@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\User\RoleEnum;
+use App\Enums\User\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -24,8 +26,20 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'login' => fake()->unique()->userName,
+            'first_name' => fake()->firstName,
+            'last_name' => fake()->lastName,
+            'company_name' => fake()->company,
+            'company_address' => fake()->address,
+            'company_city' => fake()->city,
+            'company_zipcode' => fake()->postcode,
+            'company_fax' => fake()->phoneNumber,
+            'phone' => fake()->phoneNumber,
             'email' => fake()->unique()->safeEmail(),
+            'nip' => fake()->numberBetween(1000000, 9999999),
+            'marketing' => fake()->boolean,
+            'status' => fake()->randomElement(StatusEnum::getValues()),
+            'role' => RoleEnum::USER,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),

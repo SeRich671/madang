@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\User\RoleEnum;
+use App\Enums\User\StatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,12 +15,42 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+
+            $table->foreignId('branch_id')
+                ->nullable()
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->string('login')->unique();
+
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('nip')->nullable();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone')->nullable();
+
+            $table->string('company_name')->nullable();
+            $table->string('company_address')->nullable();
+            $table->string('company_city')->nullable();
+            $table->string('company_zipcode')->nullable();
+            $table->string('company_fax')->nullable();
+
             $table->string('password');
+
+            $table->boolean('marketing')->default(0);
+            $table->boolean('conditions')->default(0);
+
+            $table->enum('status', StatusEnum::getValues())->default(StatusEnum::NOT_ACCEPTED);
+            $table->enum('role', RoleEnum::getValues())->default(RoleEnum::USER);
+
             $table->rememberToken();
+
+            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('logged_in_new_system')->nullable();
+            $table->timestamp('last_login')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

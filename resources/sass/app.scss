@@ -1,0 +1,21 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+#app {
+  height: 100vh;
+}
+main {
+  min-height: 80%;
+}
