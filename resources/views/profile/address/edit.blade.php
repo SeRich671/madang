@@ -5,8 +5,8 @@
         <div class="border-bottom border-primary bg-white p-3">
             <h3 class="text-primary">Edytuj adres</h3>
         </div>
-        <div class="bg-white">
-            <div class="row p-3">
+        <div class="bg-white p-3">
+            <div class="row=">
                 <div class="col-lg-12">
                     @if(session('success'))
                         <div class="alert alert-success">
@@ -122,7 +122,6 @@
                         </button>
                     </div>
                 </div>
-                <div><hr></div>
             </form>
         </div>
     </div>

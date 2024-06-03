@@ -13,11 +13,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="border-bottom border-primary bg-white p-3">
-                        <h3 class="text-primary">Adres dostawy</h3>
+                        <h3 class="text-primary">Faktura i dostawa</h3>
                     </div>
                 </div>
-                <div class="col-lg-12">
-                    <div class="bg-white p-3">
+                <div class="col-lg-6 pe-lg-0">
+                    <div class="bg-white p-3 h-100">
                         <div class="row mb-4">
                             <label for="address_id" class="col-lg-4 col-form-label text-lg-end">Książka adresowa</label>
 
@@ -39,12 +39,12 @@
                             </div>
                         </div>
                         <div class="row mt-4 mb-3">
-                            <label for="first_name" class="col-lg-4 col-form-label text-lg-end">Imię</label>
+                            <label for="address[first_name]" class="col-lg-4 col-form-label text-lg-end">Imię</label>
 
                             <div class="col-lg-4">
-                                <input id="first_name" type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" required autocomplete="first_name">
+                                <input id="address[first_name]" type="text" class="form-control @error('address[first_name]') is-invalid @enderror" name="address[first_name]" value="{{ old('address[first_name]') }}" required autocomplete="address[first_name]">
 
-                                @error('first_name')
+                                @error('address[first_name]')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -52,12 +52,12 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="last_name" class="col-lg-4 col-form-label text-lg-end">Nazwisko</label>
+                            <label for="address[last_name]" class="col-lg-4 col-form-label text-lg-end">Nazwisko</label>
 
                             <div class="col-lg-4">
-                                <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="last_name">
+                                <input id="address[last_name]" type="text" class="form-control @error('address[last_name]') is-invalid @enderror" name="address[last_name]" value="{{ old('address[last_name]') }}" required autocomplete="address[last_name]">
 
-                                @error('last_name')
+                                @error('address[last_name]')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -65,12 +65,12 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="company_name" class="col-lg-4 col-form-label text-lg-end">Firma <small>(opcjonalne)</small></label>
+                            <label for="address[company_name]" class="col-lg-4 col-form-label text-lg-end">Firma <small>(opcjonalne)</small></label>
 
                             <div class="col-lg-4">
-                                <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name') }}" required autocomplete="company_name">
+                                <input id="address[company_name]" type="text" class="form-control @error('address[company_name]') is-invalid @enderror" name="address[company_name]" value="{{ old('address[company_name]') }}" required autocomplete="address[company_name]">
 
-                                @error('company_name')
+                                @error('address[company_name]')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -78,12 +78,12 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="address" class="col-lg-4 col-form-label text-lg-end">Adres</label>
+                            <label for="address[address]" class="col-lg-4 col-form-label text-lg-end">Adres</label>
 
                             <div class="col-lg-4">
-                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required autocomplete="address">
+                                <input id="address[address]" type="text" class="form-control @error('address[address]') is-invalid @enderror" name="address[address]" value="{{ old('address[address]') }}" required autocomplete="address[address]">
 
-                                @error('address')
+                                @error('address[address]')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -91,12 +91,12 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="city" class="col-lg-4 col-form-label text-lg-end">Miasto</label>
+                            <label for="address[city]" class="col-lg-4 col-form-label text-lg-end">Miasto</label>
 
                             <div class="col-lg-4">
-                                <input id="city" type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" required autocomplete="city">
+                                <input id="address[city]" type="text" class="form-control @error('address[city]') is-invalid @enderror" name="address[city]" value="{{ old('address[city]') }}" required autocomplete="address[city]">
 
-                                @error('city')
+                                @error('address[city]')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -104,12 +104,12 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="zipcode" class="col-lg-4 col-form-label text-lg-end">Kod pocztowy</label>
+                            <label for="address[zipcode]" class="col-lg-4 col-form-label text-lg-end">Kod pocztowy</label>
 
                             <div class="col-lg-4">
-                                <input id="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}" required autocomplete="zipcode">
+                                <input id="address[zipcode]" type="text" class="form-control @error('address[zipcode]') is-invalid @enderror" name="address[zipcode]" value="{{ old('address[zipcode]') }}" required autocomplete="address[zipcode]">
 
-                                @error('zipcode')
+                                @error('address[zipcode]')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -117,18 +117,164 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="phone" class="col-lg-4 col-form-label text-lg-end">Telefon</label>
+                            <label for="address[phone]" class="col-lg-4 col-form-label text-lg-end">Telefon</label>
 
                             <div class="col-lg-4">
-                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
+                                <input id="address[phone]" type="text" class="form-control @error('address[phone]') is-invalid @enderror" name="address[phone]" value="{{ old('address[phone]') }}" required autocomplete="address[phone]">
 
-                                @error('phone')
+                                @error('address[phone]')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 ps-lg-0">
+                    <div class="bg-white p-3">
+                        <div class="row mb-4">
+                            <label for="billing_id" class="col-lg-4 col-form-label text-lg-end">Dane do faktury</label>
+
+                            <div class="col-lg-4">
+                                <select class="form-control @error('billing_id') is-invalid @enderror" name="billing_id">
+                                    <option value="" selected>--wybierz--</option>
+                                    @foreach($billings as $billing)
+                                        <option value="{{ json_encode($billing) }}">
+                                            {{ $billing->nip }}, {{ $billing->email }}, {{ $billing->phone }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('billing_id')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mt-4 mb-3">
+                            <label for="billing[first_name]" class="col-lg-4 col-form-label text-lg-end">Imię</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing[first_name]" type="text" class="form-control @error('billing[first_name]') is-invalid @enderror" name="billing[first_name]" value="{{ old('billing[first_name]') }}" required autocomplete="billing[first_name]">
+
+                                @error('billing[first_name]')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing[last_name]" class="col-lg-4 col-form-label text-lg-end">Nazwisko</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing[last_name]" type="text" class="form-control @error('billing[last_name]') is-invalid @enderror" name="billing[last_name]" value="{{ old('billing[last_name]') }}" required autocomplete="billing[last_name]">
+
+                                @error('billing[last_name]')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing[company_name]" class="col-lg-4 col-form-label text-lg-end">Firma <small>(opcjonalne)</small></label>
+
+                            <div class="col-lg-4">
+                                <input id="billing[company_name]" type="text" class="form-control @error('billing[company_name]') is-invalid @enderror" name="billing[company_name]" value="{{ old('billing[company_name]') }}" required autocomplete="billing[company_name]">
+
+                                @error('billing[company_name]')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing[address]" class="col-lg-4 col-form-label text-lg-end">Adres</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing[address]" type="text" class="form-control @error('billing[address]') is-invalid @enderror" name="billing[address]" value="{{ old('billing[address]') }}" required autocomplete="billing[address]">
+
+                                @error('billing[address]')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing[city]" class="col-lg-4 col-form-label text-lg-end">Miasto</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing[city]" type="text" class="form-control @error('billing[city]') is-invalid @enderror" name="billing[city]" value="{{ old('billing[city]') }}" required autocomplete="billing[city]">
+
+                                @error('billing[city]')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing[zipcode]" class="col-lg-4 col-form-label text-lg-end">Kod pocztowy</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing[zipcode]" type="text" class="form-control @error('billing[zipcode]') is-invalid @enderror" name="billing[zipcode]" value="{{ old('billing[zipcode]') }}" required autocomplete="billing[zipcode]">
+
+                                @error('billing[zipcode]')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing[phone]" class="col-lg-4 col-form-label text-lg-end">Telefon</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing[phone]" type="text" class="form-control @error('billing[phone]') is-invalid @enderror" name="billing[phone]" value="{{ old('billing[phone]') }}" required autocomplete="billing[phone]">
+
+                                @error('billing[phone]')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="billing[email]" class="col-lg-4 col-form-label text-lg-end">Telefon</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing[email]" type="email" class="form-control @error('billing[email]') is-invalid @enderror" name="billing[email]" value="{{ old('billing[email]') }}" required autocomplete="billing[email]">
+
+                                @error('billing[email]')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="billing[nip]" class="col-lg-4 col-form-label text-lg-end">Telefon</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing[nip]" type="text" class="form-control @error('billing[nip]') is-invalid @enderror" name="billing[nip]" value="{{ old('billing[nip]') }}" required autocomplete="billing[nip]">
+
+                                @error('billing[nip]')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        
                     </div>
                 </div>
             </div>
@@ -238,24 +384,49 @@
                if($('select[name="address_id"]').val() != 0) {
                    let data = JSON.parse($('select[name="address_id"]').val());
 
-                   $('input[name="first_name"]').val(data['first_name']);
-                   $('input[name="last_name"]').val(data['last_name']);
-                   $('input[name="company_name"]').val(data['company_name']);
-                   $('input[name="address"]').val(data['street']);
-                   $('input[name="city"]').val(data['city']);
-                   $('input[name="zipcode"]').val(data['zip_code']);
-                   $('input[name="phone"]').val(data['phone']);
+                   $('input[name="address[first_name]"]').val(data['first_name']);
+                   $('input[name="address[last_name]"]').val(data['last_name']);
+                   $('input[name="address[company_name]"]').val(data['company_name']);
+                   $('input[name="address[address]"]').val(data['street']);
+                   $('input[name="address[city]"]').val(data['city']);
+                   $('input[name="address[zipcode]"]').val(data['zip_code']);
+                   $('input[name="address[phone]"]').val(data['phone']);
                }else{
-                   $('input[name="first_name"]').val('');
-                   $('input[name="last_name"]').val('');
-                   $('input[name="company_name"]').val('');
-                   $('input[name="address"]').val('');
-                   $('input[name="city"]').val('');
-                   $('input[name="zipcode"]').val('');
-                   $('input[name="phone"]').val('');
+                   $('input[name="address[first_name]"]').val('');
+                   $('input[name="address[last_name]"]').val('');
+                   $('input[name="address[company_name]"]').val('');
+                   $('input[name="address[address]"]').val('');
+                   $('input[name="address[city]"]').val('');
+                   $('input[name="address[zipcode]"]').val('');
+                   $('input[name="address[phone]"]').val('');
                }
-
            })
+
+            $('select[name="billing_id"]').change(function () {
+                if($('select[name="billing_id"]').val() != 0) {
+                    let data = JSON.parse($('select[name="billing_id"]').val());
+
+                    $('input[name="billing[first_name]"]').val(data['first_name']);
+                    $('input[name="billing[last_name]"]').val(data['last_name']);
+                    $('input[name="billing[company_name]"]').val(data['company_name']);
+                    $('input[name="billing[address]"]').val(data['address']);
+                    $('input[name="billing[city]"]').val(data['city']);
+                    $('input[name="billing[zipcode]"]').val(data['zipcode']);
+                    $('input[name="billing[phone]"]').val(data['phone']);
+                    $('input[name="billing[email]"]').val(data['email']);
+                    $('input[name="billing[nip]"]').val(data['nip']);
+                }else{
+                    $('input[name="billing[first_name]"]').val('');
+                    $('input[name="billing[last_name]"]').val('');
+                    $('input[name="billing[company_name]"]').val('');
+                    $('input[name="billing[address]"]').val('');
+                    $('input[name="billing[city]"]').val('');
+                    $('input[name="billing[zipcode]"]').val('');
+                    $('input[name="billing[phone]"]').val('');
+                    $('input[name="billing[email]"]').val('');
+                    $('input[name="billing[nip]"]').val('');
+                }
+            })
         });
     </script>
 @endpush

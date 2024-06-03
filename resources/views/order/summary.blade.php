@@ -49,14 +49,6 @@
                     </div>
                 @endforeach
 
-                <div class="col-lg-12 mt-4">
-                    <h5 class="text-primary">Uwagi do zamówienia</h5>
-                    <hr>
-                </div>
-                <div class="col-lg-12 mb-4">
-                    {{ $anyOrder->description }}
-                </div>
-
                 <div class="col-lg-6 mt-4">
                     <div class="border-bottom border-primary bg-white p-3">
                         <h5 class="text-primary">Adres dostawy</h5>
@@ -64,34 +56,34 @@
                     <div class="bg-white p-3">
                         <table class="table table-striped table-responsive">
                             <tbody>
-                                <tr>
-                                    <th>Imię</th>
-                                    <td>{{ $anyOrder->first_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Nazwisko</th>
-                                    <td>{{ $anyOrder->last_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Firma</th>
-                                    <td>{{ $anyOrder->company_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Adres</th>
-                                    <td>{{ $anyOrder->address }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Miasto</th>
-                                    <td>{{ $anyOrder->city }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Kod pocztowy</th>
-                                    <td>{{ $anyOrder->zipcode }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Telefon</th>
-                                    <td>{{ $anyOrder->phone }}</td>
-                                </tr>
+                            <tr>
+                                <th>Imię</th>
+                                <td>{{ $anyOrder->address_first_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nazwisko</th>
+                                <td>{{ $anyOrder->address_last_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Firma</th>
+                                <td>{{ $anyOrder->address_company_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Adres</th>
+                                <td>{{ $anyOrder->address_address }}</td>
+                            </tr>
+                            <tr>
+                                <th>Miasto</th>
+                                <td>{{ $anyOrder->address_city }}</td>
+                            </tr>
+                            <tr>
+                                <th>Kod pocztowy</th>
+                                <td>{{ $anyOrder->address_zipcode }}</td>
+                            </tr>
+                            <tr>
+                                <th>Telefon</th>
+                                <td>{{ $anyOrder->address_phone }}</td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -99,6 +91,63 @@
 
                 <div class="col-lg-6 mt-4">
                     <div class="border-bottom border-primary bg-white p-3">
+                        <h5 class="text-primary">Dane do faktury</h5>
+                    </div>
+                    <div class="bg-white p-3">
+                        <table class="table table-striped table-responsive">
+                            <tbody>
+                            <tr>
+                                <th>Imię</th>
+                                <td>{{ $anyOrder->billing_first_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nazwisko</th>
+                                <td>{{ $anyOrder->billing_last_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Firma</th>
+                                <td>{{ $anyOrder->billing_company_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Adres</th>
+                                <td>{{ $anyOrder->billing_address }}</td>
+                            </tr>
+                            <tr>
+                                <th>Miasto</th>
+                                <td>{{ $anyOrder->billing_city }}</td>
+                            </tr>
+                            <tr>
+                                <th>Kod pocztowy</th>
+                                <td>{{ $anyOrder->billing_zipcode }}</td>
+                            </tr>
+                            <tr>
+                                <th>Telefon</th>
+                                <td>{{ $anyOrder->billing_phone }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ $anyOrder->billing_email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nip</th>
+                                <td>{{ $anyOrder->billing_nip }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mt-4">
+                    <div class="border-bottom border-primary bg-white">
+                        <h5 class="text-primary">Uwagi do zamówienia</h5>
+                    </div>
+                    <div class="bg-white p-3">
+                        {{ $anyOrder->description }}
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mt-4">
+                    <div class="border-bottom border-primary bg-white">
                         <h5 class="text-primary">Koszty</h5>
                     </div>
                     <div class="bg-white p-3">

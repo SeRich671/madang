@@ -5,7 +5,7 @@
             <hr>
         </div>
         @foreach($departments as $department)
-            <div class="col-lg-3">
+            <div class="col-lg-3 mt-2">
                 @include('parts.department-card', ['department' => $department])
             </div>
         @endforeach

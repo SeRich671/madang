@@ -35,6 +35,8 @@ return new class extends Migration
             $table->string('size')->nullable();
             $table->string('count_in_package')->default(1);
 
+            $table->string('in_stock')->default(0);
+
             $table->timestamp('last_available')->nullable();
             $table->timestamps();
             $table->softDeletes();

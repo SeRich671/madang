@@ -40,6 +40,7 @@ return new class extends Migration
 
             $table->boolean('marketing')->default(0);
             $table->boolean('conditions')->default(0);
+            $table->boolean('uncertain')->default(0);
 
             $table->enum('status', StatusEnum::getValues())->default(StatusEnum::NOT_ACCEPTED);
             $table->enum('role', RoleEnum::getValues())->default(RoleEnum::USER);

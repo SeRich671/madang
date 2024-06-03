@@ -27,24 +27,24 @@
                     <tbody>
                         <tr>
                             <th>Adres do faktury</th>
-                            <td>{{ $order->user->first_name }} {{ $order->user->last_name }}</td>
-                            <td>{{ $order->user->company_name }}</td>
-                            <td>{{ $order->user->company_city }}</td>
-                            <td>{{ $order->user->company_address }}</td>
-                            <td>{{ $order->user->company_zipcode }}</td>
-                            <td>{{ $order->user->nip }}</td>
-                            <td>{{ $order->user->phone }}</td>
-                            <td>{{ $order->user->email }}</td>
+                            <td>{{ $order->billing_first_name }} {{ $order->billing_last_name }}</td>
+                            <td>{{ $order->billing_company_name }}</td>
+                            <td>{{ $order->billing_city }}</td>
+                            <td>{{ $order->billing_address }}</td>
+                            <td>{{ $order->billing_zipcode }}</td>
+                            <td>{{ $order->billing_nip }}</td>
+                            <td>{{ $order->billing_phone }}</td>
+                            <td><a class="link-primary" href="{{ route('admin.user.edit', $order->user) }}">{{ $order->billing_email }}</a></td>
                         </tr>
                         <tr>
                             <th>Adres dostawy</th>
-                            <td>{{ $order->first_name }} {{ $order->last_name }}</td>
-                            <td>{{ $order->company_name }}</td>
-                            <td>{{ $order->city }}</td>
-                            <td>{{ $order->address }}</td>
-                            <td>{{ $order->zipcode }}</td>
+                            <td>{{ $order->address_first_name }} {{ $order->address_last_name }}</td>
+                            <td>{{ $order->address_company_name }}</td>
+                            <td>{{ $order->address_city }}</td>
+                            <td>{{ $order->address_address }}</td>
+                            <td>{{ $order->address_zipcode }}</td>
                             <td>-</td>
-                            <td>{{ $order->phone }}</td>
+                            <td>{{ $order->address_phone }}</td>
                             <td>-</td>
                         </tr>
                     </tbody>
@@ -78,7 +78,7 @@
                                 <td><input type="text" name="quantity[{{ $line->id }}]" class="form-control" value="{{ $line->quantity }}"></td>
                                 <td>{{ $line->product->count_in_package * $line->quantity }}</td>
                                 <td>{{ $line->product->price_discount ?: $line->product->price }} zł</td>
-                                <td>{{ $line->price }} zł</td>
+                                <td>{{ $line->quantity * $line->price }} zł</td>
                                 <td>
                                     <input type="hidden" name="unavailable[{{ $line->id }}]" value="0">
                                     <input type="checkbox" name="unavailable[{{ $line->id }}]" value="1" @checked($line->unavailable)>
@@ -90,22 +90,22 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <td colspan="6"></td>
+                            <td class="bg-white border-0 text-center" colspan="6"></td>
                             <td>{{ $order->total }} zł</td>
                             <td colspan="2">Wartość koszyka</td>
                         </tr>
                         <tr>
-                            <td colspan="6"></td>
+                            <td class="bg-white border-0 text-center" colspan="6"></td>
                             <td>{{ $order->delivery_cost }} zł</td>
                             <td colspan="2">Koszt dostawy</td>
                         </tr>
                         <tr>
-                            <td colspan="6"></td>
+                            <td class="bg-white border-0 text-center" colspan="6"></td>
                             <td>{{ $order->payment_cost }} zł</td>
                             <td colspan="2">Koszt płatności</td>
                         </tr>
                         <tr>
-                            <td colspan="6"></td>
+                            <td class="bg-white border-0 text-center" colspan="6"></td>
                             <td>{{ $order->total + $order->delivery_cost + $order->payment_cost }} zł</td>
                             <td colspan="2">Do zapłaty</td>
                         </tr>

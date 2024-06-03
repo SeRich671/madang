@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -80,6 +81,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        DB::beginTransaction();
+
         $user = User::create([
             'login' => $data['login'],
             'first_name' => $data['first_name'],
@@ -106,6 +109,20 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'email' => $data['email'],
         ]);
+
+        $user->billings()->create([
+            'first_name' => $data['address']['first_name'],
+            'last_name' => $data['address']['last_name'],
+            'company_name' => $data['address']['company_name'],
+            'address' => $data['address']['address'],
+            'city' => $data['address']['city'],
+            'zipcode' => $data['address']['zipcode'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
+            'nip' => $data['nip']
+        ]);
+
+        DB::commit();
 
         return $user;
     }

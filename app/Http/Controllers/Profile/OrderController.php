@@ -27,6 +27,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        return view('profile.order.show', [
+            'order' => $order
+        ]);
     }
 }

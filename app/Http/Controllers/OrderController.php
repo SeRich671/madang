@@ -8,6 +8,7 @@ use App\Http\Requests\Order\StoreRequest;
 use App\Models\CartItem;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class OrderController extends Controller
@@ -15,10 +16,12 @@ class OrderController extends Controller
     public function create()
     {
         $addresses = auth()->user()->addresses;
+        $billings = auth()->user()->billings;
         $cartItems = auth()->user()->cartItems;
 
         return view('order.create', [
             'addresses' => $addresses,
+            'billings' => $billings,
             'cartItems' => $cartItems,
         ]);
     }
@@ -31,6 +34,8 @@ class OrderController extends Controller
             ->groupBy('branch_id');
         $orderReference = Str::uuid();
 
+        DB::beginTransaction();
+
         foreach($cartItemGroups as $branchId => $cartItemGroup) {
             $total = 0;
 
@@ -42,13 +47,25 @@ class OrderController extends Controller
                 'user_id' => auth()->id(),
                 'branch_id' => $branchId,
                 'code' => $orderReference,
-                'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'company_name' => $data['company_name'],
-                'address' => $data['address'],
-                'city' => $data['city'],
-                'zipcode' => $data['zipcode'],
-                'phone' => $data['phone'],
+                
+                'address_first_name' => $data['address']['first_name'],
+                'address_last_name' => $data['address']['last_name'],
+                'address_company_name' => $data['address']['company_name'],
+                'address_address' => $data['address']['address'],
+                'address_city' => $data['address']['city'],
+                'address_zipcode' => $data['address']['zipcode'],
+                'address_phone' => $data['address']['phone'],
+
+                'billing_first_name' => $data['billing']['first_name'],
+                'billing_last_name' => $data['billing']['last_name'],
+                'billing_company_name' => $data['billing']['company_name'],
+                'billing_address' => $data['billing']['address'],
+                'billing_city' => $data['billing']['city'],
+                'billing_zipcode' => $data['billing']['zipcode'],
+                'billing_phone' => $data['billing']['phone'],
+                'billing_email' => $data['billing']['email'],
+                'billing_nip' => $data['billing']['nip'],
+                
                 'description' => $data['description'],
                 'finished_by_client' => 0,
                 'delivery' => $data['delivery'][$branchId],
@@ -69,6 +86,8 @@ class OrderController extends Controller
                 ]);
             }
         }
+
+        DB::commit();
 
         return redirect()->route('order.summary', $orderReference);
     }

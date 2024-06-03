@@ -27,7 +27,13 @@
                             <h3 class="text-primary">Panel administracyjny</h3>
                         </div>
                         <div class="list-group">
+                            <a href="{{ route('admin.department.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Działy</a>
+                            <a href="{{ route('admin.branch.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Oddziały</a>
+                            <a href="{{ route('admin.category.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Kategorie produktów</a>
                             <a href="{{ route('admin.order.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Zamówienia</a>
+                            <a href="{{ route('admin.product.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Produkty</a>
+                            <a href="{{ route('admin.attribute.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Cechy produktów</a>
+                            <a href="{{ route('admin.user.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Użytkownicy</a>
                         </div>
                     </div>
                     @if($menuName)
@@ -62,5 +68,6 @@
         @include('parts.footer')
     </div>
     @stack('scripts')
+
 </body>
 </html>

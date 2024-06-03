@@ -27,13 +27,24 @@ return new class extends Migration
 
             $table->string('code');
 
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('company_name')->nullable();
-            $table->string('address');
-            $table->string('city');
-            $table->string('zipcode');
-            $table->string('phone');
+            $table->string('address_first_name');
+            $table->string('address_last_name');
+            $table->string('address_company_name')->nullable();
+            $table->string('address_address');
+            $table->string('address_city');
+            $table->string('address_zipcode');
+            $table->string('address_phone');
+
+            $table->string('billing_first_name');
+            $table->string('billing_last_name');
+            $table->string('billing_company_name')->nullable();
+            $table->string('billing_address');
+            $table->string('billing_city');
+            $table->string('billing_zipcode');
+
+            $table->string('billing_phone');
+            $table->string('billing_email');
+            $table->string('billing_nip');
 
             $table->text('description')->nullable();
 

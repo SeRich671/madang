@@ -5,8 +5,8 @@
         <div class="border-bottom border-primary bg-white p-3">
             <h3 class="text-primary">Dodaj nowy adres</h3>
         </div>
-        <div class="bg-white">
-            <div class="row p-3">
+        <div class="bg-white p-3">
+            <div class="row">
                 <div class="col-lg-12">
                     @if(session('success'))
                         <div class="alert alert-success">
@@ -18,8 +18,6 @@
 
             <form method="POST" action="{{ route('profile.address.store') }}">
                 @csrf
-                @method('POST')
-
                 <div class="row mb-3">
                     <label for="first_name" class="col-lg-4 col-form-label text-lg-end">Imię</label>
                     <div class="col-lg-6">
@@ -60,12 +58,12 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="street" class="col-lg-4 col-form-label text-lg-end">Adres</label>
+                    <label for="address" class="col-lg-4 col-form-label text-lg-end">Adres</label>
 
                     <div class="col-lg-6">
-                        <input id="street" type="text" class="form-control @error('street') is-invalid @enderror" name="street" value="{{ old('street') }}" required autocomplete="street">
+                        <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required autocomplete="address">
 
-                        @error('street')
+                        @error('address')
                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -88,12 +86,12 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="zip_code" class="col-lg-4 col-form-label text-lg-end">Kod pocztowy</label>
+                    <label for="zipcode" class="col-lg-4 col-form-label text-lg-end">Kod pocztowy</label>
 
                     <div class="col-lg-6">
-                        <input id="zip_code" type="text" class="form-control @error('zip_code') is-invalid @enderror" name="zip_code" value="{{ old('zip_code') }}" required autocomplete="zip_code">
+                        <input id="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}" required autocomplete="zipcode">
 
-                        @error('zip_code')
+                        @error('zipcode')
                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -122,7 +120,6 @@
                         </button>
                     </div>
                 </div>
-                <div><hr></div>
             </form>
         </div>
     </div>

@@ -25,13 +25,26 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'company_name' => ['nullable', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
-            'city' => ['required', 'string', 'max:255'],
-            'zipcode' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'array'],
+            'address.first_name' => ['required', 'string', 'max:255'],
+            'address.last_name' => ['required', 'string', 'max:255'],
+            'address.company_name' => ['nullable', 'string', 'max:255'],
+            'address.address' => ['required', 'string', 'max:255'],
+            'address.city' => ['required', 'string', 'max:255'],
+            'address.zipcode' => ['required', 'string', 'max:255'],
+            'address.phone' => ['required', 'string', 'max:255'],
+
+            'billing' => ['required', 'array'],
+            'billing.first_name' => ['required', 'string', 'max:255'],
+            'billing.last_name' => ['required', 'string', 'max:255'],
+            'billing.company_name' => ['nullable', 'string', 'max:255'],
+            'billing.address' => ['required', 'string', 'max:255'],
+            'billing.city' => ['required', 'string', 'max:255'],
+            'billing.zipcode' => ['required', 'string', 'max:255'],
+            'billing.phone' => ['required', 'string', 'max:255'],
+            'billing.email' => ['required', 'email', 'max:255'],
+            'billing.nip' => ['required', 'string', 'max:255'],
+
             'description' => ['nullable', 'string'],
 
             'delivery' => ['required', 'array'],

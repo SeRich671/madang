@@ -1,6 +1,7 @@
 import 'bootstrap';
 import $ from 'jquery';
 import { createApp } from 'vue';
+import select2 from "select2"
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -11,6 +12,8 @@ import { createApp } from 'vue';
 import axios from 'axios';
 window.axios = axios;
 window.$ = window.jQuery = $;
+
+select2();
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 

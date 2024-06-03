@@ -25,7 +25,7 @@ class CartController extends Controller
         $cartItem = CartItem::where('user_id', auth()->user()->id)
             ->where('product_id', $product->id)
             ->where('branch_id', $product->order_branch->id)
-            ->where('department_id', $department->id)
+            ->where('department_id', $department ? $department->id : $product->categories()->first()->department->id)
             ->first();
 
         if($cartItem) {
@@ -35,12 +35,18 @@ class CartController extends Controller
                 'user_id' => auth()->user()->id,
                 'branch_id' => $product->order_branch->id,
                 'product_id' => $product->id,
-                'department_id' => $department->id,
+                'department_id' => $department ? $department->id : $product->categories()->first()->department->id,
                 'quantity' => $request->input('quantity'),
             ]);
         }
 
-        return redirect()->back()->with('success', 'Pomyślnie dodano produkt do koszyka');
+        if(!$request->input('to_div')) {
+            return redirect()->back()->with('success', 'Pomyślnie dodano produkt do koszyka');
+        }else{
+            $url = url()->previous() . $request->input('to_div');
+            return redirect($url)->with('success', 'Pomyślnie dodano produkt do koszyka');
+        }
+
     }
 
     public function recalculate(Request $request)

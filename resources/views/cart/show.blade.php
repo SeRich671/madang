@@ -46,7 +46,7 @@
                                                 <td class="col-lg-2"><input type="number" value="{{ $cartItem->quantity }}" class="form-control" name="quantity[{{$cartItem->id}}]"></td>
                                                 <td class="col-lg-2">{{ $cartItem->product->count_in_package }}</td>
                                                 <td class="col-lg-1">{{ $cartItem->product->count_in_package * $cartItem->quantity }}</td>
-                                                <td class="col-lg-2">{{ ($cartItem->product->discount_price ?: $cartItem->product->price) * $cartItem->quantity }}</td>
+                                                <td class="col-lg-2">{{ ($cartItem->product->discount_price ?: $cartItem->product->price) * $cartItem->quantity }} zł</td>
                                                 <td class="col-lg-1 text-end">
                                                     <a class="btn btn-sm btn-danger text-white" href="{{ route('cart.delete', $cartItem) }}"><i class="bi bi-x"></i></a>
                                                 </td>

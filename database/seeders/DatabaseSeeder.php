@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enums\User\RoleEnum;
 use App\Enums\User\StatusEnum;
 use App\Models\Address;
+use App\Models\Billing;
 use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Department;
@@ -35,6 +36,12 @@ class DatabaseSeeder extends Seeder
                     'user_id' => $user->id
                 ]);
             }
+
+            foreach ($users as $user) {
+                Billing::factory(1)->create([
+                    'user_id' => $user->id
+                ]);
+            }
         }
 
         $adminUser = User::factory()->create([
@@ -45,6 +52,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Address::factory(1)->create([
+            'user_id' => $adminUser->id
+        ]);
+
+        Billing::factory(1)->create([
             'user_id' => $adminUser->id
         ]);
     }

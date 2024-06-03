@@ -7,6 +7,8 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 
+@import 'select2/dist/css/select2.min.css';
+
 html {
   height: 100%;
 }
@@ -18,4 +20,19 @@ body {
 }
 main {
   min-height: 80%;
+}
+.accordion-button {
+  background-color: rgb(248, 134, 97) !important;
+  color: #ffffff !important;
+}
+
+.page-link, .page-link:hover {
+  color: #f6993f;
+}
+
+.page-link.active, .active > .page-link {
+  z-index: 3;
+  color: #ffffff;
+  background-color: #f6993f;
+  border-color: #f6993f;
 }

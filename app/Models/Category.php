@@ -38,7 +38,6 @@ class Category extends Model
 
     public function allLeafNodes()
     {
-        //returns all leaf categories related to current model
         $leafNodes = DB::select(
             "WITH RECURSIVE cte AS (
                 SELECT id, category_id
@@ -52,9 +51,46 @@ class Category extends Model
             SELECT id
             FROM categories
             WHERE id IN (SELECT id FROM cte)");
-//        dd($leafNodes);
+
         return Category::whereIn('id', collect($leafNodes)->pluck('id')->toArray())
             ->with('categories')
             ->whereDoesntHave('categories');
+    }
+
+
+    public function getAllProductCountAttribute(): int
+    {
+        $allLeafNodes = $this->allLeafNodes()->pluck('id');
+
+        $leafProducts = Product::isAvailable()
+            ->whereHas('categories', function ($query) use ($allLeafNodes) {
+                return $query->whereIn('categories.id', $allLeafNodes);
+            })
+            ->distinct()
+            ->get();
+
+        $products = $this->products()
+            ->where(function ($query) {
+                return $query->where('is_available', 1)
+                    ->orWhere('last_available', '>', now()->subDays(7));
+            })
+            ->get();
+
+        return $leafProducts->merge($products)
+            ->unique('id')
+            ->count();
+    }
+
+    public function getFullParentNameAttribute(): string
+    {
+        $recur = $this;
+        $out = '';
+
+        while($recur) {
+            $out = ' / ' . $recur->name . $out;
+            $recur = $recur->category;
+        }
+
+        return $this->department->name . $out;
     }
 }

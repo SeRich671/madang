@@ -5,18 +5,9 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="d-flex mx-auto">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                @php
-                    $departments = \App\Models\Department::all();
-                @endphp
-                <select class="form-control me-2">
-                    <option value="0">Wszystkie działy</option>
-                    @foreach($departments as $department)
-                        <option value="{{ $department->id }}">{{ $department->name }}</option>
-                    @endforeach
-                </select>
-                <button class="btn btn-outline-primary" type="submit">Search</button>
+            <form method="GET" action="{{ route('search.index', current_subdomain() ?: '') }}" class="d-flex mx-auto">
+                <input class="form-control me-2" minlength="3" name="global_query" value="{{ request()->get('global_query') }}" type="search" placeholder="Nazwa lub kod produktu" aria-label="Search">
+                <button class="btn btn-outline-primary" type="submit">Szukaj</button>
             </form>
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
@@ -36,6 +27,7 @@
                             <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Edycja danych</a></li>
                             <li><a class="dropdown-item" href="{{ route('profile.order.index') }}">Moje zamówienia</a></li>
                             <li><a class="dropdown-item" href="{{ route('profile.address.index') }}">Książka adresowa</a></li>
+                            <li><a class="dropdown-item" href="{{ route('profile.billing.index') }}">Dane do faktury</a></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf

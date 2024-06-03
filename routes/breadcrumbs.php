@@ -2,6 +2,7 @@
 
 // Note: Laravel will automatically resolve `Breadcrumbs::` without
 // this import. This is nice for IDE syntax and refactoring.
+use App\Models\Category;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 
 // This import is also not required, and you could replace `BreadcrumbTrail $trail`
@@ -26,9 +27,16 @@ Breadcrumbs::for('category', function (BreadcrumbTrail $trail, $department, $cat
     $trail->push($category->name, route('department.category.index', ['subdomain' => $department->subdomain, 'category' => $category]));
 });
 
-Breadcrumbs::for('product.show', function (BreadcrumbTrail $trail, $department, $category, $product) {
-    $trail->parent('category', $department, $category,);
-    $trail->push($product->name, route('product.show', ['subdomain' => $department->subdomain, 'category' => $category, 'product' => $product]));
+Breadcrumbs::for('product.show', function (BreadcrumbTrail $trail, $department, Category $category, $product) {
+    if($category->exists) {
+        $trail->parent('category', $department, $category,);
+    }else{
+        $trail->push('Powrót', url()->previous());
+    }
+
+
+
+    $trail->push($product->name, route('product.show', ['subdomain' => $department->subdomain, 'category' => $category ?? null, 'product' => $product]));
 });
 
 

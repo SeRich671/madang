@@ -24,6 +24,24 @@
         </main>
         @include('parts.footer')
     </div>
+    <div class="modal fade" id="productImageModal" tabindex="-1" aria-labelledby="productImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" class="img-fluid" alt="Product Image">
+                </div>
+            </div>
+        </div>
+    </div>
     @stack('scripts')
+    <script type="application/javascript">
+        function showProductImage(src) {
+            var modalImage = document.getElementById('modalImage');
+            modalImage.src = src; // Set the source of the modal image to the source of the clicked image
+        }
+    </script>
 </body>
 </html>

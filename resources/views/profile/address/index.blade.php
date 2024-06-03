@@ -41,12 +41,13 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12 text-end">
-                    <a href="{{ route('profile.address.create') }}" class="btn btn-primary text-white">Dodaj nowy</a>
-                </div>
+                    <div class="col-lg-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center justify-content-center">
+                                <a href="{{ route('profile.address.create') }}" class="btn btn-primary text-white">Dodaj nowy</a>
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
