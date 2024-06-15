@@ -25,9 +25,11 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'image' => ['required', 'image'],
+            'image' => ['sometimes', 'nullable', 'image'],
             'subdomain' => ['required', 'string'],
             'status' => ['required', Rule::in(StatusEnum::getValues())],
+            'footer_auth' => ['sometimes', 'nullable', 'string'],
+            'footer_guest' => ['sometimes', 'nullable', 'string'],
         ];
     }
 }

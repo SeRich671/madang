@@ -105,6 +105,18 @@
         </div>
 
         <div class="row mt-4 mb-3">
+            <label for="discount_price" class="col-lg-4 col-form-label text-lg-end">Przecena</label>
+            <div class="col-lg-4">
+                <input id="discount_price" type="text" class="form-control @error('discount_price') is-invalid @enderror" name="discount_price" value="{{ $product->discount_price }}" autocomplete="discount_price">
+                @error('discount_price')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-3">
             <label for="size_carton" class="col-lg-4 col-form-label text-lg-end">Sztuk w kartonie</label>
             <div class="col-lg-4">
                 <input id="size_carton" type="text" class="form-control @error('size_carton') is-invalid @enderror" name="size_carton" value="{{ $product->size_carton }}" required autocomplete="size_carton">
@@ -128,17 +140,17 @@
             </div>
         </div>
 
-        <div class="row mt-4 mb-3">
-            <label for="in_stock" class="col-lg-4 col-form-label text-lg-end">Stan ilościowy</label>
-            <div class="col-lg-4">
-                <input id="in_stock" type="text" class="form-control @error('in_stock') is-invalid @enderror" name="in_stock" value="{{ $product->in_stock }}" required autocomplete="in_stock">
-                @error('in_stock')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-        </div>
+{{--        <div class="row mt-4 mb-3">--}}
+{{--            <label for="in_stock" class="col-lg-4 col-form-label text-lg-end">Stan ilościowy</label>--}}
+{{--            <div class="col-lg-4">--}}
+{{--                <input id="in_stock" type="text" class="form-control @error('in_stock') is-invalid @enderror" name="in_stock" value="{{ $product->in_stock }}" required autocomplete="in_stock">--}}
+{{--                @error('in_stock')--}}
+{{--                <span class="invalid-feedback" role="alert">--}}
+{{--                    <strong>{{ $message }}</strong>--}}
+{{--                </span>--}}
+{{--                @enderror--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -191,6 +203,19 @@
 
                     <label for="is_recommended" class="form-check-label">
                         Wybrane na główną
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-lg-6 offset-lg-4">
+                <div class="form-check">
+                    <input type="hidden" name="bought_by_others" value="0">
+                    <input type="checkbox" value="1" name="bought_by_others" id="bought_by_others" class="form-check-input" @checked($product->bought_by_others)>
+
+                    <label for="bought_by_others" class="form-check-label">
+                        Wyświetlać w sekcji "Inni kupili również"
                     </label>
                 </div>
             </div>

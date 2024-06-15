@@ -2,11 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\User\StatusEnum;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class HasBranch
+class HasNoDeletedStatus
 {
     /**
      * Handle an incoming request.
@@ -15,13 +17,13 @@ class HasBranch
      */
     public function handle(Request $request, Closure $next): Response
     {
-
         $user = auth()->user();
 
-        if($user?->branch_id) {
+        if(!$user || ($user->status !== StatusEnum::DELETED && $user->status !== StatusEnum::ARCHIVED)) {
             return $next($request);
         }
 
-        return redirect()->route('home');
+        Auth::logout();
+        return redirect()->route('home')->with('error', 'Proszę o kontakt z firmą');
     }
 }

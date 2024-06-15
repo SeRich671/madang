@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\Order\DeliveryEnum;
 use App\Enums\Order\PaymentEnum;
+use App\Enums\Order\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Order\UpdateRequest;
 use App\Models\Order;
@@ -14,13 +15,38 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $statuses = StatusEnum::asSelectArray();
         $orders = Order::where('finished_by_client', 1)
+            ->when($request->input('id'), function ($query) use ($request) {
+                return $query->where('id', $request->input('id'));
+            })
+            ->when($request->input('code'), function ($query) use ($request) {
+                return $query->where('code', 'LIKE', $request->input('code') . '%');
+            })
+            ->when($request->input('query'), function ($query) use ($request) {
+                return $query->whereHas('user', function ($query2) use ($request) {
+                    return $query2->where('first_name', 'LIKE', '%' . $request->input('query') . '%')
+                        ->orWhere('last_name', 'LIKE', '%' . $request->input('query') . '%')
+                        ->orWhere('email', 'LIKE', '%' . $request->input('query') . '%');
+                });
+            })
+            ->when($request->input('status') && $request->input('status') != '', function ($query) use ($request) {
+                return $query->where('status', $request->input('status'));
+            })
+            ->when($request->input('date_from'), function ($query) use ($request) {
+                return $query->whereDate('created_at', '>=', $request->input('date_from'));
+            })
+            ->when($request->input('date_to'), function ($query) use ($request) {
+                return $query->whereDate('created_at', '<=', $request->input('date_to'));
+            })
+            ->orderByDesc('created_at')
             ->paginate(10);
 
         return view('admin.order.index', [
-            'orders' => $orders
+            'orders' => $orders,
+            'statuses' => $statuses,
         ]);
     }
 

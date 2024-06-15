@@ -1,6 +1,13 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-white border-bottom">
     <div class="container">
+        @if(isset($department) && $department instanceof \App\Models\Department)
+
+        <a class="navbar-brand" href="{{ config('app.url') }}"><img src="{{ asset('storage/' . $department->image) }}" alt="" width="140" height="50" class="d-inline-block align-text-top"></a>
+        @else
+        <a class="navbar-brand" href="{{ config('app.url') }}"><img src="{{ asset('storage/departments/default.png') }}" alt="" width="140" height="50" class="d-inline-block align-text-top"></a>
+        @endif
         <a class="navbar-brand" href="{{ config('app.url') }}">Madang</a>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

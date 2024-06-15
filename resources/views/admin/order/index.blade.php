@@ -1,7 +1,43 @@
 @extends('layouts.admin', ['menuName' => 'Zamówienia'])
 
 @section('content')
-    <div class="row">
+    <form method="GET" action="{{ url()->current() }}">
+        <div class="row">
+            <div class="col-lg-4">
+                <label for="id">ID zamówienia</label>
+                <input type="text" class="form-control" name="id" id="id" value="{{ request()->input('id') }}">
+            </div>
+            <div class="col-lg-4">
+                <label for="code">ID zamówienia klienta</label>
+                <input type="text" class="form-control" name="code" id="code" value="{{ request()->input('code') }}">
+            </div>
+            <div class="col-lg-4">
+                <label for="query">Imię, nazwisko, adres e-mail</label>
+                <input type="text" class="form-control" name="query" id="query" value="{{ request()->input('query') }}">
+            </div>
+            <div class="col-lg-4">
+                <label for="status">Status</label>
+                <select class="form-control" name="status">
+                    <option value="">Wszystkie</option>
+                    @foreach($statuses as $key => $status)
+                        <option value="{{ $key }}" @selected($key == request()->input('status'))>{{ $status }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-lg-4">
+                <label for="date_from">Data od</label>
+                <input type="date" class="form-control" name="date_from" id="date_from" value="{{ request()->input('date_from') }}">
+            </div>
+            <div class="col-lg-4">
+                <label for="date_to">Data do</label>
+                <input type="date" class="form-control" name="date_to" id="date_to" value="{{ request()->input('date_to') }}">
+            </div>
+            <div class="col-lg-12 text-center mt-2">
+                <button class="btn btn-primary text-white">Wyszukaj</button>
+            </div>
+        </div>
+    </form>
+    <div class="row mt-4">
         <div class="col-lg-12">
             <table class="table table-striped table-responsive">
                 <thead>

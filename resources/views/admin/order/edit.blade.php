@@ -55,11 +55,13 @@
                 <hr>
             </div>
             <div class="col-lg-12 table-responsive">
-                <table class="table">
+                <table id="sortableTable" class="table">
                     <thead>
                         <tr>
                             <th>Zdjęcie</th>
-                            <th>Nazwa</th>
+                            <th onclick="sortTable(1)">ID</th>
+                            <th onclick="sortTable(2)">Kod</th>
+                            <th onclick="sortTable(3)">Nazwa</th>
                             <th>Sztuk w opakowaniu</th>
                             <th>Ilość opakowań</th>
                             <th>Razem sztuk</th>
@@ -73,12 +75,14 @@
                         @foreach($order->lines as $line)
                             <tr class="{{ $line->deleted ? 'table-danger' : ($line->unavailable ? 'table-warning' : 'table-white') }}">
                                 <td class="text-center"><img src="{{ asset('storage/' . $line->product->img_path) }}" style="max-height:100px;max-width:100px"></td>
+                                <td>{{ $line->product->id }}</td>
+                                <td>{{ $line->product->code }}</td>
                                 <td>{{ $line->product->name }}</td>
                                 <td>{{ $line->product->count_in_package }}</td>
                                 <td><input type="text" name="quantity[{{ $line->id }}]" class="form-control" value="{{ $line->quantity }}"></td>
                                 <td>{{ $line->product->count_in_package * $line->quantity }}</td>
-                                <td>{{ $line->product->price_discount ?: $line->product->price }} zł</td>
-                                <td>{{ $line->quantity * $line->price }} zł</td>
+                                <td>{!! $line->product->discount_price ? '<s>' . $line->product->price . '</s> <span class="text-danger">' . $line->product->discount_price . '</span>' : $line->product->price !!} zł</td>
+                                <td>{{ number_format((float)($line->quantity * ($line->product->discount_price ?: $line->product->price)), 2, '.', '') }} zł</td>
                                 <td>
                                     <input type="hidden" name="unavailable[{{ $line->id }}]" value="0">
                                     <input type="checkbox" name="unavailable[{{ $line->id }}]" value="1" @checked($line->unavailable)>
@@ -89,29 +93,33 @@
                                 </td>
                             </tr>
                         @endforeach
-                        <tr>
-                            <td class="bg-white border-0 text-center" colspan="6"></td>
-                            <td>{{ $order->total }} zł</td>
-                            <td colspan="2">Wartość koszyka</td>
-                        </tr>
-                        <tr>
-                            <td class="bg-white border-0 text-center" colspan="6"></td>
-                            <td>{{ $order->delivery_cost }} zł</td>
-                            <td colspan="2">Koszt dostawy</td>
-                        </tr>
-                        <tr>
-                            <td class="bg-white border-0 text-center" colspan="6"></td>
-                            <td>{{ $order->payment_cost }} zł</td>
-                            <td colspan="2">Koszt płatności</td>
-                        </tr>
-                        <tr>
-                            <td class="bg-white border-0 text-center" colspan="6"></td>
-                            <td>{{ $order->total + $order->delivery_cost + $order->payment_cost }} zł</td>
-                            <td colspan="2">Do zapłaty</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td class="bg-white border-0 text-center col-lg-10" colspan="8"></td>
+                    <td>{{ $order->total }} zł</td>
+                    <td colspan="2">Wartość koszyka</td>
+                </tr>
+                <tr>
+                    <td class="bg-white border-0 text-center" colspan="8"></td>
+                    <td>{{ $order->delivery_cost }} zł</td>
+                    <td colspan="2">Koszt dostawy</td>
+                </tr>
+                <tr>
+                    <td class="bg-white border-0 text-center" colspan="8"></td>
+                    <td>{{ $order->payment_cost }} zł</td>
+                    <td colspan="2">Koszt płatności</td>
+                </tr>
+                <tr>
+                    <td class="bg-white border-0 text-center" colspan="8"></td>
+                    <td>{{ $order->total + $order->delivery_cost + $order->payment_cost }} zł</td>
+                    <td colspan="2">Do zapłaty</td>
+                </tr>
+                </tbody>
+            </table>
 
             <div class="col-lg-12 mt-4 text-primary">
                 <h5>Status zamówienia</h5>
@@ -240,3 +248,38 @@
         </form>
     </div>
 @endsection
+
+@push('scripts')
+    <script type="application/javascript">
+        function sortTable(columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("sortableTable");
+            switching = true;
+            // Make a loop that will continue until no switching has been done:
+            while (switching) {
+                // Start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                // Loop through all table rows (except the first, which contains table headers):
+                for (i = 1; i < (rows.length - 1); i++) {
+                    // Start by saying there should not be switching:
+                    shouldSwitch = false;
+                    // Get the two elements you want to compare, one from current row and one from the next:
+                    x = rows[i].getElementsByTagName("TD")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+                    // Check if the two rows should switch place:
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    // If a switch has been marked, make the switch and mark that a switch has been done:
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+    </script>
+@endpush

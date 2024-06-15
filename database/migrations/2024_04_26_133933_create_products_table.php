@@ -18,22 +18,23 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
 
-            $table->string('price');
-            $table->string('discount_price')->nullable();
+            $table->decimal('price', 10, 2);
+            $table->decimal('discount_price', 10, 2)->nullable();
 
             $table->boolean('is_available')->default(1);
             $table->boolean('is_recommended')->default(0);
             $table->boolean('sticker')->default(0);
             $table->boolean('later_delivery')->default(0);
+            $table->boolean('bought_by_others')->default(0);
 
             $table->string('material')->nullable();
             $table->text('img_path')->nullable();
 
-            $table->string('size_set')->nullable();
-            $table->string('size_carton')->nullable();
+            $table->unsignedInteger('size_set')->nullable();
+            $table->unsignedInteger('size_carton')->nullable();
 
             $table->string('size')->nullable();
-            $table->string('count_in_package')->default(1);
+            $table->unsignedInteger('count_in_package')->default(1);
 
             $table->string('in_stock')->default(0);
 

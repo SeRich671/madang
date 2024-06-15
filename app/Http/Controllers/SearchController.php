@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
@@ -12,36 +13,36 @@ class SearchController extends Controller
     {
         $department = Department::where('subdomain', current_subdomain())->first();
 
-        $productsQuery = Product::isAvailable()
+        $productsQuery = Product::query()
             ->when($department, function ($query) use ($department) {
                 return $query->whereHas('categories', function ($query2) use ($department) {
                     return $query2->where('department_id', $department->id);
                 });
             })
+            ->orderBy('is_available', 'desc')
             ->search($request->input('global_query'))
-//            ->filter($request->input('filters'))
-//            ->sort($request->input('sort'))
-            ->orderByDesc('created_at')
+            ->filters($request->get('filters'))
             ->distinct('id');
 
-        $materials = $productsQuery->get()->pluck('material')->unique()->map(function ($material) {
-            return explode(',', $material);
-        })
-            ->flatten(1)
-            ->filter(function ($item) {
-                return (bool)$item;
-            })
-            ->map(function ($item) {
-                return trim($item);
-            })->unique();
+        $dynamicAttributes = DB::table('product_attribute')
+            ->join('attributes', 'attributes.id', '=', 'product_attribute.attribute_id')
+            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value')
+            ->distinct()
+            ->get()
+            ->groupBy('attribute_id');
 
-        $products = $productsQuery->paginate(12);
+//        dd($productsQuery->toRawSql());
+        $products = $productsQuery->paginate(
+            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : Product::PER_PAGE
+        );
+
+//        dd($products);
 
         return view('home.search', [
             'department' => $department,
             'categories' => collect(),
             'products' => $products,
-            'materials' => $materials,
+            'dynamicAttributes' => $dynamicAttributes,
         ]);
     }
 }

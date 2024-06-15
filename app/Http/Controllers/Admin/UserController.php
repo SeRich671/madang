@@ -18,13 +18,26 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $users = User::query()
+            ->when($request->input('query'), function ($query) use ($request) {
+                return $query->where(function ($query2) use ($request) {
+                    return $query2->where('first_name', 'LIKE', '%' . $request->input('query') . '%')
+                        ->orWhere('last_name', 'LIKE', '%' . $request->input('query') . '%')
+                        ->orWhere('email', 'LIKE', '%' . $request->input('query') . '%')
+                        ->orWhere('login', 'LIKE', '%' . $request->input('query') . '%');
+                });
+            })
+            ->when(!empty($request->input('branch_id', [])), function ($query) use ($request) {
+                return $query->whereIn('branch_id', $request->input('branch_id', []));
+            })
             ->paginate(20);
+        $branches = Branch::pluck('name', 'id');
 
         return view('admin.user.index', [
-            'users' => $users
+            'users' => $users,
+            'branches' => $branches,
         ]);
     }
 

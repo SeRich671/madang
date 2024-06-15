@@ -1,7 +1,26 @@
 @extends('layouts.admin', ['menuName' => 'Użytkownicy'])
 
 @section('content')
-    <div class="row">
+    <form method="GET" action="{{ url()->current() }}">
+        <div class="row">
+            <div class="col-lg-8">
+                <label for="query">Imię, nazwisko, adres e-mail, login</label>
+                <input type="text" class="form-control" name="query" value="{{ request()->input('query') }}">
+            </div>
+            <div class="col-lg-4">
+                <label for="branch_id">Oddziały</label>
+                <select name="branch_id[]" id="branch_id" class="form-control" multiple>
+                    @foreach($branches as $key => $branch)
+                        <option value="{{ $key }}" @selected(in_array($key, request()->input('branch_id', [])))>{{ $branch }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-lg-12 text-center">
+                <button type="submit" class="btn btn-primary text-white">Wyszukaj</button>
+            </div>
+        </div>
+    </form>
+    <div class="row mt-4">
         <div class="col-lg-12 table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -29,7 +48,7 @@
                         <td>{{ $user->branch?->name ?: '-' }}</td>
                         <td>{{ \App\Enums\User\StatusEnum::getDescription($user->status) }}</td>
                         <td>{{ $user->uncertain ? 'Tak' : 'Nie' }}</td>
-                        <td>{{ $user->last_login ? Carbon::parse($user->last_login) : '-' }}</td>
+                        <td>{{ $user->last_login ? Carbon\Carbon::parse($user->last_login)->format('H:i d.m.Y') : '-' }}</td>
                         <td class="text-end">
                             <form method="POST" action="{{ route('admin.user.destroy', $user) }}">
                                 @csrf
@@ -53,3 +72,11 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script type="module">
+        $(document).ready(function () {
+            $('#branch_id').select2();
+        });
+    </script>
+@endpush

@@ -36,9 +36,14 @@
                                         <strong>{{ $attribute->name }}: </strong> {{ $attribute->pivot->value }}<br>
                                 @endforeach
                             </div>
-                            @if(Auth::check() && auth()->user()->branch_id)
+                            @if($product->later_delivery)
+                                <div class="mt-1">
+                                    <strong class="text-danger">Opóźnienie w dostawie</strong>
+                                </div>
+                            @endif
+                            @if(Auth::check() && auth()->user()->branch_id && $product->is_available)
                                 <hr>
-                                <h4>Cena: {{ $product->discount_price ?: $product->price }} zł</h4>
+                                <h4>Cena: {!! $product->discount_price ? '<s>' . $product->price . '</s> <span class="text-danger">' . $product->discount_price . '</span>'  : $product->price !!} zł</h4>
                                 <hr>
                                 <div class="mt-4">
                                     <form method="POST" action="{{ route('cart.add', $product) }}">
@@ -49,6 +54,8 @@
                                         </div>
                                     </form>
                                 </div>
+                            @elseif(Auth::check() && !$product->is_available)
+                                Produkt obecnie niedostępny
                             @else
                                 <hr>
                                 <div class="mt-4 text-end">
@@ -60,5 +67,21 @@
                 </div>
             </div>
         </div>
+        @if($otherProducts->count())
+        <div class="row">
+            <div class="col-lg-12 mt-5 bg-white p-4">
+                <div class="text-primary border-primary border-bottom">
+                    <h3>Inni kupili również</h3>
+                </div>
+                <div class="row">
+                    @foreach($otherProducts as $product)
+                        <div class="col-lg-4 mt-2">
+                            @include('parts.department.product.card', $product)
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 @endsection

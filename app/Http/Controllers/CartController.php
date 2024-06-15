@@ -11,6 +11,7 @@ class CartController extends Controller
 {
     public function show() {
         $cartItemGroups = CartItem::where('user_id', auth()->id())
+            ->orderBy('created_at')
             ->get()
             ->groupBy('department.name');
 

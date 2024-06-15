@@ -21,7 +21,10 @@ return new class extends Migration
             $table->enum('status', StatusEnum::getValues())->default(StatusEnum::ON);
             $table->string('footer_type');
 
-            $table->boolean('is_hidden')->default(0);
+//            $table->boolean('is_hidden')->default(0);
+
+            $table->text('footer_auth')->nullable();
+            $table->text('footer_guest')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

@@ -28,6 +28,8 @@ class StoreRequest extends FormRequest
             'image' => ['required', 'image'],
             'subdomain' => ['required', 'string'],
             'status' => ['required', Rule::in(StatusEnum::getValues())],
+            'footer_auth' => ['sometimes', 'nullable', 'string'],
+            'footer_guest' => ['sometimes', 'nullable', 'string'],
         ];
     }
 }

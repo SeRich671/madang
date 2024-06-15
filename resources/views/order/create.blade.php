@@ -247,7 +247,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="billing[email]" class="col-lg-4 col-form-label text-lg-end">Telefon</label>
+                            <label for="billing[email]" class="col-lg-4 col-form-label text-lg-end">Email</label>
 
                             <div class="col-lg-4">
                                 <input id="billing[email]" type="email" class="form-control @error('billing[email]') is-invalid @enderror" name="billing[email]" value="{{ old('billing[email]') }}" required autocomplete="billing[email]">
@@ -261,7 +261,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="billing[nip]" class="col-lg-4 col-form-label text-lg-end">Telefon</label>
+                            <label for="billing[nip]" class="col-lg-4 col-form-label text-lg-end">NIP</label>
 
                             <div class="col-lg-4">
                                 <input id="billing[nip]" type="text" class="form-control @error('billing[nip]') is-invalid @enderror" name="billing[nip]" value="{{ old('billing[nip]') }}" required autocomplete="billing[nip]">

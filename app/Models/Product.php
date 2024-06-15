@@ -14,6 +14,8 @@ class Product extends Model
 
     protected $guarded = ['id'];
 
+    const PER_PAGE = 12;
+
     public function branches(): BelongsToMany
     {
         return $this->belongsToMany(Branch::class, 'product_branch', 'product_id', 'branch_id')
@@ -34,6 +36,36 @@ class Product extends Model
         }
 
         return $this->branches()->wherePivot('is_default', 1)->first();
+    }
+
+    public function scopeFilters($query, $filters) {
+        return $query->whereHas('categories')->when(isset($filters['sort_type']) && $filters['sort_type'], function ($query2) use ($filters) {
+            return $query2->orderBy($filters['sort_type'], $filters['sort_order']);
+        }, function ($query2) {
+            return $query2->orderBy('name', 'asc');
+        })->when(isset($filters['price']['from']) && $filters['price']['from'], function ($query2) use ($filters) {
+            return $query2->where('price', '>=', $filters['price']['from']);
+        })->when(isset($filters['price']['to']) && $filters['price']['to'], function ($query2) use ($filters) {
+            return $query2->where('price', '<=', $filters['price']['to']);
+        })->when(isset($filters['count_in_package']['from']) && $filters['count_in_package']['from'], function ($query2) use ($filters) {
+            return $query2->where('count_in_package', '>=', $filters['count_in_package']['from']);
+        })->when(isset($filters['count_in_package']['to']) && $filters['count_in_package']['to'], function ($query2) use ($filters) {
+            return $query2->where('price', '<=', $filters['count_in_package']['to']);
+        })->when(!isset($filters['show_unavailable']) || $filters['show_unavailable'] == 0, function ($query2) use ($filters) {
+            return $query2->where(function ($query3) {
+                return $query3->where('is_available', 1)
+                    ->orWhere('last_available', '>', now()->subDays(7));
+            });
+        })->when(isset($filters['sticker']) && $filters['sticker'] != 0, function ($query2) {
+            return $query2->where('sticker', 1);
+        })->when(!empty($filters['dynamic_attribute']), function ($query2) use ($filters) {
+            foreach ($filters['dynamic_attribute'] as $key => $dynamicAttribute) {
+                $query2->whereHas('attributes', function ($query3) use ($key, $dynamicAttribute) {
+                    $query3->where('attributes.id', $key)
+                        ->whereIn('value', $dynamicAttribute);
+                });
+            }
+        });
     }
 
     public function scopeIsAvailable($query) {

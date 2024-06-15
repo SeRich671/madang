@@ -37,11 +37,11 @@
                                 <tr class="align-middle">
                                     <td class="col-lg-3">{{ $cartItem->product->name }}</td>
                                     <td class="col-lg-3">{{ $cartItem->branch->name }}</td>
-                                    <td class="col-lg-1">{{ $cartItem->product->discount_price ?: $cartItem->product->price }}</td>
+                                    <td class="col-lg-1">{!! $cartItem->product->discount_price ? '<s>' . $cartItem->product->price . '</s> <span class="text-danger">' . $cartItem->product->discount_price . '</span>'  : $cartItem->product->price !!} zł</td>
                                     <td class="col-lg-2">{{ $cartItem->quantity }}</td>
                                     <td class="col-lg-2">{{ $cartItem->product->count_in_package }}</td>
                                     <td class="col-lg-1">{{ $cartItem->product->count_in_package * $cartItem->quantity }}</td>
-                                    <td class="col-lg-2">{{ ($cartItem->product->discount_price ?: $cartItem->product->price) * $cartItem->quantity }}</td>
+                                    <td class="col-lg-2">{{ number_format((float)(($cartItem->product->discount_price ?: $cartItem->product->price) * $cartItem->quantity), 2, '.', '') }} zł</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -166,13 +166,13 @@
                                             Dostawa - {{ \App\Enums\Order\DeliveryEnum::getDescription($order->delivery) }}
                                         </td>
                                         <td class="col-lg-2 text-end">
-                                            {{ $order->delivery_cost }}
+                                            {{ $order->delivery_cost }} zł
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Płatność - {{ \App\Enums\Order\PaymentEnum::getDescription($order->payment) }}</td>
                                         <td class="text-end">
-                                            {{ $order->payment_cost }}
+                                            {{ $order->payment_cost }} zł
                                         </td>
                                     </tr>
                                 @endforeach

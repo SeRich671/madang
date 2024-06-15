@@ -59,6 +59,30 @@
                     @enderror
                 </div>
             </div>
+
+            <div class="row mt-4 mb-3">
+                <label for="footer_auth" class="col-lg-4 col-form-label text-lg-end">Stopka dla zalogowanych (HTML)</label>
+                <div class="col-lg-4">
+                    <textarea class="form-control" id="footer_auth" name="footer_auth" rows="10">{{ old('footer_auth') }}</textarea>
+                    @error('footer_auth')
+                    <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="row mt-4 mb-3">
+                <label for="footer_guest" class="col-lg-4 col-form-label text-lg-end">Stopka dla gości (HTML)</label>
+                <div class="col-lg-4">
+                    <textarea class="form-control" id="footer_guest" name="footer_guest" rows="10">{{ old('footer_guest') }}</textarea>
+                    @error('footer_guest')
+                    <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                    @enderror
+                </div>
+            </div>
             
             <div class="row mt-4">
                 <div class="col-lg-12 text-center">
