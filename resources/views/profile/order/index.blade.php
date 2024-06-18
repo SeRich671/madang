@@ -69,8 +69,6 @@
 
 @push('scripts')
     <script type="module">
-        import {end} from "@popperjs/core";
-
         $(document).ready(function () {
             $('.recreate').submit(function (e) {
                 e.preventDefault();

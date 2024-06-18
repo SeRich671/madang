@@ -14,3 +14,8 @@ function cart_count() {
 function cart_ids() {
     return CartItem::where('user_id', auth()->id())->pluck('product_id')->toArray();
 }
+
+function pretty_price($price): string
+{
+    return number_format((float)$price, 2, '.', '');
+}

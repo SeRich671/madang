@@ -30,21 +30,21 @@ class DatabaseRemap extends Command
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         //oddziały
         DB::statement("
-            INSERT INTO madang_v2.branches (id, name, email, phone, city, street, zip_code)
+            INSERT INTO madang.branches (id, name, email, phone, city, street, zip_code)
             SELECT id, name, email, tel as phone, city, street, zip_code
             FROM madang_remap.branches
         ");
 
         //działy
         DB::statement("
-            INSERT INTO madang_v2.departments (id, name, image, subdomain, status, footer_type)
+            INSERT INTO madang.departments (id, name, image, subdomain, status, footer_type)
             SELECT id, name, image, subdomain, status, footer_type
             FROM madang_remap.departments
         ");
 
         //kategorie produktów
         DB::statement("
-            INSERT INTO madang_v2.categories (id, name, transition_only, department_id, category_id)
+            INSERT INTO madang.categories (id, name, transition_only, department_id, category_id)
             SELECT id, name, transitionOnly as transition_only, department_id, category_id
             FROM madang_remap.categories
         ");
@@ -52,7 +52,7 @@ class DatabaseRemap extends Command
 
         //produkty
         DB::statement("
-            INSERT INTO madang_v2.products (
+            INSERT INTO madang.products (
                                             id,
                                             code,
                                             name,
@@ -98,14 +98,14 @@ class DatabaseRemap extends Command
 
         //produkt - kategorie
         DB::statement("
-            INSERT INTO madang_v2.product_category (id, product_id, category_id)
+            INSERT INTO madang.product_category (id, product_id, category_id)
             SELECT id, product_id, category_id
             FROM madang_remap.product_categories
         ");
 
         //produkt - oddział
         DB::statement("
-            INSERT INTO madang_v2.product_branch (id, product_id, branch_id, is_default)
+            INSERT INTO madang.product_branch (id, product_id, branch_id, is_default)
             SELECT id, product_id, branch_id, is_default
             FROM madang_remap.product_branches
         ");

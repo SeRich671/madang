@@ -101,6 +101,8 @@ class UserController extends Controller
 
         if(isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
+        }else{
+            unset($data['password']);
         }
 
         $user->update($data);

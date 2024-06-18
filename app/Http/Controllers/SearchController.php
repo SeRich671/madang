@@ -33,7 +33,7 @@ class SearchController extends Controller
 
 //        dd($productsQuery->toRawSql());
         $products = $productsQuery->paginate(
-            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : Product::PER_PAGE
+            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : cache()->get('settings.per_page')
         );
 
 //        dd($products);

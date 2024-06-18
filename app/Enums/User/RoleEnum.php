@@ -2,9 +2,10 @@
 
 namespace App\Enums\User;
 
+use BenSampo\Enum\Contracts\LocalizedEnum;
 use BenSampo\Enum\Enum;
 
-final class RoleEnum extends Enum
+final class RoleEnum extends Enum implements LocalizedEnum
 {
     const ADMIN = 'ADMIN';
     const EMPLOYEE = 'EMPLOYEE';

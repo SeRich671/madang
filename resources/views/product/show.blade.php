@@ -7,10 +7,12 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-3">
-                @include('parts.department.category-tree', ['categories' => $categories, 'department' => $department])
-            </div>
-            <div class="col-lg-9">
+            @if($categories->count())
+                <div class="col-lg-3">
+                    @include('parts.department.category-tree', ['categories' => $categories, 'department' => $department])
+                </div>
+            @endif
+            <div class="@if($categories->count())col-lg-9 @else col-lg-12 @endif">
                 <div class="mb-4 bg-white p-4">
                     {{ Breadcrumbs::render('product.show', $department, $category, $product) }}
                 </div>
@@ -48,7 +50,7 @@
                                 <div class="mt-4">
                                     <form method="POST" action="{{ route('cart.add', $product) }}">
                                         <div class="input-group">
-                                            <input name="quantity" type="number" class="form-control" placeholder="Ilość" required>
+                                            <input name="quantity" min="1" type="number" class="form-control" placeholder="Ilość" required>
                                             @csrf
                                             <button type="submit" class="btn btn-primary"><i class="bi bi-cart-check"></i></button>
                                         </div>

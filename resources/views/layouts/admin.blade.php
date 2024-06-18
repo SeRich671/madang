@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link href="path/to/your/bootstrap-5-theme-for-select2.css" rel="stylesheet">
     @stack('styles')
 </head>
 <body class="bg-body-secondary">
@@ -34,6 +35,7 @@
                             <a href="{{ route('admin.product.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Produkty</a>
                             <a href="{{ route('admin.attribute.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Cechy produktów</a>
                             <a href="{{ route('admin.user.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Użytkownicy</a>
+                            <a href="{{ route('admin.settings.edit') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Ustawienia</a>
                         </div>
                     </div>
                     @if($menuName)

@@ -12,10 +12,12 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-3">
-            @include('parts.department.category-tree', ['categories' => $categories, 'department' => $department])
-        </div>
-        <div class="col-lg-9">
+        @if($categories->count())
+            <div class="col-lg-3">
+                @include('parts.department.category-tree', ['categories' => $categories, 'department' => $department])
+            </div>
+        @endif
+        <div class="@if($categories->count()) col-lg-9 @else col-lg-12 @endif">
             @include('parts.department.category-breadcrumbs', ['category' => $category ?? null])
             @if(!isset($category))
                 @include('parts.department.index', ['recommended' => $recommended, 'new' => $new, 'discounted' => $discounted])

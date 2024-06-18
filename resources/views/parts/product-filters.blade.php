@@ -27,9 +27,11 @@
                         <div class="col-lg-4">
                             <label for="filters[per_page]">Produktów na stronie</label>
                             <select class="form-control" name="filters[per_page]" id="filters[per_page]">
-                                <option value="12" @selected(isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '12')>12</option>
-                                <option value="24" @selected(isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '24')>24</option>
-                                <option value="60" @selected(isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '60')>60</option>
+                                <option value="12" @selected((!isset(request()->get('filters')['per_page']) && cache()->get('settings.per_page') == '12') || (isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '12'))>12</option>
+                                <option value="24" @selected((!isset(request()->get('filters')['per_page']) && cache()->get('settings.per_page') == '24') || (isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '24'))>24</option>
+                                <option value="36" @selected((!isset(request()->get('filters')['per_page']) && cache()->get('settings.per_page') == '36') || (isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '36'))>36</option>
+                                <option value="48" @selected((!isset(request()->get('filters')['per_page']) && cache()->get('settings.per_page') == '48') || (isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '48'))>48</option>
+                                <option value="60" @selected((!isset(request()->get('filters')['per_page']) && cache()->get('settings.per_page') == '60') || (isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '60'))>60</option>
                                 <option value="all" @selected(isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == 'all')>Wszystkie</option>
                             </select>
                         </div>

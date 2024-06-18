@@ -2,9 +2,10 @@
 
 namespace App\Enums\Order;
 
+use BenSampo\Enum\Contracts\LocalizedEnum;
 use BenSampo\Enum\Enum;
 
-final class StatusEnum extends Enum
+final class StatusEnum extends Enum implements LocalizedEnum
 {
     const NEW = 'NEW';
     const IN_PROGRESS = 'IN_PROGRESS';

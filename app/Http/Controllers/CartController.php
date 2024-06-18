@@ -70,4 +70,10 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Pomyślnie usunięto produkt z koszyka');
     }
+
+    public function empty() {
+        auth()->user()->cartItems()->delete();
+
+        return redirect()->back()->with('success', 'Pomyślnie usunięto wszystkie produkty z koszyka');
+    }
 }

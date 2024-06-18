@@ -100,7 +100,7 @@ class Product extends Model
         $searchTerms = array_filter(explode(' ', $search), function ($word) {
             return strlen($word) >= 3; // Pomijamy słowa krótsze niż 3 litery
         });
-        $searchTerms = array_map($normalizeChars, $searchTerms);
+//        $searchTerms = array_map($normalizeChars, $searchTerms);
         $searchTerms = array_map($trimEndings, $searchTerms);
 
         // Wyszukiwanie z użyciem zmodyfikowanych fraz

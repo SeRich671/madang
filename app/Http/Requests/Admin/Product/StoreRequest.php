@@ -39,6 +39,7 @@ class StoreRequest extends FormRequest
             'is_available' => ['required', 'boolean'],
             'is_recommended' => ['required', 'boolean'],
             'bought_by_others' => ['required', 'boolean'],
+            'sticker' => ['required', 'boolean'],
 
             'attributes' => ['sometimes', 'nullable', 'array'],
             'attributes.*.attribute_id' => ['sometimes', 'nullable', 'exists:attributes,id'],

@@ -48,6 +48,14 @@
                             <td>-</td>
                         </tr>
                     </tbody>
+                    @if($order->description)
+                    <tfoot>
+                        <tr>
+                            <th>Uwagi do zamówienia:</th>
+                            <td colspan="8">{{ $order->description }}</td>
+                        </tr>
+                    </tfoot>
+                    @endif
                 </table>
             </div>
             <div class="col-lg-12 mt-4 text-primary">

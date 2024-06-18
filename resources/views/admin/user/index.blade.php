@@ -43,10 +43,16 @@
                             {{ $user->login }}
                         </td>
                         <td>{{ \App\Enums\User\RoleEnum::getDescription($user->role) }}</td>
-                        <td>{{ $user->first_name }} {{ $user->last_name }}</td>
+                        <td>
+                            {{ $user->first_name }} {{ $user->last_name }}<br>
+                            Firma: {{ $user->company_name }}
+                        </td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->branch?->name ?: '-' }}</td>
-                        <td>{{ \App\Enums\User\StatusEnum::getDescription($user->status) }}</td>
+                        <td>
+                            {{ \App\Enums\User\StatusEnum::getDescription($user->status) }} <br>
+                            Zgody marketingowe: {{ $user->marketing ? 'Tak' : 'Nie' }}
+                        </td>
                         <td>{{ $user->uncertain ? 'Tak' : 'Nie' }}</td>
                         <td>{{ $user->last_login ? Carbon\Carbon::parse($user->last_login)->format('H:i d.m.Y') : '-' }}</td>
                         <td class="text-end">

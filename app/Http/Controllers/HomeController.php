@@ -58,6 +58,25 @@ class HomeController extends Controller
             ->take(9)
             ->get();
 
+        $lastDeliveries = Product::whereHas('categories', function ($query) use ($departmentCategoryIds) {
+            $query->whereIn('categories.id', $departmentCategoryIds);
+        })
+            ->isAvailable()
+            ->where(function ($query2) {
+                return $query2->where(function ($query) {
+                    return $query->whereDate('created_at', '>=', now()->subMonth())
+                        ->orWhereDate('updated_at', '>=', now()->subMonth());
+                })
+                    ->orWhere(function ($query) {
+                        return $query->whereDate('last_available', '>=', now()->subMonth())
+                            ->where('is_available', 1)
+                            ->whereDate('updated_at', '>=', 'last_available');
+                    });
+            })
+            ->orderByDesc('updated_at')
+            ->take(9)
+            ->get();
+
         $discounted = Product::whereHas('categories', function ($query) use ($departmentCategoryIds) {
             $query->whereIn('categories.id', $departmentCategoryIds);
         })
@@ -73,6 +92,7 @@ class HomeController extends Controller
             'new' => $new,
             'recommended' => $recommended,
             'discounted' => $discounted,
+            'lastDeliveries' => $lastDeliveries,
         ]);
     }
 
@@ -107,7 +127,7 @@ class HomeController extends Controller
 
 //        dd($productsQuery->toRawSql());
         $products = $productsQuery->paginate(
-            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : Product::PER_PAGE
+            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : cache()->get('settings.per_page')
         );
 
         return view('home.new', [
@@ -146,7 +166,7 @@ class HomeController extends Controller
 
 //        dd($productsQuery->toRawSql());
         $products = $productsQuery->paginate(
-            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : Product::PER_PAGE
+            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : cache()->get('settings.per_page')
         );
 
         return view('home.recommended', [
@@ -176,24 +196,37 @@ class HomeController extends Controller
             ->filters(request()->get('filters'))
             ->distinct('id');
 
-        $dynamicAttributes = DB::table('product_attribute')
-            ->join('attributes', 'attributes.id', '=', 'product_attribute.attribute_id')
-            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value')
-            ->distinct()
-            ->get()
-            ->groupBy('attribute_id');
+        return $this->getDynamicAttributes($productsQuery, $request, $department, $categories);
+    }
 
-//        dd($productsQuery->toRawSql());
-        $products = $productsQuery->paginate(
-            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : Product::PER_PAGE
-        );
+    public function lastDeliveries(Request $request, string $department) {
+        $department = Department::where('subdomain', $department)->first();
 
-        return view('home.discounted', [
-            'department' => $department,
-            'categories' => $categories,
-            'products' => $products,
-            'dynamicAttributes' => $dynamicAttributes,
-        ]);
+        if(!$department) {
+            return redirect()->route('home');
+        }
+
+        $departmentCategoryIds = $department->categories()->pluck('id');
+
+        $categories = $department->categories()->whereNull('category_id')->get();
+
+        $productsQuery = Product::whereHas('categories', function ($query) use ($departmentCategoryIds) {
+            $query->whereIn('categories.id', $departmentCategoryIds);
+        })->where(function ($query2) {
+            return $query2->where(function ($query) {
+                return $query->whereDate('created_at', '>=', now()->subMonth())
+                    ->orWhereDate('updated_at', '>=', now()->subMonth());
+            })
+                ->orWhere(function ($query) {
+                    return $query->whereDate('last_available', '>=', now()->subMonth())
+                        ->where('is_available', 1)
+                        ->whereDate('updated_at', '>=', 'last_available');
+                });
+        })
+            ->filters(request()->get('filters'))
+            ->distinct('id');
+
+        return $this->getDynamicAttributes($productsQuery, $request, $department, $categories);
     }
 
     public function category(Request $request, string $department, Category $category) {
@@ -220,7 +253,7 @@ class HomeController extends Controller
 
 //        dd($productsQuery->toRawSql());
         $products = $productsQuery->paginate(
-            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : Product::PER_PAGE
+            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : cache()->get('settings.per_page')
         );
 
 
@@ -232,6 +265,39 @@ class HomeController extends Controller
             'department' => $department,
             'category' => $category,
             'categories' => $category->categories,
+            'products' => $products,
+            'dynamicAttributes' => $dynamicAttributes,
+        ]);
+    }
+
+    /**
+     * @param $productsQuery
+     * @param  Request  $request
+     * @param $department
+     * @param $categories
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
+    private function getDynamicAttributes(
+        $productsQuery,
+        Request $request,
+        $department,
+        $categories
+    ): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View {
+        $dynamicAttributes = DB::table('product_attribute')
+            ->join('attributes', 'attributes.id', '=', 'product_attribute.attribute_id')
+            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value')
+            ->distinct()
+            ->get()
+            ->groupBy('attribute_id');
+
+//        dd($productsQuery->toRawSql());
+        $products = $productsQuery->paginate(
+            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : cache()->get('settings.per_page')
+        );
+
+        return view('home.discounted', [
+            'department' => $department,
+            'categories' => $categories,
             'products' => $products,
             'dynamicAttributes' => $dynamicAttributes,
         ]);

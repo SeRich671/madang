@@ -14,7 +14,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <form method="GET" action="{{ route('search.index', current_subdomain() ?: '') }}" class="d-flex mx-auto">
                 <input class="form-control me-2" minlength="3" name="global_query" value="{{ request()->get('global_query') }}" type="search" placeholder="Nazwa lub kod produktu" aria-label="Search">
-                <button class="btn btn-outline-primary" type="submit">Szukaj</button>
+                <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
             </form>
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
@@ -29,7 +29,7 @@
                     <ul class="dropdown-menu px-2" style="min-width: 300px" aria-labelledby="navbarDropdown">
                         @if(Auth::check())
                             @if(auth()->user()->role == \App\Enums\User\RoleEnum::ADMIN)
-                                <li><a class="dropdown-item" href="{{ route('admin.index') }}">Panel administratora</a></li>
+                                <li><a class="dropdown-item" href="{{ config('app.url') . '/admin' }}">Panel administratora</a></li>
                             @endif
                             <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Edycja danych</a></li>
                             <li><a class="dropdown-item" href="{{ route('profile.order.index') }}">Moje zamówienia</a></li>

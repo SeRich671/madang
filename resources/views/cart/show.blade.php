@@ -43,7 +43,7 @@
                                             <tr class="align-middle">
                                                 <td class="col-lg-3">{{ $cartItem->product->name }}</td>
                                                 <td class="col-lg-1">{!! $cartItem->product->discount_price ? '<s>' . $cartItem->product->price . '</s> <span class="text-danger">' . $cartItem->product->discount_price . '</span>' : $cartItem->product->price !!} zł</td>
-                                                <td class="col-lg-2"><input type="number" value="{{ $cartItem->quantity }}" class="form-control" name="quantity[{{$cartItem->id}}]"></td>
+                                                <td class="col-lg-2"><input min="1" type="number" value="{{ $cartItem->quantity }}" class="form-control" name="quantity[{{$cartItem->id}}]"></td>
                                                 <td class="col-lg-2">{{ $cartItem->product->count_in_package }}</td>
                                                 <td class="col-lg-1">{{ $cartItem->product->count_in_package * $cartItem->quantity }}</td>
                                                 <td class="col-lg-2">{{ number_format((float)(($cartItem->product->discount_price ?: $cartItem->product->price) * $cartItem->quantity), 2, '.', '') }} zł</td>
@@ -58,6 +58,12 @@
                             @endforeach
                             <div class="col-lg-12 mt-4 text-end">
                                 <a href="{{ route('order.create') }}" class="btn btn-primary text-white">Realizuj zamówienie</a>
+                            </div>
+                        </form>
+                        <form method="post" action="{{ route('cart.empty') }}">
+                            @csrf
+                            <div class="col-lg-12 my-1 text-center">
+                                <button type="submit" class="btn btn-danger text-white">Opróżnij koszyk</button>
                             </div>
                         </form>
                     @else

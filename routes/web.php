@@ -20,18 +20,18 @@ Route::middleware([SetSessionDomain::class, HasNoDeletedStatus::class])->group(f
         'verify' => true
     ]);
 
-
-    Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
-
     Route::get('search', [SearchController::class, 'search'])->name('search.index');
 
     Route::domain('{subdomain}.' . config('app.url_short'))->middleware([HasNoDeletedStatus::class])->group(function () {
+        Route::get('contact', [ContactController::class, 'show'])->name('contact.show');
+        Route::post('contact', [ContactController::class, 'store'])->name('contact.store');
         Route::get('/', [HomeController::class, 'department'])->name('department.index');
         Route::get('new', [HomeController::class, 'new'])->name('department.new');
         Route::get('recommended', [HomeController::class, 'recommended'])->name('department.recommended');
+        Route::get('last-deliveries', [HomeController::class, 'lastDeliveries'])->name('department.last-deliveries');
         Route::get('discounted', [HomeController::class, 'discounted'])->name('department.discounted');
-        Route::get('{category}', [HomeController::class, 'category'])->name('department.category.index');
         Route::get('product/{product}/{category?}', [ProductController::class, 'show'])->name('product.show');
+        Route::get('{category}', [HomeController::class, 'category'])->name('department.category.index');
     });
 
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -47,6 +47,7 @@ Route::middleware([SetSessionDomain::class, HasNoDeletedStatus::class])->group(f
         Route::get('/show', [CartController::class, 'show'])->name('show');
         Route::post('add/{product}', [CartController::class, 'add'])->name('add');
         Route::post('recalculate', [CartController::class, 'recalculate'])->name('recalculate');
+        Route::post('empty', [CartController::class, 'empty'])->name('empty');
         Route::get('delete/{cartItem}', [CartController::class, 'delete'])->name('delete');
     });
 

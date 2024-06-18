@@ -34,7 +34,7 @@
             <div class="col-lg-3">
                 <label for="is_available">Widoczny</label>
                 <select class="form-control" name="is_available">
-                    <option value="">Dostępny</option>
+                    <option value="">Wszystkie</option>
                     <option value="1" @selected(request()->input('is_available') === '1')>Widoczne</option>
                     <option value="0" @selected(request()->input('is_available') === '0')>Niewidoczne</option>
                 </select>

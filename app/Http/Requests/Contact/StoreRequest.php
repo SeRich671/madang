@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Admin\Department;
+namespace App\Http\Requests\Contact;
 
-use App\Enums\Department\StatusEnum;
+use App\Rules\Recaptcha;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -24,13 +23,11 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
-            'image' => ['required', 'image'],
-            'subdomain' => ['required', 'string'],
             'email' => ['required', 'email'],
-            'status' => ['required', Rule::in(StatusEnum::getValues())],
-            'footer_auth' => ['sometimes', 'nullable', 'string'],
-            'footer_guest' => ['sometimes', 'nullable', 'string'],
+            'title' => ['required', 'string'],
+            'content' => ['required', 'string'],
+            'attachment' => ['sometimes', 'nullable', 'file', 'mimes:pdf,jpeg,png,gif'],
+            'g-recaptcha-response' => ['required', new Recaptcha],
         ];
     }
 }

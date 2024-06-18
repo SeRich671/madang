@@ -220,6 +220,19 @@
             </div>
         </div>
 
+        <div class="row mb-3">
+            <div class="col-lg-6 offset-lg-4">
+                <div class="form-check">
+                    <input type="hidden" name="sticker" value="0">
+                    <input type="checkbox" value="1" name="sticker" id="sticker" class="form-check-input" @checked(old('sticker'))>
+
+                    <label for="sticker" class="form-check-label">
+                        Posiada miejsce na naklejkę
+                    </label>
+                </div>
+            </div>
+        </div>
+
         <div id="dynamic-attributes-container" class="col-lg-12">
 
         </div>

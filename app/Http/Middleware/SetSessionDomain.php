@@ -21,6 +21,8 @@ class SetSessionDomain
 
         if($department) {
             Session::put('subdomain', $department->subdomain);
+        }else{
+            Session::remove('subdomain');
         }
 
         return $next($request);

@@ -29,6 +29,18 @@
                     @enderror
                 </div>
             </div>
+            <div class="row mt-4 mb-3">
+                <label for="email" class="col-lg-4 col-form-label text-lg-end">Email</label>
+                <div class="col-lg-4">
+                    <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $department->email }}" required autocomplete="email">
+
+                    @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+            </div>
 
             <div class="row mt-4 mb-3">
                 <label for="status" class="col-lg-4 col-form-label text-lg-end">Status</label>

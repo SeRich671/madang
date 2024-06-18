@@ -70,6 +70,8 @@ class RegisterController extends Controller
             'address.address' => ['required', 'string', 'max:255'],
             'address.city' => ['required', 'string', 'max:255'],
             'address.zipcode' => ['required', 'string', 'max:255'],
+        ], [
+            'login' => 'Podany login jest już zajęty',
         ]);
     }
 

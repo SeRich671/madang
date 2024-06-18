@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\User\AddressController;
 use App\Http\Controllers\Admin\User\BillingController;
 use App\Http\Controllers\Admin\UserController;
@@ -54,3 +55,6 @@ Route::prefix('user/{user}')->name('user.')->group(function () {
         'except' => ['show', 'index'],
     ]);
 });
+
+Route::get('settings', [SettingsController::class, 'edit'])->name('settings.edit');
+Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');

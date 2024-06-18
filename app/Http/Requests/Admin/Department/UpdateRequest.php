@@ -27,6 +27,7 @@ class UpdateRequest extends FormRequest
             'name' => ['required', 'string'],
             'image' => ['sometimes', 'nullable', 'image'],
             'subdomain' => ['required', 'string'],
+            'email' => ['required', 'email'],
             'status' => ['required', Rule::in(StatusEnum::getValues())],
             'footer_auth' => ['sometimes', 'nullable', 'string'],
             'footer_guest' => ['sometimes', 'nullable', 'string'],

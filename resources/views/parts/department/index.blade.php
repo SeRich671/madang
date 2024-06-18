@@ -49,18 +49,37 @@
         </div>
     @endif
 
-        @if($discounted->count())
+    @if($discounted->count())
+        <div class="row mt-4">
+            <div class="col-lg-12 text-primary d-flex justify-content-between">
+                <h3 class="d-inline">Przecena</h3>
+                <a href="{{ route('department.discounted', $department->subdomain) }}" class="link-primary">Zobacz wszystkie</a>
+            </div>
+            <div class="col-lg-12 text-primary">
+                <hr>
+            </div>
+        </div>
+        <div class="row mt-3 mb-4">
+            @foreach($discounted as $product)
+                <div class="col-lg-4 mb-2 ">
+                    @include('parts.department.product.card', ['product' => $product, 'category' => $product->categories()->where('department_id', $department->id)->first()])
+                </div>
+            @endforeach
+        </div>
+    @endif
+
+        @if($lastDeliveries->count())
             <div class="row mt-4">
                 <div class="col-lg-12 text-primary d-flex justify-content-between">
-                    <h3 class="d-inline">Przecena</h3>
-                    <a href="{{ route('department.discounted', $department->subdomain) }}" class="link-primary">Zobacz wszystkie</a>
+                    <h3 class="d-inline">Ostatnie dostawy</h3>
+                    <a href="{{ route('department.last-deliveries', $department->subdomain) }}" class="link-primary">Zobacz wszystkie</a>
                 </div>
                 <div class="col-lg-12 text-primary">
                     <hr>
                 </div>
             </div>
             <div class="row mt-3 mb-4">
-                @foreach($discounted as $product)
+                @foreach($lastDeliveries as $product)
                     <div class="col-lg-4 mb-2 ">
                         @include('parts.department.product.card', ['product' => $product, 'category' => $product->categories()->where('department_id', $department->id)->first()])
                     </div>

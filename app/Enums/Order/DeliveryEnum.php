@@ -2,9 +2,10 @@
 
 namespace App\Enums\Order;
 
+use BenSampo\Enum\Contracts\LocalizedEnum;
 use BenSampo\Enum\Enum;
 
-final class DeliveryEnum extends Enum
+final class DeliveryEnum extends Enum implements LocalizedEnum
 {
     const PICK_UP = 'pick_up';
     const COURIER = 'courier';

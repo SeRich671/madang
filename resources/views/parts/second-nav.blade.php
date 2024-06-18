@@ -13,7 +13,7 @@
                         Zmień dział
                     </a>
                     @php
-                        $departments = \App\Models\Department::all();
+                        $departments = \App\Models\Department::where('status', \App\Enums\Department\StatusEnum::ON)->get();
                     @endphp
                     <ul class="dropdown-menu">
                         @foreach($departments as $department)
@@ -25,9 +25,11 @@
                         @endforeach
                     </ul>
                 </div>
-                <a href="{{ route('contact.index') }}" class="btn rounded-0">
-                    Kontakt
-                </a>
+                @if(current_subdomain())
+                    <a href="{{ route('contact.show', current_subdomain()) }}" class="btn rounded-0">
+                        Kontakt
+                    </a>
+                @endif
             </div>
         </div>
     </div>
