@@ -20,7 +20,7 @@ Route::middleware([SetSessionDomain::class, HasNoDeletedStatus::class])->group(f
         'verify' => true
     ]);
 
-    Route::get('search', [SearchController::class, 'search'])->name('search.index');
+
 
     Route::domain('{subdomain}.' . config('app.url_short'))->middleware([HasNoDeletedStatus::class])->group(function () {
         Route::get('contact', [ContactController::class, 'show'])->name('contact.show');
@@ -32,7 +32,10 @@ Route::middleware([SetSessionDomain::class, HasNoDeletedStatus::class])->group(f
         Route::get('discounted', [HomeController::class, 'discounted'])->name('department.discounted');
         Route::get('product/{product}/{category?}', [ProductController::class, 'show'])->name('product.show');
         Route::get('category/{category}', [HomeController::class, 'category'])->name('department.category.index');
+        Route::get('search', [SearchController::class, 'search'])->name('search.index');
     });
+
+    Route::get('search', [SearchController::class, 'search'])->name('search.index');
 
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
