@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -19,6 +20,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        Session::remove('subdomain');
         $departments = Department::where('status', StatusEnum::ON)->get();
 
         return view('welcome', [

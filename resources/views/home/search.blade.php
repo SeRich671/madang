@@ -24,12 +24,15 @@
                     @if(isset($products) && $products->count())
                         @include('parts.department.products', ['products' => $products, 'category' => 'Wyniki wyszukiwania'])
                     @else
-                        <div class="bg-white p-3 text-center">
-                            Brak wyników wyszukiwania. <br>
-                            @if(current_subdomain())
-                                Wyszukałeś wyniki dla działu: {{ \App\Models\Department::where('subdomain', current_subdomain())->first()->name }}, <br>
-                                Spróbuj wyszukać produkt w innych działach
-                            @endif
+                        <div class="bg-white p-3">
+                            @include('parts.product-filters')
+                            <div class="text-center mt-4">
+                                Brak wyników wyszukiwania. <br>
+                                @if(current_subdomain())
+                                    Wyszukałeś wyniki dla działu: {{ \App\Models\Department::where('subdomain', current_subdomain())->first()->name }}, <br>
+                                    Spróbuj wyszukać produkt w innych działach
+                                @endif
+                            </div>
                         </div>
                     @endif
                 </div>

@@ -1,11 +1,11 @@
 <div class="accordion" id="accordionExample">
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button @if(empty(request()->get('filters'))) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="{{ empty(request()->get('filters')) }}" aria-controls="collapseOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="{{ empty(request()->get('filters')) }}" aria-controls="collapseOne">
                 Sortowanie i filtry
             </button>
         </h2>
-        <div id="collapseOne" class="accordion-collapse @if(empty(request()->get('filters'))) collapse @else show  @endif" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div id="collapseOne" class="accordion-collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <form method="GET" action="{{ url()->current() }}">
                 <input type="hidden" name="global_query" value="{{ request()->get('global_query') }}">
                 <div class="accordion-body">
