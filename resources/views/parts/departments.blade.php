@@ -1,6 +1,6 @@
-<div class="container my-4 bg-white">
+<div class="container p-2 my-4 bg-white">
     <div class="row">
-        <div class="col-lg-12 text-uppercase pt-2 mt-2">
+        <div class="col-lg-12 text-uppercase pt-2 mt-2 text-primary">
             <h3 class="fw-bold">Wybierz interesujący ciebie dział</h3>
             <hr>
         </div>

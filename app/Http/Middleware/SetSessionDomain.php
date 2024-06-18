@@ -17,12 +17,10 @@ class SetSessionDomain
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $department = Department::where('subdomain', request()->subdomain)->first();
+        $department = Department::where('subdomain', request()->route()->parameter('subdomain'))->first();
 
         if($department) {
             Session::put('subdomain', $department->subdomain);
-        }else{
-            Session::remove('subdomain');
         }
 
         return $next($request);

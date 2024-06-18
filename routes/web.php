@@ -31,7 +31,7 @@ Route::middleware([SetSessionDomain::class, HasNoDeletedStatus::class])->group(f
         Route::get('last-deliveries', [HomeController::class, 'lastDeliveries'])->name('department.last-deliveries');
         Route::get('discounted', [HomeController::class, 'discounted'])->name('department.discounted');
         Route::get('product/{product}/{category?}', [ProductController::class, 'show'])->name('product.show');
-        Route::get('{category}', [HomeController::class, 'category'])->name('department.category.index');
+        Route::get('category/{category}', [HomeController::class, 'category'])->name('department.category.index');
     });
 
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
