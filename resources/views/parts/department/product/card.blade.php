@@ -1,4 +1,4 @@
-<div class="card h-100 rounded-0" id="product_{{ $product->id }}">
+<div class="card h-100 rounded-0 exportable" id="product_{{ $product->id }}" data-export-id="{{ $product->id }}">
     <div class="card-header rounded-0 {{ in_array($product->id, cart_ids()) ? 'bg-primary text-white' : '' }}">
         <h5 class="card-title">{{ $product->name }}</h5>
     </div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Profile\AddressController;
@@ -20,8 +21,6 @@ Route::middleware([SetSessionDomain::class, HasNoDeletedStatus::class])->group(f
         'verify' => true
     ]);
 
-
-
     Route::domain('{subdomain}.' . config('app.url_short'))->middleware([HasNoDeletedStatus::class])->group(function () {
         Route::get('contact', [ContactController::class, 'show'])->name('contact.show');
         Route::post('contact', [ContactController::class, 'store'])->name('contact.store');
@@ -34,6 +33,8 @@ Route::middleware([SetSessionDomain::class, HasNoDeletedStatus::class])->group(f
         Route::get('category/{category}', [HomeController::class, 'category'])->name('department.category.index');
         Route::get('search', [SearchController::class, 'search'])->name('search.index');
     });
+
+    Route::get('product-export', [ExportController::class, 'products'])->name('product.export');
 
     Route::get('search', [SearchController::class, 'search'])->name('search.index');
 
