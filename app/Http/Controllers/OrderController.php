@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Enums\Order\DeliveryEnum;
 use App\Enums\Order\PaymentEnum;
 use App\Http\Requests\Order\StoreRequest;
+use App\Mail\OrderBranchSummaryMail;
+use App\Mail\OrderClientSummaryMail;
 use App\Models\Address;
 use App\Models\Billing;
 use App\Models\CartItem;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class OrderController extends Controller
@@ -188,8 +191,6 @@ class OrderController extends Controller
             }
         }
 
-
-
         return view('order.summary', [
             'anyOrder' => $orders->random(),
             'orders' => $orders,
@@ -216,6 +217,16 @@ class OrderController extends Controller
         }
 
         CartItem::where('user_id', auth()->id())->delete();
+
+        $orders = Order::where('code', $orderReference)->get();
+
+        foreach ($orders as $order) {
+            Mail::to($order->branch->email)->send(new OrderBranchSummaryMail($order));
+        }
+
+        $order = $orders->first();
+
+        Mail::to($order->billing_email)->send(new OrderClientSummaryMail($order));
 
         return redirect()->route('profile.order.index')->with('success', 'Pomyślnie stworzono zamówienie');
     }

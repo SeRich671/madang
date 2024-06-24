@@ -26,6 +26,9 @@ return new class extends Migration
             $table->text('footer_auth')->nullable();
             $table->text('footer_guest')->nullable();
 
+            $table->boolean('show_change_department')->default(1);
+            $table->boolean('show_contact')->default(1);
+
             $table->timestamps();
             $table->softDeletes();
         });

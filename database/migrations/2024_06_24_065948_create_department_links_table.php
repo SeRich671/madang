@@ -11,12 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attributes', function (Blueprint $table) {
+        Schema::create('department_links', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('department_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
             $table->string('name');
-            $table->boolean('is_filter')->default(1);
+            $table->string('link');
+
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -25,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attributes');
+        Schema::dropIfExists('department_links');
     }
 };

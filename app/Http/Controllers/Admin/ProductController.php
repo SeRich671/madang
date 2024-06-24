@@ -41,7 +41,9 @@ class ProductController extends Controller
                     return $query2->whereIn('categories.id', $request->input('category_id'));
                 });
             })
-            ->paginate(20);
+            ->paginate(
+                $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : cache()->get('settings.per_page')
+            );
 
         $categories = Category::pluck('name', 'id');
 
@@ -60,10 +62,15 @@ class ProductController extends Controller
         $branches = Branch::all();
         $attributes = Attribute::all();
 
+        $stickers = Product::isAvailable()
+            ->where('name', 'LIKE', 'naklej%')
+            ->pluck('name', 'id');
+
         return view('admin.product.create', [
             'categories' => $categories,
             'branches' => $branches,
             'attributes' => $attributes,
+            'stickers' => $stickers
         ]);
     }
 
@@ -96,9 +103,11 @@ class ProductController extends Controller
             'is_recommended' => $data['is_recommended'],
             'bought_by_others' => $data['bought_by_others'],
             'sticker' => $data['sticker'],
+            'later_delivery' => $data['later_delivery'],
         ]);
 
         $product->categories()->sync($data['categories']);
+        $product->stickers()->sync($data['stickers']);
 
         $data['branches'] = collect($data['branches'])->mapWithKeys(function ($item) use ($data) {
             return [
@@ -132,12 +141,16 @@ class ProductController extends Controller
         $categories = Category::all();
         $branches = Branch::all();
         $attributes = Attribute::all();
+        $stickers = Product::isAvailable()
+            ->where('name', 'LIKE', 'naklej%')
+            ->pluck('name', 'id');
 
         return view('admin.product.edit', [
             'product' => $product,
             'categories' => $categories,
             'branches' => $branches,
             'attributes' => $attributes,
+            'stickers' => $stickers,
         ]);
     }
 
@@ -177,11 +190,13 @@ class ProductController extends Controller
             'is_recommended' => $data['is_recommended'],
             'bought_by_others' => $data['bought_by_others'],
             'sticker' => $data['sticker'],
+            'later_delivery' => $data['later_delivery'],
         ]);
 
 
 
         $product->categories()->sync($data['categories']);
+        $product->stickers()->sync($data['stickers']);
 
         $data['branches'] = collect($data['branches'])->mapWithKeys(function ($item) use ($data) {
             return [

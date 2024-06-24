@@ -73,9 +73,11 @@
             $('.recreate').submit(function (e) {
                 e.preventDefault();
                 @if(cart_count() > 0)
-                if(confirm("Twój koszyk nie jest pusty. Czy na pewno chcesz wyczyścić koszyk i dodać produkty z tego zamówienia?")) {
+                    if(confirm("Twój koszyk nie jest pusty. Czy na pewno chcesz wyczyścić koszyk i dodać produkty z tego zamówienia?")) {
+                        e.currentTarget.submit();
+                    }
+                @else
                     e.currentTarget.submit();
-                }
                 @endif
             })
         });

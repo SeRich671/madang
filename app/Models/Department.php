@@ -18,4 +18,9 @@ class Department extends Model
     {
         return $this->hasMany(Category::class);
     }
+
+    public function links(): HasMany
+    {
+        return $this->hasMany(DepartmentLink::class);
+    }
 }

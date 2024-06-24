@@ -12,11 +12,13 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $orders = Order::where('user_id', auth()->id())
             ->where('finished_by_client', 1)
-            ->paginate(10);
+            ->paginate(
+                $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : cache()->get('settings.per_page')
+            );
 
         return view('profile.order.index', [
             'orders' => $orders,

@@ -125,4 +125,14 @@ class Product extends Model
         return $this->belongsToMany(Attribute::class, 'product_attribute', 'product_id', 'attribute_id')
             ->withPivot(['value']);
     }
+
+    public function stickers(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_sticker', 'sticker_id', 'product_id');
+    }
+
+    public function product(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_sticker', 'product_id', 'sticker_id');
+    }
 }

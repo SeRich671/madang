@@ -233,6 +233,37 @@
             </div>
         </div>
 
+        <div class="row mt-4 mb-3">
+            <label for="stickers" class="col-lg-4 col-form-label text-lg-end">Naklejki</label>
+            <div class="col-lg-4">
+                <select id="stickers" class="form-control" name="stickers[]" multiple>
+                    @foreach($stickers as $key => $sticker)
+                        <option value="{{ $key }}">
+                            {{ $sticker }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('stickers')
+                <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-lg-6 offset-lg-4">
+                <div class="form-check">
+                    <input type="hidden" name="later_delivery" value="0">
+                    <input type="checkbox" value="1" name="later_delivery" id="later_delivery" class="form-check-input" @checked(old('later_delivery'))>
+
+                    <label for="later_delivery" class="form-check-label">
+                        Opóźnienie w dostawie
+                    </label>
+                </div>
+            </div>
+        </div>
+
         <div id="dynamic-attributes-container" class="col-lg-12">
 
         </div>
@@ -255,6 +286,7 @@
             $('#categories').select2();
             $('#branches').select2();
             $('#branch_id').select2();
+            $('#stickers').select2();
         });
     </script>
 

@@ -1,6 +1,7 @@
 @extends('layouts.admin', ['menuName' => 'Działy'])
 
 @section('content')
+    {{ $errors->any() }}
     <div class="row">
         <div class="col-lg-12 table-responsive">
             <table class="table table-striped">

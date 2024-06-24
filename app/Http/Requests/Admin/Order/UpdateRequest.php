@@ -26,6 +26,24 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'address_first_name' => ['required', 'string', 'max:255'],
+            'address_last_name' => ['required', 'string', 'max:255'],
+            'address_company_name' => ['nullable', 'string', 'max:255'],
+            'address_address' => ['required', 'string', 'max:255'],
+            'address_city' => ['required', 'string', 'max:255'],
+            'address_zipcode' => ['required', 'string', 'max:255'],
+            'address_phone' => ['required', 'string', 'max:255'],
+
+            'billing_first_name' => ['required', 'string', 'max:255'],
+            'billing_last_name' => ['required', 'string', 'max:255'],
+            'billing_company_name' => ['nullable', 'string', 'max:255'],
+            'billing_address' => ['required', 'string', 'max:255'],
+            'billing_city' => ['required', 'string', 'max:255'],
+            'billing_zipcode' => ['required', 'string', 'max:255'],
+            'billing_phone' => ['required', 'string', 'max:255'],
+            'billing_email' => ['required', 'email', 'max:255'],
+            'billing_nip' => ['required', 'string', 'max:255'],
+            
             'quantity' => ['required', 'array'],
             'quantity.*' => ['required', 'integer'],
             'unavailable' => ['required', 'array'],

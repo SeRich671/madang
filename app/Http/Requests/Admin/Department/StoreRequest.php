@@ -31,6 +31,9 @@ class StoreRequest extends FormRequest
             'status' => ['required', Rule::in(StatusEnum::getValues())],
             'footer_auth' => ['sometimes', 'nullable', 'string'],
             'footer_guest' => ['sometimes', 'nullable', 'string'],
+
+            'show_contact' => ['required'],
+            'show_change_department' => ['required'],
         ];
     }
 }

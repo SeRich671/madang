@@ -21,8 +21,8 @@
     </tr>
     </thead>
     <tbody>
-    @foreach ($products as $product)
-        <tr>
+    @foreach ($products as $key => $product)
+        <tr @if(isset($exportCount) && $exportCount != 'all' && $key > 0 && $key % $exportCount == 0) style="page-break-before: always;" @endif>
             @if((int)request()->input('has_image'))
             <td><img src="{{ public_path('storage/' . $product->img_path) }}" style="max-height: 200px; max-width: 200px" alt="Product Image"></td>
             @endif

@@ -23,7 +23,9 @@ class ProductController extends Controller
             ->take(50)
             ->keys();
 
-        $otherProducts = Product::whereIn('id', $otherProductIds)->where('bought_by_others', 1)->inRandomOrder()->take(6)->get();
+        $otherProducts = Product::whereIn('id', $otherProductIds)
+            ->whereNot('id', $product->id)
+            ->where('bought_by_others', 1)->inRandomOrder()->take(6)->get();
 
         return view('product.show', [
             'product' => $product,

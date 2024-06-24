@@ -13,9 +13,11 @@ class AttributeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $attributes = Attribute::paginate(20);
+        $attributes = Attribute::paginate(
+            $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : cache()->get('settings.per_page')
+        );
 
         return view('admin.attribute.index', [
             'attributes' => $attributes,

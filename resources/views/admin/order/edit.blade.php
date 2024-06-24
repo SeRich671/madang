@@ -2,6 +2,13 @@
 
 @section('content')
     <div class="row">
+        <div class="col-lg-12 text-end">
+            <a class="btn btn-primary text-white" href="{{ route('admin.order.download', $order) }}">
+                PDF
+            </a>
+        </div>
+    </div>
+    <div class="row">
         <form method="POST" action="{{ route('admin.order.update', $order) }}">
             @csrf
             @method('PUT')
@@ -9,54 +16,231 @@
                 <h5>Dane klienta</h5>
                 <hr>
             </div>
-            <div class="col-lg-12 table-responsive">
-                <table class="table bg-white">
-                    <thead>
-                        <tr>
-                            <td></td>
-                            <th>Imię i nazwisko</th>
-                            <th>Nazwa firmy</th>
-                            <th>Miasto</th>
-                            <th>Adres</th>
-                            <th>Kod pocztowy</th>
-                            <th>NIP</th>
-                            <th>Telefon</th>
-                            <th>Adres e-mail</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>Adres do faktury</th>
-                            <td>{{ $order->billing_first_name }} {{ $order->billing_last_name }}</td>
-                            <td>{{ $order->billing_company_name }}</td>
-                            <td>{{ $order->billing_city }}</td>
-                            <td>{{ $order->billing_address }}</td>
-                            <td>{{ $order->billing_zipcode }}</td>
-                            <td>{{ $order->billing_nip }}</td>
-                            <td>{{ $order->billing_phone }}</td>
-                            <td><a class="link-primary" href="{{ route('admin.user.edit', $order->user) }}">{{ $order->billing_email }}</a></td>
-                        </tr>
-                        <tr>
-                            <th>Adres dostawy</th>
-                            <td>{{ $order->address_first_name }} {{ $order->address_last_name }}</td>
-                            <td>{{ $order->address_company_name }}</td>
-                            <td>{{ $order->address_city }}</td>
-                            <td>{{ $order->address_address }}</td>
-                            <td>{{ $order->address_zipcode }}</td>
-                            <td>-</td>
-                            <td>{{ $order->address_phone }}</td>
-                            <td>-</td>
-                        </tr>
-                    </tbody>
-                    @if($order->description)
-                    <tfoot>
-                        <tr>
-                            <th>Uwagi do zamówienia:</th>
-                            <td colspan="8">{{ $order->description }}</td>
-                        </tr>
-                    </tfoot>
-                    @endif
-                </table>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="bg-white p-3 h-100">
+                        <div class="row mt-4 mb-3">
+                            <label for="address_first_name" class="col-lg-4 col-form-label text-lg-end">Imię</label>
+
+                            <div class="col-lg-4">
+                                <input id="address_first_name" type="text" class="form-control @error('address_first_name') is-invalid @enderror" name="address_first_name" value="{{ $order->address_first_name }}" required autocomplete="address_first_name">
+
+                                @error('address_first_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="address_last_name" class="col-lg-4 col-form-label text-lg-end">Nazwisko</label>
+
+                            <div class="col-lg-4">
+                                <input id="address_last_name" type="text" class="form-control @error('address_last_name') is-invalid @enderror" name="address_last_name" value="{{ $order->address_last_name }}" required autocomplete="address_last_name">
+
+                                @error('address_last_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="address_company_name" class="col-lg-4 col-form-label text-lg-end">Firma <small>(opcjonalne)</small></label>
+
+                            <div class="col-lg-4">
+                                <input id="address_company_name" type="text" class="form-control @error('address_company_name') is-invalid @enderror" name="address_company_name" value="{{ $order->address_company_name }}" required autocomplete="address_company_name">
+
+                                @error('address_company_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="address_address" class="col-lg-4 col-form-label text-lg-end">Adres</label>
+
+                            <div class="col-lg-4">
+                                <input id="address_address" type="text" class="form-control @error('address_address') is-invalid @enderror" name="address_address" value="{{ $order->address_address }}" required autocomplete="address_address">
+
+                                @error('address_address')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="address_city" class="col-lg-4 col-form-label text-lg-end">Miasto</label>
+
+                            <div class="col-lg-4">
+                                <input id="address_city" type="text" class="form-control @error('address_city') is-invalid @enderror" name="address_city" value="{{ $order->address_city }}" required autocomplete="address_city">
+
+                                @error('address_city')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="address_zipcode" class="col-lg-4 col-form-label text-lg-end">Kod pocztowy</label>
+
+                            <div class="col-lg-4">
+                                <input id="address_zipcode" type="text" class="form-control @error('address_zipcode') is-invalid @enderror" name="address_zipcode" value="{{ $order->address_zipcode }}" required autocomplete="address_zipcode">
+
+                                @error('address_zipcode')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="address_phone" class="col-lg-4 col-form-label text-lg-end">Telefon</label>
+
+                            <div class="col-lg-4">
+                                <input id="address_phone" type="text" class="form-control @error('address_phone') is-invalid @enderror" name="address_phone" value="{{ $order->address_phone }}" required autocomplete="address_phone">
+
+                                @error('address_phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="bg-white p-3">
+                        <div class="row mt-4 mb-3">
+                            <label for="billing_first_name" class="col-lg-4 col-form-label text-lg-end">Imię</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing_first_name" type="text" class="form-control @error('billing_first_name') is-invalid @enderror" name="billing_first_name" value="{{ $order->billing_first_name }}" required autocomplete="billing_first_name">
+
+                                @error('billing_first_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing_last_name" class="col-lg-4 col-form-label text-lg-end">Nazwisko</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing_last_name" type="text" class="form-control @error('billing_last_name') is-invalid @enderror" name="billing_last_name" value="{{ $order->billing_last_name }}" required autocomplete="billing_last_name">
+
+                                @error('billing_last_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing_company_name" class="col-lg-4 col-form-label text-lg-end">Firma <small>(opcjonalne)</small></label>
+
+                            <div class="col-lg-4">
+                                <input id="billing_company_name" type="text" class="form-control @error('billing_company_name') is-invalid @enderror" name="billing_company_name" value="{{ $order->billing_company_name }}" required autocomplete="billing_company_name">
+
+                                @error('billing_company_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing_address" class="col-lg-4 col-form-label text-lg-end">Adres</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing_address" type="text" class="form-control @error('billing_address') is-invalid @enderror" name="billing_address" value="{{ $order->billing_address }}" required autocomplete="billing_address">
+
+                                @error('billing_address')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing_city" class="col-lg-4 col-form-label text-lg-end">Miasto</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing_city" type="text" class="form-control @error('billing_city') is-invalid @enderror" name="billing_city" value="{{ $order->billing_city }}" required autocomplete="billing_city">
+
+                                @error('billing_city')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing_zipcode" class="col-lg-4 col-form-label text-lg-end">Kod pocztowy</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing_zipcode" type="text" class="form-control @error('billing_zipcode') is-invalid @enderror" name="billing_zipcode" value="{{ $order->billing_zipcode }}" required autocomplete="billing_zipcode">
+
+                                @error('billing_zipcode')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="billing_phone" class="col-lg-4 col-form-label text-lg-end">Telefon</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing_phone" type="text" class="form-control @error('billing_phone') is-invalid @enderror" name="billing_phone" value="{{ $order->billing_phone }}" required autocomplete="billing_phone">
+
+                                @error('billing_phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="billing_email" class="col-lg-4 col-form-label text-lg-end">Email</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing_email" type="email" class="form-control @error('billing_email') is-invalid @enderror" name="billing_email" value="{{ $order->billing_email }}" required autocomplete="billing_email">
+
+                                @error('billing_email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="billing_nip" class="col-lg-4 col-form-label text-lg-end">NIP</label>
+
+                            <div class="col-lg-4">
+                                <input id="billing_nip" type="text" class="form-control @error('billing_nip') is-invalid @enderror" name="billing_nip" value="{{ $order->billing_nip }}" required autocomplete="billing_nip">
+
+                                @error('billing_nip')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                {{ $order->description }}
             </div>
             <div class="col-lg-12 mt-4 text-primary">
                 <h5>Zamówione produkty </h5>
@@ -67,9 +251,9 @@
                     <thead>
                         <tr>
                             <th>Zdjęcie</th>
-                            <th onclick="sortTable(1)">ID</th>
-                            <th onclick="sortTable(2)">Kod</th>
-                            <th onclick="sortTable(3)">Nazwa</th>
+                            <th style="cursor:pointer" class="text-primary" onclick="sortTable(1)">ID</th>
+                            <th style="cursor:pointer" class="text-primary" onclick="sortTable(2)">Kod</th>
+                            <th style="cursor:pointer" class="text-primary" onclick="sortTable(3)">Nazwa</th>
                             <th>Sztuk w opakowaniu</th>
                             <th>Ilość opakowań</th>
                             <th>Razem sztuk</th>
@@ -260,9 +444,11 @@
 @push('scripts')
     <script type="application/javascript">
         function sortTable(columnIndex) {
-            var table, rows, switching, i, x, y, shouldSwitch;
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
             table = document.getElementById("sortableTable");
             switching = true;
+            // Set the sorting direction to ascending initially:
+            dir = "asc";
             // Make a loop that will continue until no switching has been done:
             while (switching) {
                 // Start by saying: no switching is done:
@@ -275,17 +461,34 @@
                     // Get the two elements you want to compare, one from current row and one from the next:
                     x = rows[i].getElementsByTagName("TD")[columnIndex];
                     y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
-                    // Check if the two rows should switch place:
-                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                        // If so, mark as a switch and break the loop:
-                        shouldSwitch = true;
-                        break;
+                    // Check if the two rows should switch place, based on the direction, asc or desc:
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
                     }
                 }
                 if (shouldSwitch) {
                     // If a switch has been marked, make the switch and mark that a switch has been done:
                     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                     switching = true;
+                    // Each time a switch is done, increase this count:
+                    switchcount++;
+                } else {
+                    // If no switching has been done AND the direction is "asc",
+                    // set the direction to "desc" and run the while loop again.
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
                 }
             }
         }

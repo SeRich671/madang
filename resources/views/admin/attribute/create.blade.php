@@ -16,6 +16,18 @@
                     @enderror
                 </div>
             </div>
+            <div class="row mb-3">
+                <div class="col-lg-6 offset-lg-4">
+                    <div class="form-check">
+                        <input type="hidden" name="is_filter" value="0">
+                        <input type="checkbox" value="1" name="is_filter" id="is_filter" class="form-check-input" @checked(old('is_filter'))>
+
+                        <label for="is_filter" class="form-check-label">
+                            Pokaż w filtrach
+                        </label>
+                    </div>
+                </div>
+            </div>
             <div class="row mt-4">
                 <div class="col-lg-12 text-center">
                     <button type="submit" class="btn btn-primary text-white">

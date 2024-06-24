@@ -1,5 +1,15 @@
 @if ($paginator->hasPages())
     <nav class="d-flex justify-items-center justify-content-between">
+        <div class="me-2">
+            <select class="form-control" name="filters[per_page]" id="perPageSelector" onchange="changePerPage()">
+                <option value="12" @selected((!isset(request()->get('filters')['per_page']) && cache()->get('settings.per_page') == '12') || (isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '12'))>12</option>
+                <option value="24" @selected((!isset(request()->get('filters')['per_page']) && cache()->get('settings.per_page') == '24') || (isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '24'))>24</option>
+                <option value="36" @selected((!isset(request()->get('filters')['per_page']) && cache()->get('settings.per_page') == '36') || (isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '36'))>36</option>
+                <option value="48" @selected((!isset(request()->get('filters')['per_page']) && cache()->get('settings.per_page') == '48') || (isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '48'))>48</option>
+                <option value="60" @selected((!isset(request()->get('filters')['per_page']) && cache()->get('settings.per_page') == '60') || (isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '60'))>60</option>
+                <option value="100000" @selected(isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '100000')>Wszystkie</option>
+            </select>
+        </div>
         <div class="d-flex justify-content-between flex-fill d-sm-none">
             <ul class="pagination">
                 {{-- Previous Page Link --}}
@@ -86,3 +96,14 @@
         </div>
     </nav>
 @endif
+
+@push('scripts')
+    <script type="application/javascript">
+        function changePerPage() {
+            var url = new URL(window.location.href);
+            var perPage = document.getElementById('perPageSelector').value;
+            url.searchParams.set('filters[per_page]', perPage);
+            window.location.href = url.href;
+        }
+    </script>
+@endpush

@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\Department\LinkController;
 use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -19,12 +21,21 @@ Route::resource('order', OrderController::class, [
     'except' => ['show', 'create', 'store'],
 ]);
 
+Route::get('order/{order}/download-pdf', [OrderController::class, 'download'])->name('order.download');
+
 Route::resource('branch', BranchController::class, [
     'except' => ['show'],
 ]);
 Route::resource('department', DepartmentController::class, [
     'except' => ['show'],
 ]);
+
+Route::prefix('department/{department}')->name('department.')->group(function () {
+    Route::resource('link', LinkController::class, [
+        'only' => ['create', 'store', 'edit', 'update', 'destroy']
+    ]);
+});
+
 Route::resource('category', CategoryController::class, [
     'except' => ['show'],
 ]);
@@ -38,6 +49,11 @@ Route::prefix('product/{product}')->name('product.')->group(function () {
         'except' => ['show'],
     ]);
 });
+
+Route::get('report', [\App\Http\Controllers\Admin\ReportHistoryController::class, 'index'])->name('report.index');
+
+Route::get('product-export', [ExportController::class, 'products'])->name('product.export');
+Route::get('product-export/{report}/download', [ExportController::class, 'download'])->name('product.export.download');
 
 Route::resource('attribute', AttributeController::class, [
     'except' => ['show'],

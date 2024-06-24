@@ -30,6 +30,16 @@
                             <div class="text-primary border-primary border-bottom">
                                 <h3>{{ $product->name }}</h3>
                             </div>
+                            @if($product->count_in_package)
+                                <div>
+                                    {{ $product->count_in_package }} szt./komplet
+                                </div>
+                            @endif
+                            @if($product->size_carton)
+                                <div>
+                                    {{ $product->size_carton }} szt./karton
+                                </div>
+                            @endif
                             <div class="mt-4">
                                 {{ $product->description }}
                             </div>
@@ -38,6 +48,16 @@
                                         <strong>{{ $attribute->name }}: </strong> {{ $attribute->pivot->value }}<br>
                                 @endforeach
                             </div>
+
+                            @if($product->stickers->isNotEmpty())
+                            <div class="mt-1">
+                                <strong>Dostępne naklejki:</strong><br>
+                                @foreach($product->stickers as $sticker)
+                                    <strong><a href="{{ route('product.show', ['product' => $sticker, 'subdomain' => $department->subdomain]) }}">{{ $sticker->name }}</a></strong> <br>
+                                @endforeach
+                            </div>
+                            @endif
+
                             @if($product->later_delivery)
                                 <div class="mt-1">
                                     <strong class="text-danger">Opóźnienie w dostawie</strong>

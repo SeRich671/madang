@@ -8,6 +8,7 @@ use App\Enums\Order\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Order\UpdateRequest;
 use App\Models\Order;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -42,7 +43,9 @@ class OrderController extends Controller
                 return $query->whereDate('created_at', '<=', $request->input('date_to'));
             })
             ->orderByDesc('created_at')
-            ->paginate(10);
+            ->paginate(
+                $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : cache()->get('settings.per_page')
+            );
 
         return view('admin.order.index', [
             'orders' => $orders,
@@ -79,6 +82,24 @@ class OrderController extends Controller
         }
 
         $order->update([
+            'address_first_name' => $request->validated('address_first_name'),
+            'address_last_name' => $request->validated('address_last_name'),
+            'address_company_name' => $request->validated('address_company_name'),
+            'address_address' => $request->validated('address_address'),
+            'address_city' => $request->validated('address_city'),
+            'address_zipcode' => $request->validated('address_zipcode'),
+            'address_phone' => $request->validated('address_phone'),
+
+            'billing_first_name' => $request->validated('billing_first_name'),
+            'billing_last_name' => $request->validated('billing_last_name'),
+            'billing_company_name' => $request->validated('billing_company_name'),
+            'billing_address' => $request->validated('billing_address'),
+            'billing_city' => $request->validated('billing_city'),
+            'billing_zipcode' => $request->validated('billing_zipcode'),
+            'billing_phone' => $request->validated('billing_phone'),
+            'billing_email' => $request->validated('billing_email'),
+            'billing_nip' => $request->validated('billing_nip'),
+
             'delivery' => $request->validated('delivery'),
             'delivery_cost' => DeliveryEnum::getPrice($request->validated('delivery')),
             'payment' => $request->validated('payment'),
@@ -88,6 +109,8 @@ class OrderController extends Controller
             'client_comment' => $request->validated('client_comment'),
         ]);
 
+        $ordersTotal = 0;
+
         foreach ($order->lines as $line)
         {
             $line->update([
@@ -96,7 +119,13 @@ class OrderController extends Controller
                 'deleted' => $request->validated('deleted')[$line->id],
                 'edited_quantity' => $request->validated('quantity')[$line->id] !== $line->quantity && !$line->edited_quantity ? $line->quantity : $line->edited_quantity,
             ]);
+
+            $ordersTotal += $line->quantity * ($line->product->discount_price ?: $line->product->price);
         }
+
+        $order->update([
+            'total' => $ordersTotal
+        ]);
 
         return redirect()->back()->with('success', 'Pomyślnie zaktualizowano zamówienie');
     }
@@ -109,5 +138,12 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect()->back()->with('success', 'Pomyślnie usunięto zamówienie');
+    }
+
+    public function download(Order $order)
+    {
+        $pdf = PDF::loadView('pdf.order', ['order' => $order]);
+
+        return $pdf->download(now()->format('d-m-Y') . '.pdf');
     }
 }

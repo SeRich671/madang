@@ -3,6 +3,11 @@
 @section('content')
     <form method="GET" action="{{ url()->current() }}">
         <div class="row">
+            <div class="col-lg-12 text-end">
+                <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#productExportUser">
+                    Zestawienie
+                </button>
+            </div>
             <div class="col-lg-12">
                 <label for="query">Nazwa</label>
                 <input type="text" class="form-control" name="query" id="query" value="{{ request()->input('query') }}">
@@ -52,14 +57,13 @@
                     <th>Nazwa</th>
                     <th>Kod</th>
                     <th>Cena podstawowa</th>
-                    <th>Stan</th>
                     <th>Dostępny</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($products->items() as $product)
-                    <tr>
+                    <tr class="exportable" data-export-id="{{ $product->id }}">
                         <td>
                             {{ $product->name }}
                         </td>
@@ -67,7 +71,6 @@
                             {{ $product->code }}
                         </td>
                         <td>{{ $product->price }}</td>
-                        <td>{{ $product->in_stock }}</td>
                         <td>{{ $product->is_available ? 'Tak' : 'Nie' }}</td>
                         <td class="text-end">
                             <form method="POST" action="{{ route('admin.product.destroy', $product) }}">

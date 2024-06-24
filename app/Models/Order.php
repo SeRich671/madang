@@ -55,7 +55,7 @@ class Order extends Model
         if($this->status === StatusEnum::NEW) {
             return 'warning';
         }else if($this->status === StatusEnum::IN_PROGRESS) {
-            return 'success';
+            return 'info';
         }else if($this->status === StatusEnum::DONE) {
             return 'success';
         }else if($this->status === StatusEnum::ABORTED) {

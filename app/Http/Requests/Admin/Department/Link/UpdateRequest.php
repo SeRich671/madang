@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Attribute;
+namespace App\Http\Requests\Admin\Department\Link;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,7 +23,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'is_filter' => ['required'],
+            'link' => ['required', 'string'],
         ];
     }
 }

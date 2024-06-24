@@ -32,7 +32,9 @@ class UserController extends Controller
             ->when(!empty($request->input('branch_id', [])), function ($query) use ($request) {
                 return $query->whereIn('branch_id', $request->input('branch_id', []));
             })
-            ->paginate(20);
+            ->paginate(
+                $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : cache()->get('settings.per_page')
+            );
         $branches = Branch::pluck('name', 'id');
 
         return view('admin.user.index', [

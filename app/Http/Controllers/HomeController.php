@@ -122,8 +122,8 @@ class HomeController extends Controller
 
         $dynamicAttributes = DB::table('product_attribute')
             ->join('attributes', 'attributes.id', '=', 'product_attribute.attribute_id')
-            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value')
-            ->distinct()
+            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value', 'attributes.is_filter as is_filter')
+            ->where('is_filter', 1)->distinct()
             ->get()
             ->groupBy('attribute_id');
 
@@ -161,8 +161,8 @@ class HomeController extends Controller
 
         $dynamicAttributes = DB::table('product_attribute')
             ->join('attributes', 'attributes.id', '=', 'product_attribute.attribute_id')
-            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value')
-            ->distinct()
+            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value', 'attributes.is_filter as is_filter')
+            ->where('is_filter', 1)->distinct()
             ->get()
             ->groupBy('attribute_id');
 
@@ -248,7 +248,8 @@ class HomeController extends Controller
 
         $dynamicAttributes = DB::table('product_attribute')
             ->join('attributes', 'attributes.id', '=', 'product_attribute.attribute_id')
-            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value')
+            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value', 'attributes.is_filter as is_filter')
+            ->where('is_filter', 1)
             ->distinct()
             ->get()
             ->groupBy('attribute_id');
@@ -263,10 +264,20 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
 
+        $categories = $category->categories;
+
+        if($categories->isEmpty()) {
+            if($category->category) {
+                $categories = $category->category->categories;
+            }else{
+                $categories = $department->categories()->whereNull('category_id')->get();
+            }
+        }
+
         return view('home', [
             'department' => $department,
             'category' => $category,
-            'categories' => $category->categories,
+            'categories' => $categories,
             'products' => $products,
             'dynamicAttributes' => $dynamicAttributes,
         ]);
@@ -287,7 +298,8 @@ class HomeController extends Controller
     ): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View {
         $dynamicAttributes = DB::table('product_attribute')
             ->join('attributes', 'attributes.id', '=', 'product_attribute.attribute_id')
-            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value')
+            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value', 'attributes.is_filter as is_filter')
+            ->where('is_filter', 1)
             ->distinct()
             ->get()
             ->groupBy('attribute_id');

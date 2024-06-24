@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <link href="path/to/your/bootstrap-5-theme-for-select2.css" rel="stylesheet">
     @stack('styles')
 </head>
 <body class="bg-body-secondary">
@@ -35,6 +34,7 @@
                             <a href="{{ route('admin.product.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Produkty</a>
                             <a href="{{ route('admin.attribute.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Cechy produktów</a>
                             <a href="{{ route('admin.user.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Użytkownicy</a>
+                            <a href="{{ route('admin.report.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Historia raportów</a>
                             <a href="{{ route('admin.settings.edit') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Ustawienia</a>
                         </div>
                     </div>
@@ -69,7 +69,76 @@
         </main>
         @include('parts.footer')
     </div>
+    <div class="modal fade" id="productExportUser" tabindex="-1" aria-labelledby="productExportUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Zestawienie</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="GET" id="exportForm" action="{{ route('admin.product.export') }}">
+                        <div class="row">
+                            <div id="hiddenInputsContainer"></div>
+                            <div class="col-lg-12">
+                                <label for="has_image">Wyświetlić obrazek?</label>
+                                <select id="has_image" name="has_image" class="form-control">
+                                    <option value="0">Nie</option>
+                                    <option value="1">Tak</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="export_count">Liczba produktów na jednej stronie</label>
+                                <select id="export_count" name="export_count" class="form-control">
+                                    <option value="4">4</option>
+                                    <option value="6">6</option>
+                                    <option value="9">9</option>
+                                    <option value="12">12</option>
+                                    <option value="24">24</option>
+                                    <option value="all" selected>Wszystkie</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-12 mt-4">
+                                <button type="submit" class="btn btn-primary text-white">
+                                    Pobierz
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     @stack('scripts')
+    <script type="application/javascript">
+        const form = document.getElementById('exportForm');
 
+        form.addEventListener('submit', function (e) {
+            // Prevent the default form submission
+            e.preventDefault();
+
+            // Container where we'll append our hidden inputs
+            const hiddenInputsContainer = document.getElementById('hiddenInputsContainer');
+
+            // Clear previous inputs
+            hiddenInputsContainer.innerHTML = '';
+
+            // Find all elements with the class 'exportable'
+            const exportableElements = document.querySelectorAll('.exportable');
+
+            // Loop through all elements and create hidden inputs
+            exportableElements.forEach((element, index) => {
+                const exportId = element.getAttribute('data-export-id');
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'product_ids[]'; // Name your input correctly so it can be easily read on the server side
+                input.value = exportId;
+                hiddenInputsContainer.appendChild(input);
+            });
+
+            // After appending all hidden inputs, submit the form
+            form.submit();
+        });
+    </script>
 </body>
 </html>

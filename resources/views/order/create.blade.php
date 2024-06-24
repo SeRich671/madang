@@ -344,7 +344,7 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <label for="payment" class="col-lg-4 col-form-label text-lg-end">Sposób dostawy</label>
+                                    <label for="payment" class="col-lg-4 col-form-label text-lg-end">Metoda płatności</label>
 
                                     <div class="col-lg-4">
                                         <select class="form-control @error('payment') is-invalid @enderror" name="payment[{{ $branchId }}]" required>

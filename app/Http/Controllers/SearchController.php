@@ -26,8 +26,8 @@ class SearchController extends Controller
 
         $dynamicAttributes = DB::table('product_attribute')
             ->join('attributes', 'attributes.id', '=', 'product_attribute.attribute_id')
-            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value')
-            ->distinct()
+            ->select('product_attribute.attribute_id', 'attributes.name as attribute_name', 'product_attribute.value', 'attributes.is_filter as is_filter')
+            ->where('is_filter', 1)->distinct()
             ->get()
             ->groupBy('attribute_id');
 

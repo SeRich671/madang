@@ -4,7 +4,16 @@
     </div>
     <img src="{{ asset('storage/' . $product->img_path) }}" style="background-color:white;height: 200px; width: auto; object-fit: contain; background-repeat: no-repeat;" alt="..." onclick="showProductImage(this.src)" data-bs-toggle="modal" data-bs-target="#productImageModal">
     <div class="card-body bg-white">
-
+        @if($product->count_in_package)
+            <div>
+                {{ $product->count_in_package }} szt./komplet
+            </div>
+        @endif
+        @if($product->size_carton)
+            <div>
+                {{ $product->size_carton }} szt./karton
+            </div>
+        @endif
     </div>
     <div class="card-footer">
         @if(Auth::check() && auth()->user()->branch_id && $product->is_available)
