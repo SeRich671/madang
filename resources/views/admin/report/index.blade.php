@@ -31,7 +31,7 @@
             </table>
         </div>
         <div class="col-lg-12">
-            {{ $reports->links() }}
+            {{ $reports->withQueryString()->links() }}
         </div>
     </div>
 @endsection

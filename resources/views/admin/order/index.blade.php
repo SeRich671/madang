@@ -54,7 +54,7 @@
                     @foreach($orders->items() as $order)
                         <tr>
                             <td>
-                                {{ substr($order->code,0,8) }}-{{ $order->id }}
+                                {{ substr($order->code,0,8) }}-{{ $order->id }}({{ $order->branch->id }})
                                 <span class="badge bg-{{ $order->status_color }} text-black">{{ \App\Enums\Order\StatusEnum::getDescription($order->status) }}</span>
                             </td>
                             <td>{{ $order->created_at->format('d.m.Y H:i') }}</td>
@@ -69,7 +69,7 @@
             </table>
         </div>
         <div class="col-lg-12">
-            {{ $orders->links() }}
+            {{ $orders->withQueryString()->links() }}
         </div>
     </div>
 @endsection

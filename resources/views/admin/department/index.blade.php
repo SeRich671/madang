@@ -41,7 +41,7 @@
             </table>
         </div>
         <div class="col-lg-12">
-            {{ $departments->links() }}
+            {{ $departments->withQueryString()->links() }}
         </div>
         <div class="col-lg-12 text-end">
             <a href="{{ route('admin.department.create') }}" class="btn btn-primary text-white">Dodaj nowy</a>

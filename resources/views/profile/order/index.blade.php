@@ -30,7 +30,7 @@
                         <tbody>
                         @foreach(collect($orders->items())->groupBy('code') as $orderGroup)
                             @php $first = true; @endphp
-                            @foreach($orderGroup as $order)
+                            @foreach($orderGroup->sortByDesc('id') as $order)
                                 <tr>
                                     <!-- Group header with rowspan -->
                                     @if($first)
@@ -60,7 +60,7 @@
                     </table>
                 </div>
                 <div class="col-lg-12">
-                    {{ $orders->links() }}
+                    {{ $orders->withQueryString()->links() }}
                 </div>
             </div>
         </div>

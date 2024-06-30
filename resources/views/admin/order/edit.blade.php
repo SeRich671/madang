@@ -18,6 +18,11 @@
             </div>
 
             <div class="row">
+                <div class="col-lg-12 text-center">
+                    Klient: <a class="link-primary" href="{{ route('admin.user.edit', $order->user) }}">
+                        {{ $order->user->first_name }} {{ $order->user->last_name }}
+                    </a>
+                </div>
                 <div class="col-lg-6">
                     <div class="bg-white p-3 h-100">
                         <div class="row mt-4 mb-3">
@@ -274,7 +279,7 @@
                                 <td><input type="text" name="quantity[{{ $line->id }}]" class="form-control" value="{{ $line->quantity }}"></td>
                                 <td>{{ $line->product->count_in_package * $line->quantity }}</td>
                                 <td>{!! $line->product->discount_price ? '<s>' . $line->product->price . '</s> <span class="text-danger">' . $line->product->discount_price . '</span>' : $line->product->price !!} zł</td>
-                                <td>{{ number_format((float)($line->quantity * ($line->product->discount_price ?: $line->product->price)), 2, '.', '') }} zł</td>
+                                <td>{{ number_format((float)($line->quantity * $line->product->count_in_package * ($line->product->discount_price ?: $line->product->price)), 2, '.', '') }} zł</td>
                                 <td>
                                     <input type="hidden" name="unavailable[{{ $line->id }}]" value="0">
                                     <input type="checkbox" name="unavailable[{{ $line->id }}]" value="1" @checked($line->unavailable)>

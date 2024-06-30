@@ -88,7 +88,7 @@
             </table>
         </div>
         <div class="col-lg-12">
-            {{ $products->links() }}
+            {{ $products->withQueryString()->links() }}
         </div>
         <div class="col-lg-12 text-end">
             <a href="{{ route('admin.product.create') }}" class="btn btn-primary text-white">Dodaj nowy</a>

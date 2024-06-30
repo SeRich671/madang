@@ -1,12 +1,15 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-white border-bottom">
     <div class="container">
-        @if(isset($department) && $department instanceof \App\Models\Department)
+        @php
+            $headerDepartment = \App\Models\Department::where('subdomain', current_subdomain())->first();
+        @endphp
+        @if($headerDepartment)
 
-        <a class="navbar-brand" href="{{ config('app.url') }}"><img src="{{ asset('storage/' . $department->image) }}" alt="" width="140" height="50" class="d-inline-block align-text-top"></a>
+        <a class="navbar-brand" href="{{ config('app.url') }}"><img src="{{ asset('storage/' . $headerDepartment->image) }}" alt="" width="140" height="50" class="d-inline-block align-text-top"></a>
         @else
         <a class="navbar-brand" href="{{ config('app.url') }}"><img src="{{ asset('storage/departments/default.png') }}" alt="" width="140" height="50" class="d-inline-block align-text-top"></a>
         @endif
-        <a class="navbar-brand" href="{{ config('app.url') }}">{{ isset($department) && !is_string($department) ? $department->name : 'Madang' }}</a>
+        <a class="navbar-brand" href="{{ config('app.url') }}">{{ isset($headerDepartment) && !is_string($headerDepartment) ? $headerDepartment->name : 'Madang' }}</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

@@ -10,11 +10,13 @@
                 <input type="hidden" name="global_query" value="{{ request()->get('global_query') }}">
                 <div class="accordion-body">
                     <div class="row">
+                        @if(auth()->check())
                         <div class="col-lg-12 text-end">
                             <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#productExportUser">
                                 Zestawienie
                             </button>
                         </div>
+                        @endif
                         <div class="col-lg-4">
                             <label for="filters[sort_type]">Rodzaj sortowania</label>
                             <select class="form-control" name="filters[sort_type]" id="filters[sort_type]">

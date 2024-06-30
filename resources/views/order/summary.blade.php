@@ -41,7 +41,7 @@
                                     <td class="col-lg-2">{{ $cartItem->quantity }}</td>
                                     <td class="col-lg-2">{{ $cartItem->product->count_in_package }}</td>
                                     <td class="col-lg-1">{{ $cartItem->product->count_in_package * $cartItem->quantity }}</td>
-                                    <td class="col-lg-2">{{ number_format((float)(($cartItem->product->discount_price ?: $cartItem->product->price) * $cartItem->quantity), 2, '.', '') }} zł</td>
+                                    <td class="col-lg-2">{{ number_format((float)(($cartItem->product->discount_price ?: $cartItem->product->price) * $cartItem->quantity * $cartItem->product->count_in_package), 2, '.', '') }} zł</td>
                                 </tr>
                             @endforeach
                             </tbody>

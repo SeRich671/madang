@@ -80,7 +80,7 @@
                             <td>{{ $line->quantity }}</td>
                             <td>{{ $line->product->count_in_package * $line->quantity }}</td>
                             <td>{{ $line->product->price_discount ?: $line->product->price }} zł</td>
-                            <td>{{ $line->quantity * $line->price }} zł</td>
+                            <td>{{ $line->quantity * $line->price * $line->product->count_in_package }} zł</td>
                         </tr>
                     @endforeach
                     <tr>

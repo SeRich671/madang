@@ -84,18 +84,14 @@ class ProductController extends Controller
         $path = str_replace('public/', '', $request->file('image')->store('public/departments'));
         $data['img_path'] = $path;
 
-        if(!in_array($data['branch_id'], $data['branches'])) {
-            return redirect()->back()->with('error', 'Wybrany domyślny oddział jest niepoprawny');
-        }
-
         DB::beginTransaction();
 
         $product = Product::create([
             'name' => $data['name'],
             'code' => $data['code'],
             'description' => $data['description'],
-            'price' => $data['price'],
-            'discount_price' => $data['discount_price'],
+            'price' => pretty_price($data['price']),
+            'discount_price' => pretty_price($data['discount_price']),
             'size_carton' => $data['size_carton'],
             'count_in_package' => $data['count_in_package'],
             'img_path' => $data['img_path'],
@@ -107,7 +103,10 @@ class ProductController extends Controller
         ]);
 
         $product->categories()->sync($data['categories']);
-        $product->stickers()->sync($data['stickers']);
+
+        if(!empty($data['stickers'])) {
+            $product->stickers()->sync($data['stickers']);
+        }
 
         $data['branches'] = collect($data['branches'])->mapWithKeys(function ($item) use ($data) {
             return [
@@ -166,10 +165,6 @@ class ProductController extends Controller
             $data['img_path'] = $path;
         }
 
-        if(!in_array($data['branch_id'], $data['branches'])) {
-            return redirect()->back()->with('error', 'Wybrany domyślny oddział jest niepoprawny');
-        }
-
         DB::beginTransaction();
 
         if($product->is_available == 1 && $data['is_available'] == '0') {
@@ -180,8 +175,8 @@ class ProductController extends Controller
             'name' => $data['name'],
             'code' => $data['code'],
             'description' => $data['description'],
-            'price' => $data['price'],
-            'discount_price' => $data['discount_price'],
+            'price' => pretty_price($data['price']),
+            'discount_price' => pretty_price($data['discount_price']),
             'size_carton' => $data['size_carton'],
             'count_in_package' => $data['count_in_package'],
 //            'in_stock' => $data['in_stock'],
@@ -196,7 +191,10 @@ class ProductController extends Controller
 
 
         $product->categories()->sync($data['categories']);
-        $product->stickers()->sync($data['stickers']);
+
+        if(!empty($data['stickers'])) {
+            $product->stickers()->sync($data['stickers']);
+        }
 
         $data['branches'] = collect($data['branches'])->mapWithKeys(function ($item) use ($data) {
             return [

@@ -71,7 +71,7 @@
             </table>
         </div>
         <div class="col-lg-12">
-            {{ $users->links() }}
+            {{ $users->withQueryString()->links() }}
         </div>
         <div class="col-lg-12 text-end">
             <a href="{{ route('admin.user.create') }}" class="btn btn-primary text-white">Dodaj nowy</a>

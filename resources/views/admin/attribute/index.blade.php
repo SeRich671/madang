@@ -32,7 +32,7 @@
             </table>
         </div>
         <div class="col-lg-12">
-            {{ $attributes->links() }}
+            {{ $attributes->withQueryString()->links() }}
         </div>
         <div class="col-lg-12 text-end">
             <a href="{{ route('admin.attribute.create') }}" class="btn btn-primary text-white">Dodaj nowy</a>

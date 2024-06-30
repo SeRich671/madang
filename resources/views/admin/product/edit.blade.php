@@ -77,7 +77,8 @@
         <div class="row mt-4 mb-3">
             <label for="categories" class="col-lg-4 col-form-label text-lg-end">Domyślny oddział</label>
             <div class="col-lg-4">
-                <select id="branch_id" class="form-control" name="branch_id" required>
+                <select id="branch_id" class="form-control" name="branch_id">
+                    <option value="" @selected(!$product->branches->where('pivot.is_default', 1)->first())>Brak</option>
                     @foreach($branches as $branch)
                         <option value="{{ $branch->id }}" @selected($branch->id == $product->branches->where('pivot.is_default', 1)->first()?->id)>
                             {{ $branch->name }}

@@ -73,7 +73,7 @@ class Category extends Model
             ->where(function ($query) {
                 return $query->where('is_available', 1)
                     ->orWhere('last_available', '>', now()->subDays(7));
-            })
+            })->where('in_stock', '>', 0)
             ->get();
 
         return $leafProducts->merge($products)

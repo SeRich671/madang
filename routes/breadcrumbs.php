@@ -12,7 +12,7 @@ use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 // Home
 Breadcrumbs::for('department.index', function (BreadcrumbTrail $trail, $department) {
     if(request()->input('want_back') === '1') {
-        $trail->push('< Powrót', url()->previous());
+        $trail->push('< Powrót', base64_decode(request()->input('prev_url')));
     }
     $trail->push($department->name, route('department.index', ['subdomain' => $department->subdomain]));
 });

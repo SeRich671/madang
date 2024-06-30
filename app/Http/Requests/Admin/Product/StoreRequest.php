@@ -29,7 +29,7 @@ class StoreRequest extends FormRequest
             'categories.*' => ['required', 'exists:categories,id'],
             'branches' => ['required', 'array'],
             'branches.*' => ['required', 'exists:branches,id'],
-            'branch_id' => ['required', 'exists:branches,id'],
+            'branch_id' => ['sometimes', 'nullable', 'exists:branches,id'],
             'price' => ['required', 'string'],
             'discount_price' => ['nullable', 'string'],
             'size_carton' => ['required', 'string'],
@@ -42,8 +42,8 @@ class StoreRequest extends FormRequest
             'sticker' => ['required', 'boolean'],
             'later_delivery' => ['required', 'boolean'],
 
-            'stickers' => ['required', 'array'],
-            'stickers.*' => ['required', 'exists:products,id'],
+            'stickers' => ['sometimes', 'nullable', 'array'],
+            'stickers.*' => ['sometimes', 'nullable', 'exists:products,id'],
 
             'attributes' => ['sometimes', 'nullable', 'array'],
             'attributes.*.attribute_id' => ['sometimes', 'nullable', 'exists:attributes,id'],

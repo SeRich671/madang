@@ -76,7 +76,8 @@
         <div class="row mt-4 mb-3">
             <label for="categories" class="col-lg-4 col-form-label text-lg-end">Domyślny oddział</label>
             <div class="col-lg-4">
-                <select id="branch_id" class="form-control" name="branch_id" required>
+                <select id="branch_id" class="form-control" name="branch_id">
+                    <option value="">Brak</option>
                     @foreach($branches as $branch)
                         <option value="{{ $branch->id }}">
                             {{ $branch->name }}

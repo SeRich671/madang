@@ -22,7 +22,7 @@
                     <div class="pb-2">
                         <strong>Kategorie: </strong>
                         @foreach($product->categories->unique('department.name')->values() as $key => $category)
-                            <a class="link link-primary" href="{{ route('product.show', ['product' => $product, 'category' => $category, 'subdomain' => $category->department->subdomain]) . '?want_back=1' }}">
+                            <a class="link link-primary" href="{{ route('product.show', ['product' => $product, 'category' => $category, 'subdomain' => $category->department->subdomain]) . '?want_back=1&prev_url=' . base64_encode(request()->fullUrl()) }}">
                                 <strong>"{{ $category->department->name }}"</strong>
                             </a>@if($key != $product->categories->unique('department.name')->count() - 1), @endif
 

@@ -24,28 +24,8 @@ class DatabaseSeeder extends Seeder
     {
         Artisan::call('app:database-remap');
 
-        $branches = Branch::all();
-
-        foreach ($branches as $branch) {
-            $users = User::factory(2)->create([
-                'branch_id' => $branch->id,
-            ]);
-
-            foreach ($users as $user) {
-                Address::factory(1)->create([
-                    'user_id' => $user->id
-                ]);
-            }
-
-            foreach ($users as $user) {
-                Billing::factory(1)->create([
-                    'user_id' => $user->id
-                ]);
-            }
-        }
-
         $adminUser = User::factory()->create([
-            'branch_id' => $branches->random()->id,
+            'branch_id' => 1,
             'email' => 'admin@test.com',
             'status' => StatusEnum::ACCEPTED,
             'role' => RoleEnum::ADMIN,
@@ -58,12 +38,5 @@ class DatabaseSeeder extends Seeder
         Billing::factory(1)->create([
             'user_id' => $adminUser->id
         ]);
-    }
-
-    private function getDepartments(): array
-    {
-        return [
-
-        ];
     }
 }

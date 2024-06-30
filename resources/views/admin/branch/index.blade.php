@@ -38,7 +38,7 @@
             </table>
         </div>
         <div class="col-lg-12">
-            {{ $branches->links() }}
+            {{ $branches->withQueryString()->links() }}
         </div>
         <div class="col-lg-12 text-end">
             <a href="{{ route('admin.branch.create') }}" class="btn btn-primary text-white">Dodaj nowy</a>

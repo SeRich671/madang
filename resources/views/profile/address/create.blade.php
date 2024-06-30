@@ -13,6 +13,16 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                 </div>
             </div>
 
@@ -58,12 +68,12 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="address" class="col-lg-4 col-form-label text-lg-end">Adres</label>
+                    <label for="street" class="col-lg-4 col-form-label text-lg-end">Adres</label>
 
                     <div class="col-lg-6">
-                        <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required autocomplete="address">
+                        <input id="street" type="text" class="form-control @error('street') is-invalid @enderror" name="street" value="{{ old('street') }}" required autocomplete="street">
 
-                        @error('address')
+                        @error('street')
                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -86,12 +96,12 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="zipcode" class="col-lg-4 col-form-label text-lg-end">Kod pocztowy</label>
+                    <label for="zip_code" class="col-lg-4 col-form-label text-lg-end">Kod pocztowy</label>
 
                     <div class="col-lg-6">
-                        <input id="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}" required autocomplete="zipcode">
+                        <input id="zip_code" type="text" class="form-control @error('zip_code') is-invalid @enderror" name="zip_code" value="{{ old('zip_code') }}" required autocomplete="zip_code">
 
-                        @error('zipcode')
+                        @error('zip_code')
                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

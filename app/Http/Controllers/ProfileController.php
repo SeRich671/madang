@@ -19,9 +19,16 @@ class ProfileController extends Controller
     public function update(UpdateRequest $request): RedirectResponse
     {
         $user = auth()->user();
+        $data = $request->validated();
 
-        $user->fill($request->validated());
-        $user->password = Hash::make($request->validated('password'));
+        if(isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }else{
+            unset($data['password']);
+        }
+
+        $user->fill($data);
+
         $user->marketing = (bool)($request->validated('marketing'));
 
         $user->save();

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('subdomain');
 
             $table->enum('status', StatusEnum::getValues())->default(StatusEnum::ON);
-            $table->string('footer_type');
 
             $table->string('email')->nullable();
 

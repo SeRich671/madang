@@ -41,7 +41,7 @@
         <td>{{ $order->billing_zipcode }}</td>
         <td>{{ $order->billing_nip }}</td>
         <td>{{ $order->billing_phone }}</td>
-        <td><a class="link-primary" href="{{ route('admin.user.edit', $order->user) }}">{{ $order->billing_email }}</a></td>
+        <td>{{ $order->billing_email }}</td>
     </tr>
     <tr>
         <th>Adres dostawy</th>
@@ -94,7 +94,7 @@
             <td>{{ $line->quantity }}</td>
             <td>{{ $line->product->count_in_package * $line->quantity }}</td>
             <td>{!! $line->product->discount_price ? '<s>' . $line->product->price . '</s> <span class="text-danger">' . $line->product->discount_price . '</span>' : $line->product->price !!} zł</td>
-            <td>{{ number_format((float)($line->quantity * ($line->product->discount_price ?: $line->product->price)), 2, '.', '') }} zł</td>
+            <td>{{ number_format((float)($line->quantity * $line->product->count_in_package * ($line->product->discount_price ?: $line->product->price)), 2, '.', '') }} zł</td>
         </tr>
     @endforeach
     </tbody>

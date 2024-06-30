@@ -30,12 +30,15 @@ class Product extends Model
     public function getOrderBranchAttribute()
     {
         $userBranch = $this->branches()->wherePivot('branch_id', auth()->user()->branch_id)->first();
+        $defaultBranch = $this->branches()->wherePivot('is_default', 1)->first();
 
         if($userBranch) {
             return $userBranch;
+        }elseif($defaultBranch) {
+            return $defaultBranch;
         }
 
-        return $this->branches()->wherePivot('is_default', 1)->first();
+        return $this->branches()->first();
     }
 
     public function scopeFilters($query, $filters) {
@@ -55,7 +58,7 @@ class Product extends Model
             return $query2->where(function ($query3) {
                 return $query3->where('is_available', 1)
                     ->orWhere('last_available', '>', now()->subDays(7));
-            });
+            })->where('in_stock', '>', 0);
         })->when(isset($filters['sticker']) && $filters['sticker'] != 0, function ($query2) {
             return $query2->where('sticker', 1);
         })->when(!empty($filters['dynamic_attribute']), function ($query2) use ($filters) {
@@ -72,7 +75,7 @@ class Product extends Model
         return $query->where(function ($query2) {
             return $query2->where('is_available', 1)
                 ->orWhere('last_available', '>', now()->subDays(7));
-        });
+        })->where('in_stock', '>', 0);
     }
 
     public function scopeSearch($query, $search) {

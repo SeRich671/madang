@@ -103,5 +103,18 @@
             form.submit();
         });
     </script>
+    <script>
+        document.addEventListener('keydown', function(event) {
+            // Check if the pressed key is 'Backspace'
+            if (event.key === 'Backspace') {
+                // Prevent default action to avoid deleting text in inputs or textareas
+                if (event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
+                    event.preventDefault();
+                    // Navigate to the previous page
+                    window.history.back();
+                }
+            }
+        });
+    </script>
 </body>
 </html>

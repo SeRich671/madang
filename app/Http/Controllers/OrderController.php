@@ -106,7 +106,7 @@ class OrderController extends Controller
                 $total = 0;
 
                 foreach ($cartItemGroup as $cartItem) {
-                    $total += ($cartItem->product->discount_price ?: $cartItem->product->price) * $cartItem->quantity;
+                    $total += ($cartItem->product->discount_price ?: $cartItem->product->price) * $cartItem->quantity * $cartItem->product->count_in_package;
                 }
 
                 $order = Order::create([
@@ -179,7 +179,7 @@ class OrderController extends Controller
 
         foreach ($orders as $order) {
             foreach ($order->lines as $line) {
-                $ordersTotal += $line->quantity * ($line->product->discount_price ?: $line->product->price);
+                $ordersTotal += $line->quantity * $line->product->count_in_package * ($line->product->discount_price ?: $line->product->price);
             }
 
             if($order->delivery === DeliveryEnum::COURIER) {
@@ -195,7 +195,7 @@ class OrderController extends Controller
             'anyOrder' => $orders->random(),
             'orders' => $orders,
             'cartItemGroups' => $cartItemGroups,
-            'ordersTotal' => $ordersTotal,
+            'ordersTotal' => pretty_price($ordersTotal),
             'ordersAdditional' => $ordersAdditional,
         ]);
     }

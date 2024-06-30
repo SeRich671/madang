@@ -17,5 +17,5 @@ function cart_ids() {
 
 function pretty_price($price): string
 {
-    return number_format((float)$price, 2, '.', '');
+    return number_format((float)str_replace(',', '.', $price), 2, '.', '');
 }

@@ -22,12 +22,12 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->string('login')->unique();
+            $table->string('login')->collation('utf8mb4_bin')->unique();
 
             $table->string('first_name');
             $table->string('last_name');
             $table->string('nip')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->collation('utf8mb4_bin')->unique();
             $table->string('phone')->nullable();
 
             $table->string('company_name')->nullable();
