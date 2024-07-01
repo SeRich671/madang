@@ -34,12 +34,11 @@ class StoreRequest extends FormRequest
             'discount_price' => ['nullable', 'string'],
             'size_carton' => ['required', 'string'],
             'count_in_package' => ['required', 'string'],
-//            'in_stock' => ['required', 'string'],
+            'in_stock' => ['required', 'string'],
             'image' => ['required', 'image'],
             'is_available' => ['required', 'boolean'],
             'is_recommended' => ['required', 'boolean'],
             'bought_by_others' => ['required', 'boolean'],
-            'sticker' => ['required', 'boolean'],
             'later_delivery' => ['required', 'boolean'],
 
             'stickers' => ['sometimes', 'nullable', 'array'],

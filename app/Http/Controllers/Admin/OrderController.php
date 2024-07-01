@@ -120,7 +120,7 @@ class OrderController extends Controller
                 'edited_quantity' => $request->validated('quantity')[$line->id] !== $line->quantity && !$line->edited_quantity ? $line->quantity : $line->edited_quantity,
             ]);
 
-            $ordersTotal += $line->quantity * ($line->product->discount_price ?: $line->product->price);
+            $ordersTotal += $line->quantity * $line->product->count_in_package * ($line->product->discount_price ?: $line->product->price);
         }
 
         $order->update([

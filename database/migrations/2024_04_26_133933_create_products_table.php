@@ -23,7 +23,6 @@ return new class extends Migration
 
             $table->boolean('is_available')->default(1);
             $table->boolean('is_recommended')->default(0);
-            $table->boolean('sticker')->default(0);
             $table->boolean('later_delivery')->default(0);
             $table->boolean('bought_by_others')->default(0);
 

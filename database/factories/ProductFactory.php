@@ -26,7 +26,6 @@ class ProductFactory extends Factory
             'discount_price' => $this->faker->optional()->randomFloat(2, 10,19),
             'is_available' => $isAvailable,
             'is_recommended' => $this->faker->boolean,
-            'sticker' => $this->faker->boolean,
             'later_delivery' => $this->faker->boolean,
             'material' => $this->faker->sentence(2),
             'img_path' => 'products/default.jpg',

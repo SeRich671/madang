@@ -36,6 +36,13 @@ class ProductController extends Controller
             ->when($request->input('is_recommended') != '', function ($query) use ($request) {
                 return $query->where('is_recommended', $request->input('is_recommended'));
             })
+            ->when($request->input('in_stock') != '', function ($query) use ($request) {
+                if($request->input('in_stock') == 1) {
+                    return $query->where('in_stock', '>', 0);
+                }else {
+                    return $query->where('in_stock', '<=', 0);
+                }
+            })
             ->when(!empty($request->input('category_id', [])), function ($query) use ($request) {
                 return $query->whereHas('categories', function ($query2) use ($request) {
                     return $query2->whereIn('categories.id', $request->input('category_id'));
@@ -91,14 +98,14 @@ class ProductController extends Controller
             'code' => $data['code'],
             'description' => $data['description'],
             'price' => pretty_price($data['price']),
-            'discount_price' => pretty_price($data['discount_price']),
+            'discount_price' => $data['discount_price'] ? pretty_price($data['discount_price']) : null,
             'size_carton' => $data['size_carton'],
             'count_in_package' => $data['count_in_package'],
+            'in_stock' => $data['in_stock'],
             'img_path' => $data['img_path'],
             'is_available' => $data['is_available'],
             'is_recommended' => $data['is_recommended'],
             'bought_by_others' => $data['bought_by_others'],
-            'sticker' => $data['sticker'],
             'later_delivery' => $data['later_delivery'],
         ]);
 
@@ -176,15 +183,14 @@ class ProductController extends Controller
             'code' => $data['code'],
             'description' => $data['description'],
             'price' => pretty_price($data['price']),
-            'discount_price' => pretty_price($data['discount_price']),
+            'discount_price' => $data['discount_price'] ? pretty_price($data['discount_price']) : null,
             'size_carton' => $data['size_carton'],
             'count_in_package' => $data['count_in_package'],
-//            'in_stock' => $data['in_stock'],
+            'in_stock' => $data['in_stock'],
             'img_path' => $data['img_path'] ?? $product->img_path,
             'is_available' => $data['is_available'],
             'is_recommended' => $data['is_recommended'],
             'bought_by_others' => $data['bought_by_others'],
-            'sticker' => $data['sticker'],
             'later_delivery' => $data['later_delivery'],
         ]);
 

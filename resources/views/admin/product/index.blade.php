@@ -12,7 +12,7 @@
                 <label for="query">Nazwa</label>
                 <input type="text" class="form-control" name="query" id="query" value="{{ request()->input('query') }}">
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <label for="category_id">Kategorie</label>
                 <select class="form-control" id="category_id" name="category_id[]" multiple>
                     @foreach($categories as $key => $category)
@@ -20,7 +20,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <label for="img_path">Zdjecia</label>
                 <select class="form-control" id="img_path" name="img_path">
                     <option value="">Wszystkie</option>
@@ -28,7 +28,7 @@
                     <option value="0" @selected(request()->input('img_path') === '0')>Brak zdjęć</option>
                 </select>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <label for="is_recommended">Wybrane</label>
                 <select class="form-control" id="is_recommended" name="is_recommended">
                     <option value="">Wszystkie</option>
@@ -36,12 +36,20 @@
                     <option value="0" @selected(request()->input('is_recommended') === '0')>Niewybrane</option>
                 </select>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <label for="is_available">Widoczny</label>
                 <select class="form-control" name="is_available">
                     <option value="">Wszystkie</option>
                     <option value="1" @selected(request()->input('is_available') === '1')>Widoczne</option>
                     <option value="0" @selected(request()->input('is_available') === '0')>Niewidoczne</option>
+                </select>
+            </div>
+            <div class="col-lg-2">
+                <label for="in_stock">Stan ilościowy</label>
+                <select class="form-control" name="in_stock">
+                    <option value="">Wszystkie</option>
+                    <option value="1" @selected(request()->input('in_stock') === '1')>Większe od zera</option>
+                    <option value="0" @selected(request()->input('in_stock') === '0')>Zero lub mniej</option>
                 </select>
             </div>
             <div class="col-lg-12 text-center mt-2">
@@ -58,6 +66,7 @@
                     <th>Kod</th>
                     <th>Cena podstawowa</th>
                     <th>Dostępny</th>
+                    <th>Stan Ilościowy</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -72,6 +81,7 @@
                         </td>
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->is_available ? 'Tak' : 'Nie' }}</td>
+                        <td>{{ $product->in_stock }}</td>
                         <td class="text-end">
                             <form method="POST" action="{{ route('admin.product.destroy', $product) }}">
                                 @csrf

@@ -140,17 +140,17 @@
             </div>
         </div>
 
-{{--        <div class="row mt-4 mb-3">--}}
-{{--            <label for="in_stock" class="col-lg-4 col-form-label text-lg-end">Stan ilościowy</label>--}}
-{{--            <div class="col-lg-4">--}}
-{{--                <input id="in_stock" type="text" class="form-control @error('in_stock') is-invalid @enderror" name="in_stock" value="{{ old('in_stock') }}" required autocomplete="in_stock">--}}
-{{--                @error('in_stock')--}}
-{{--                <span class="invalid-feedback" role="alert">--}}
-{{--                    <strong>{{ $message }}</strong>--}}
-{{--                </span>--}}
-{{--                @enderror--}}
-{{--            </div>--}}
-{{--        </div>--}}
+        <div class="row mt-4 mb-3">
+            <label for="in_stock" class="col-lg-4 col-form-label text-lg-end">Stan ilościowy</label>
+            <div class="col-lg-4">
+                <input id="in_stock" type="text" class="form-control @error('in_stock') is-invalid @enderror" name="in_stock" value="{{ old('in_stock') }}" required autocomplete="in_stock">
+                @error('in_stock')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+        </div>
 
 {{--        <div class="row">--}}
 {{--            <div class="col-lg-12 text-center">--}}
@@ -216,19 +216,6 @@
 
                     <label for="bought_by_others" class="form-check-label">
                         Wyświetlać w sekcji "Inni kupili również"
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-lg-6 offset-lg-4">
-                <div class="form-check">
-                    <input type="hidden" name="sticker" value="0">
-                    <input type="checkbox" value="1" name="sticker" id="sticker" class="form-check-input" @checked(old('sticker'))>
-
-                    <label for="sticker" class="form-check-label">
-                        Posiada miejsce na naklejkę
                     </label>
                 </div>
             </div>

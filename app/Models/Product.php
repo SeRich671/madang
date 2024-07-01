@@ -60,7 +60,7 @@ class Product extends Model
                     ->orWhere('last_available', '>', now()->subDays(7));
             })->where('in_stock', '>', 0);
         })->when(isset($filters['sticker']) && $filters['sticker'] != 0, function ($query2) {
-            return $query2->where('sticker', 1);
+            return $query2->whereHas('stickers');
         })->when(!empty($filters['dynamic_attribute']), function ($query2) use ($filters) {
             foreach ($filters['dynamic_attribute'] as $key => $dynamicAttribute) {
                 $query2->whereHas('attributes', function ($query3) use ($key, $dynamicAttribute) {
