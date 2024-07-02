@@ -78,7 +78,8 @@
 @push('scripts')
     <script>
         @php
-            $productSearchOptions = \App\Models\Product::pluck('name');
+            $productSearchOptions = \App\Models\Product::where('is_available', 1)
+                ->pluck('name');
         @endphp
         document.addEventListener('DOMContentLoaded', function() {
             const options = [
@@ -89,11 +90,11 @@
 
             const searchInput = document.getElementById('searchInput');
             const resultList = document.getElementById('resultList');
+            let timeout = null;
 
-            searchInput.addEventListener('input', function() {
-                console.log("Input event triggered"); // Debugging line
-
-                const input = this.value.toLowerCase();
+            // Debounced function to handle search filtering
+            function handleSearch() {
+                const input = searchInput.value.toLowerCase();
 
                 // Clear previous results
                 resultList.innerHTML = '';
@@ -117,13 +118,20 @@
                 } else {
                     resultList.style.display = 'none';
                 }
-            });
-        });
-
-        document.addEventListener('click', function(event) {
-            if (!searchInput.contains(event.target) && !resultList.contains(event.target)) {
-                resultList.style.display = 'none';
             }
+
+            // Listener for input events on the search input with debouncing
+            searchInput.addEventListener('input', function() {
+                clearTimeout(timeout);
+                timeout = setTimeout(handleSearch, 500); // Adjust time as necessary
+            });
+
+            // Listener to handle clicks outside the search input and results list
+            document.addEventListener('click', function(event) {
+                if (!searchInput.contains(event.target) && !resultList.contains(event.target)) {
+                    resultList.style.display = 'none';
+                }
+            });
         });
     </script>
 @endpush
