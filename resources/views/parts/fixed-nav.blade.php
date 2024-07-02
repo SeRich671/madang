@@ -16,9 +16,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <form method="GET" action="{{ route('search.index', current_subdomain() ?: '') }}" class="d-flex mx-auto">
-                <input class="form-control me-2" minlength="3" name="global_query" value="{{ request()->get('global_query') }}" type="search" placeholder="Nazwa lub kod produktu" aria-label="Search">
-                <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+                <div class="input-group mb-3 align-middle">
+                    <input autocomplete="off" type="text" class="form-control" name="global_query" value="{{ request()->get('global_query') }}" id="searchInput" placeholder="Nazwa produktu" aria-label="Search here">
+                    <ul class="list-group" id="resultList" style="display: none; margin-top:40px; position: absolute; width: 100%; cursor: pointer; z-index: 1000; max-height:500px; overflow-y: auto">
+                    </ul>
+                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+                </div>
             </form>
+{{--            <form method="GET" action="{{ route('search.index', current_subdomain() ?: '') }}" class="d-flex mx-auto">--}}
+{{--                <input class="form-control me-2" minlength="3" name="global_query" value="{{ request()->get('global_query') }}" type="search" placeholder="Nazwa lub kod produktu" aria-label="Search">--}}
+{{--                <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>--}}
+{{--            </form>--}}
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{ route('cart.show') }}">
@@ -66,4 +74,56 @@
         </div>
     </div>
 </nav>
-{{--<div class="row"></div>--}}
+
+@push('scripts')
+    <script>
+        @php
+            $productSearchOptions = \App\Models\Product::pluck('name');
+        @endphp
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = [
+                @foreach($productSearchOptions as $option)
+                "{{ $option  }}",
+                @endforeach
+            ];
+
+            const searchInput = document.getElementById('searchInput');
+            const resultList = document.getElementById('resultList');
+
+            searchInput.addEventListener('input', function() {
+                console.log("Input event triggered"); // Debugging line
+
+                const input = this.value.toLowerCase();
+
+                // Clear previous results
+                resultList.innerHTML = '';
+
+                // Filter options based on input
+                const filteredOptions = options.filter(option => option.toLowerCase().includes(input));
+
+                // Display results
+                if (filteredOptions.length > 0 && input.trim() !== '') {
+                    resultList.style.display = 'block';
+                    filteredOptions.forEach(option => {
+                        const li = document.createElement('li');
+                        li.classList.add('list-group-item');
+                        li.textContent = option;
+                        li.addEventListener('click', function() {
+                            searchInput.value = this.textContent;
+                            resultList.style.display = 'none';
+                        });
+                        resultList.appendChild(li);
+                    });
+                } else {
+                    resultList.style.display = 'none';
+                }
+            });
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!searchInput.contains(event.target) && !resultList.contains(event.target)) {
+                resultList.style.display = 'none';
+            }
+        });
+    </script>
+@endpush

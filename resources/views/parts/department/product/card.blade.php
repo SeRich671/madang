@@ -34,7 +34,7 @@
                     <strong>Cena: {!! $product->discount_price ? '<s>' . $product->price . '</s> <span class="text-danger">' . $product->discount_price . '</span>'  : $product->price !!} zł</strong>
                 </div>
                 <div class="input-group">
-                    <input name="quantity" min="1" type="number" class="form-control" placeholder="Ilość" required>
+                    <input name="quantity" min="1" type="number" class="form-control" placeholder="Ilość" value="1" required>
                     <input type="hidden" name="to_div" value="{{ '#product_' . $product->id }}"/>
                     @csrf
                     <button type="submit" class="btn btn-primary text-white"><i class="bi bi-cart-check"></i></button>
