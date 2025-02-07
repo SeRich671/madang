@@ -51,9 +51,9 @@ class DatabaseRemap extends Command
         $this->transferBranches();
         $this->transferCategories();
         $this->transferProducts();
-        $this->transferUsers();
-        $this->transferOrders();
-        $this->transferOrderLines();
+//        $this->transferUsers();
+//        $this->transferOrders();
+//        $this->transferOrderLines();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 

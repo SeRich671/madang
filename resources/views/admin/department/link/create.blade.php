@@ -20,6 +20,9 @@
                 <input type="text" class="form-control" name="link" value="{{ old('link') }}" required>
             </div>
             <div class="col-lg-12 mt-4 text-end">
+                <a href="{{ url()->previous() }}" class="btn btn-secondary me-2">
+                    Powrót
+                </a>
                 <button class="btn btn-primary text-white">
                     Zapisz
                 </button>

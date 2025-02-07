@@ -102,6 +102,9 @@
 
         <div class="row mb-4">
             <div class="col-lg-4 offset-lg-4 d-grid">
+                <a href="{{ url()->previous() }}" class="btn btn-secondary me-2">
+                    Powrót
+                </a>
                 <button type="submit" class="btn btn-primary text-white btn-">
                     Zapisz
                 </button>

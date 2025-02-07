@@ -383,6 +383,9 @@
 
             <div class="row">
                 <div class="col-lg-12 text-end mt-4">
+                    <a href="{{ url()->previous() }}" class="btn btn-secondary me-2">
+                        Powrót
+                    </a>
                     <button type="submit" class="btn btn-primary text-white">Zapisz zmiany w zamówieniu</button>
                 </div>
             </div>

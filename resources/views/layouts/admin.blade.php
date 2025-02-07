@@ -152,6 +152,40 @@
                 }
             }
         });
+
+        (function() {
+            // Create a unique key for the current page using its pathname.
+            // You can customize this key if needed.
+            const scrollKey = 'scrollPos_' + window.location.pathname;
+
+            // Save scroll position when an internal link is clicked.
+            // This uses event delegation to capture clicks on any <a> that points
+            // to the same origin.
+            document.addEventListener('click', function(e) {
+                const anchor = e.target.closest('a');
+                if (anchor && anchor.href && anchor.href.startsWith(window.location.origin)) {
+                    // Save the current scroll position in sessionStorage.
+                    sessionStorage.setItem(scrollKey, window.pageYOffset);
+                }
+            });
+
+            // Alternatively, you can also listen to 'beforeunload' if you want to capture all navigations.
+            // window.addEventListener('beforeunload', function() {
+            //   sessionStorage.setItem(scrollKey, window.pageYOffset);
+            // });
+
+            // When the page loads, check if a scroll position was saved and restore it.
+            document.addEventListener('DOMContentLoaded', function() {
+                const savedPos = sessionStorage.getItem(scrollKey);
+                if (savedPos !== null) {
+                    // Scroll to the saved position.
+                    window.scrollTo(0, parseInt(savedPos, 10));
+                    // Optionally, remove the saved value so it doesn't affect future navigations.
+                    sessionStorage.removeItem(scrollKey);
+                }
+            });
+        })();
+
     </script>
 </body>
 </html>

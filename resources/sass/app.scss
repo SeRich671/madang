@@ -36,3 +36,63 @@ main {
   background-color: #f6993f;
   border-color: #f6993f;
 }
+
+/* Custom arrow for native select elements */
+select.form-control {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.5rem; /* room for the arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4'%3E%3Cpath fill='%23333' d='M0 0l4 4 4-4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 8px 4px;
+}
+
+/* Custom arrow for Select2 single select elements */
+.select2-container--default .select2-selection--single {
+  padding-right: 2.5rem;  /* make room for the arrow */
+  position: relative;      /* so the pseudo-element is positioned relative to this container */
+  background-image: none;  /* remove any default background image */
+}
+
+/* Hide the default arrow element that Select2 creates */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  display: none;
+}
+
+/* Add a custom arrow via a pseudo-element */
+.select2-container--default .select2-selection--single::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 4px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4'%3E%3Cpath fill='%23333' d='M0 0l4 4 4-4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 8px 4px;
+}
+
+/* For Select2 multiselect elements */
+.select2-container--default .select2-selection--multiple {
+  position: relative;          /* Make sure the pseudo-element is positioned relative to this container */
+  padding-right: 2.5rem;       /* Add space on the right for the arrow */
+  background-image: none;      /* Remove any default background arrow if present */
+}
+
+.select2-container--default .select2-selection--multiple::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 4px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4'%3E%3Cpath fill='%23333' d='M0 0l4 4 4-4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 8px 4px;
+}
+
+

@@ -92,7 +92,7 @@ class RegisterController extends Controller
             'company_name' => $data['company_name'],
             'nip' => $data['nip'],
             'phone' => $data['phone'],
-            'email' => $data['email'],
+            'email' => $data['login'],
             'company_address' => $data['company_address'],
             'company_city' => $data['company_city'],
             'company_zipcode' => $data['company_zipcode'],
