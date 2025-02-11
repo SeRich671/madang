@@ -140,9 +140,9 @@ class OrderController extends Controller
         return redirect()->back()->with('success', 'Pomyślnie usunięto zamówienie');
     }
 
-    public function download(Order $order)
+    public function download(Request $request, Order $order)
     {
-        $pdf = PDF::loadView('pdf.order', ['order' => $order]);
+        $pdf = PDF::loadView('pdf.order', ['order' => $order, 'request' => $request]);
 
         return $pdf->download(now()->format('d-m-Y') . '.pdf');
     }

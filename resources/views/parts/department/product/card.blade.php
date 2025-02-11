@@ -1,4 +1,4 @@
-<div class="card h-100 rounded-0 exportable" id="product_{{ $product->id }}" data-export-id="{{ $product->id }}">
+<div class="card h-100 rounded-0 {{ in_array($product->id, cart_ids()) ? 'bg-primary text-white' : '' }} exportable" id="product_{{ $product->id }}" data-export-id="{{ $product->id }}">
     <!-- Card Header: fixed height for 3 lines and clickable product name -->
     <div class="card-header rounded-0 {{ in_array($product->id, cart_ids()) ? 'bg-primary text-white' : '' }} d-flex align-items-center justify-content-center" style="height: 4.5rem;">
         <h5 class="card-title m-0 text-center">
@@ -10,20 +10,13 @@
     </div>
 
     <!-- Product image -->
-    <img src="{{ asset('storage/' . $product->img_path) }}" style="background-color:white; height:200px; width:auto; object-fit:contain; background-repeat:no-repeat;" alt="..." onclick="showProductImage(this.src)" data-bs-toggle="modal" data-bs-target="#productImageModal">
+    <img src="{{ asset('storage/' . $product->img_path) }}" style="{{ in_array($product->id, cart_ids()) ? 'background-color:f6993f;' : 'background-color:white;' }} height:200px; width:auto; object-fit:contain; background-repeat:no-repeat;" alt="..." onclick="showProductImage(this.src)" data-bs-toggle="modal" data-bs-target="#productImageModal">
 
     <!-- Card Body -->
-    <div class="card-body bg-white">
-        @if($product->count_in_package)
-            <div>
-                {{ $product->count_in_package }} szt./komplet
-            </div>
-        @endif
-        @if($product->size_carton)
-            <div>
-                {{ $product->size_carton }} szt./karton
-            </div>
-        @endif
+    <div class="card-body {{ in_array($product->id, cart_ids()) ? 'bg-primary text-white' : 'bg-white text-black' }}">
+        <div>
+            {{ $product->description }}
+        </div>
     </div>
 
     <!-- Card Footer -->
@@ -38,6 +31,12 @@
                                 <strong>"{{ $category->department->name }}"</strong>
                             </a>@if($key != $product->categories->unique('department.name')->count() - 1), @endif
                         @endforeach
+
+                        @if($product->later_delivery)
+                            <div class="mt-1">
+                                <strong class="text-danger">Opóźnienie w dostawie</strong>
+                            </div>
+                        @endif
                     </div>
                 @endif
                 <div class="pb-2">

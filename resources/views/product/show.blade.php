@@ -69,8 +69,9 @@
                                 <hr>
                                 <div class="mt-4">
                                     <form method="POST" action="{{ route('cart.add', $product) }}">
+                                        <label>Ilość</label>
                                         <div class="input-group">
-                                            <input name="quantity" min="1" type="number" class="form-control" placeholder="Ilość" required>
+                                            <input name="quantity" min="1" type="number" class="form-control" value="1" placeholder="Ilość" required>
                                             @csrf
                                             <button type="submit" class="btn btn-primary"><i class="bi bi-cart-check"></i></button>
                                         </div>

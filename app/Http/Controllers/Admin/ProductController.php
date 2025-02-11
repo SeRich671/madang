@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Product\StoreRequest;
 use App\Http\Requests\Admin\Product\UpdateRequest;
 use App\Models\Attribute;
 use App\Models\Branch;
+use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Department;
 use App\Models\Product;
@@ -220,6 +221,10 @@ class ProductController extends Controller
         }
 
         $product->attributes()->sync($syncData);
+
+        if((int)$data['in_stock'] <= 0 || (int)$data['is_available'] == 0) {
+            CartItem::where('product_id', $product->id)->delete();
+        }
 
         DB::commit();
 

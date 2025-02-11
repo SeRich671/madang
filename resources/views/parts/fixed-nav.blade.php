@@ -48,7 +48,7 @@
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person-fill"></i>
                     </a>
-                    <ul class="dropdown-menu px-2" style="min-width: 300px" aria-labelledby="navbarDropdown">
+                    <ul class="dropdown-menu px-2" style="min-width: 300px; left:-250px;" aria-labelledby="navbarDropdown">
                         @if(Auth::check())
                             @if(auth()->user()->role == \App\Enums\User\RoleEnum::ADMIN)
                                 <li>
@@ -107,8 +107,37 @@
 
 @push('scripts')
     <script>
+        // These functions mimic the PHP logic for normalizing and trimming.
+        function normalizePolish(str) {
+            const mapping = {
+                'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z',
+                'Ą': 'a', 'Ć': 'c', 'Ę': 'e', 'Ł': 'l', 'Ń': 'n', 'Ó': 'o', 'Ś': 's', 'Ź': 'z', 'Ż': 'z'
+            };
+            return str.replace(/[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g, match => mapping[match]);
+        }
+
+        function normalizeString(str) {
+            return normalizePolish(str).toLowerCase();
+        }
+
+        function trimEndings(word) {
+            const vowels = ['a','e','i','o','u','y'];
+            while (word.length > 4 && vowels.includes(word.slice(-1))) {
+                word = word.slice(0, -1);
+            }
+            return word;
+        }
+
         @php
-            $productSearchOptions = \App\Models\Product::where('is_available', 1)->pluck('name');
+            $departmentSB = \App\Models\Department::where('subdomain', current_subdomain())->first();
+            $productSearchOptions = \App\Models\Product::when($departmentSB, function ($query) use ($departmentSB) {
+                    return $query->whereHas('categories', function ($query2) use ($departmentSB) {
+                        return $query2->where('department_id', $departmentSB->id);
+                    });
+                })
+                ->where('is_available', 1)
+                ->where('in_stock', '>', 0)
+                ->pluck('name');
         @endphp
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -123,9 +152,7 @@
             if (searchInputDesktop) {
                 const resultListDesktop = document.createElement('ul');
                 resultListDesktop.className = 'list-group';
-                // Adjust top to position below the input (if needed)
                 resultListDesktop.style.cssText = 'display:none; top:40px; position:absolute; width:100%; cursor:pointer; z-index:1000; max-height:500px; overflow-y:auto;';
-                // Ensure the parent is relatively positioned
                 searchInputDesktop.parentNode.style.position = 'relative';
                 searchInputDesktop.parentNode.appendChild(resultListDesktop);
 
@@ -133,9 +160,17 @@
                 searchInputDesktop.addEventListener('input', function() {
                     clearTimeout(timeoutDesktop);
                     timeoutDesktop = setTimeout(function() {
-                        const input = searchInputDesktop.value.toLowerCase();
+                        // Normalize and trim the input value
+                        let input = searchInputDesktop.value;
+                        input = normalizeString(input);
+                        input = trimEndings(input);
+
                         resultListDesktop.innerHTML = '';
-                        const filteredOptions = options.filter(option => option.toLowerCase().includes(input));
+                        const filteredOptions = options.filter(option => {
+                            let normalizedOption = normalizeString(option);
+                            normalizedOption = trimEndings(normalizedOption);
+                            return normalizedOption.includes(input);
+                        });
 
                         if (filteredOptions.length > 0 && input.trim() !== '') {
                             resultListDesktop.style.display = 'block';
@@ -144,10 +179,8 @@
                                 li.classList.add('list-group-item');
                                 li.textContent = option;
                                 li.addEventListener('click', function() {
-                                    // Set input value
                                     searchInputDesktop.value = this.textContent;
                                     resultListDesktop.style.display = 'none';
-                                    // Automatically submit the form
                                     searchInputDesktop.form.submit();
                                 });
                                 resultListDesktop.appendChild(li);
@@ -178,9 +211,16 @@
                 searchInputMobile.addEventListener('input', function() {
                     clearTimeout(timeoutMobile);
                     timeoutMobile = setTimeout(function() {
-                        const input = searchInputMobile.value.toLowerCase();
+                        let input = searchInputMobile.value;
+                        input = normalizeString(input);
+                        input = trimEndings(input);
+
                         resultListMobile.innerHTML = '';
-                        const filteredOptions = options.filter(option => option.toLowerCase().includes(input));
+                        const filteredOptions = options.filter(option => {
+                            let normalizedOption = normalizeString(option);
+                            normalizedOption = trimEndings(normalizedOption);
+                            return normalizedOption.includes(input);
+                        });
 
                         if (filteredOptions.length > 0 && input.trim() !== '') {
                             resultListMobile.style.display = 'block';
@@ -191,7 +231,6 @@
                                 li.addEventListener('click', function() {
                                     searchInputMobile.value = this.textContent;
                                     resultListMobile.style.display = 'none';
-                                    // Automatically submit the mobile form
                                     searchInputMobile.form.submit();
                                 });
                                 resultListMobile.appendChild(li);

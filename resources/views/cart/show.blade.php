@@ -25,10 +25,11 @@
                                     <h5 class="text-primary">{{ $department }}</h5>
                                     <hr>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-12 table-responsive">
                                     <table class="table table-striped table-responsive text-center">
                                         <thead>
                                         <tr>
+                                            <th></th>
                                             <th>Nazwa produktu</th>
                                             <th>Cena / szt.</th>
                                             <th>Ilość opakowań</th>
@@ -42,7 +43,17 @@
                                         <tbody>
                                         @foreach($cartItemGroup as $cartItem)
                                             <tr class="align-middle">
-                                                <td class="col-lg-3">{{ $cartItem->product->name }}</td>
+                                                <td>
+                                                    <img src="{{ asset('storage/' . $cartItem->product->img_path) }}" style="background-color:white; max-width:100px; object-fit:contain; background-repeat:no-repeat;" alt="..." onclick="showProductImage(this.src)" data-bs-toggle="modal" data-bs-target="#productImageModal">
+                                                </td>
+                                                <td class="col-lg-3">
+                                                    {{ $cartItem->product->name }}
+                                                    @if($cartItem->product->later_delivery)
+                                                        <div class="mt-1">
+                                                            <strong class="text-danger">Opóźnienie w dostawie</strong>
+                                                        </div>
+                                                    @endif
+                                                </td>
                                                 <td class="col-lg-1">{!! $cartItem->product->discount_price ? '<s>' . $cartItem->product->price . '</s> <span class="text-danger">' . $cartItem->product->discount_price . '</span>' : $cartItem->product->price !!} zł</td>
                                                 <td class="col-lg-2"><input min="1" type="number" value="{{ $cartItem->quantity }}" class="form-control" name="quantity[{{$cartItem->id}}]"></td>
                                                 <td class="col-lg-2">{{ $cartItem->product->count_in_package }}</td>
@@ -58,17 +69,17 @@
                                     </table>
                                 </div>
                             @endforeach
-                            <div class="col-lg-12 mt-4 text-end">
+                            <div class="col-lg-12 mt-4 text-center">
                                 <a href="{{ route('order.create') }}" class="btn btn-primary text-white">Realizuj zamówienie</a>
                             </div>
                         </form>
-                        <form method="post" action="{{ route('cart.empty') }}">
+                        <form method="post" action="{{ route('cart.empty') }}" onsubmit="return confirm('Czy na pewno chcesz opróżnić koszyk?');">
                             @csrf
                             <div class="col-lg-12 my-1 text-center">
                                 <button type="submit" class="btn btn-danger text-white">Opróżnij koszyk</button>
                             </div>
                         </form>
-                    @else
+                @else
                         <div class="text-center">
                             Koszyk jest pusty
                         </div>

@@ -35,7 +35,14 @@
                             <tbody>
                             @foreach($cartItemGroup as $cartItem)
                                 <tr class="align-middle">
-                                    <td class="col-lg-3">{{ $cartItem->product->name }}</td>
+                                    <td class="col-lg-3">
+                                        {{ $cartItem->product->name }}
+                                        @if($cartItem->product->later_delivery)
+                                            <div class="mt-1">
+                                                <strong class="text-danger">Opóźnienie w dostawie</strong>
+                                            </div>
+                                        @endif
+                                    </td>
                                     <td class="col-lg-3">{{ $cartItem->branch->name }}</td>
                                     <td class="col-lg-1">{!! $cartItem->product->discount_price ? '<s>' . $cartItem->product->price . '</s> <span class="text-danger">' . $cartItem->product->discount_price . '</span>'  : $cartItem->product->price !!} zł</td>
                                     <td class="col-lg-2">{{ $cartItem->quantity }}</td>

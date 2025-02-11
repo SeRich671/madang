@@ -14,6 +14,45 @@
     </style>
 </head>
 <body>
+
+{{-- --- Sort the order lines based on the request parameters --- --}}
+@php
+    // Start with the original collection
+    $lines = $order->lines;
+
+    // Check if a sort parameter is present
+    if (request()->has('sort')) {
+        $sortColumn = request()->input('sort');
+        $sortOrder  = request()->input('order', 'asc');
+
+        switch ($sortColumn) {
+            case '1': // Sort by product ID
+                $lines = $lines->sortBy(function($line) {
+                    return $line->product->id;
+                }, SORT_REGULAR, $sortOrder === 'desc');
+                break;
+
+            case '2': // Sort by product Code
+                $lines = $lines->sortBy(function($line) {
+                    return $line->product->code;
+                }, SORT_REGULAR, $sortOrder === 'desc');
+                break;
+
+            case '3': // Sort by product Name
+                $lines = $lines->sortBy(function($line) {
+                    return $line->product->name;
+                }, SORT_REGULAR, $sortOrder === 'desc');
+                break;
+
+            // Add more cases if needed
+            default:
+                // Optionally, apply a default sorting if needed
+                break;
+        }
+    }
+@endphp
+
+{{-- ---------------------- Customer Addresses ---------------------- --}}
 <table class="table bg-white">
     <thead>
     <tr>
@@ -61,7 +100,10 @@
         </tfoot>
     @endif
 </table>
+
 <br>
+
+{{-- ---------------------- Order Lines Table ---------------------- --}}
 <table id="sortableTable" class="table">
     <thead>
     <tr>
@@ -77,22 +119,33 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($order->lines as $line)
+    {{-- Use the sorted $lines collection --}}
+    @foreach($lines as $line)
         <tr class="{{ $line->deleted ? 'table-danger' : ($line->unavailable ? 'table-warning' : 'table-white') }}">
-            <td class="text-center"><img src="{{ public_path('storage/' . $line->product->img_path) }}" style="max-height:100px;max-width:100px"></td>
+            <td class="text-center">
+                <img src="{{ public_path('storage/' . $line->product->img_path) }}" style="max-height:100px;max-width:100px">
+            </td>
             <td>{{ $line->product->id }}</td>
             <td>{{ $line->product->code }}</td>
             <td>{{ $line->product->name }}</td>
             <td>{{ $line->product->count_in_package }}</td>
             <td>{{ $line->quantity }}</td>
             <td>{{ $line->product->count_in_package * $line->quantity }}</td>
-            <td>{!! $line->product->discount_price ? '<s>' . $line->product->price . '</s> <span class="text-danger">' . $line->product->discount_price . '</span>' : $line->product->price !!} zł</td>
+            <td>
+                {!! $line->product->discount_price
+                    ? '<s>' . $line->product->price . '</s> <span class="text-danger">' . $line->product->discount_price . '</span>'
+                    : $line->product->price
+                !!} zł
+            </td>
             <td>{{ number_format((float)($line->quantity * $line->product->count_in_package * ($line->product->discount_price ?: $line->product->price)), 2, '.', '') }} zł</td>
         </tr>
     @endforeach
     </tbody>
 </table>
+
 <br>
+
+{{-- ---------------------- Totals Table ---------------------- --}}
 <table class="table">
     <tbody>
     <tr>
@@ -113,7 +166,10 @@
     </tr>
     </tbody>
 </table>
+
 <br>
+
+{{-- ---------------------- Order Details Table ---------------------- --}}
 <table class="table table-borderless">
     <tbody>
     <tr>
@@ -158,5 +214,6 @@
     </tr>
     </tbody>
 </table>
+
 </body>
 </html>

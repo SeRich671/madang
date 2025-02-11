@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12 text-end">
-            <a class="btn btn-primary text-white" href="{{ route('admin.order.download', $order) }}">
+            <a id="pdfButton" class="btn btn-primary text-white" href="{{ route('admin.order.download', $order) }}">
                 PDF
             </a>
         </div>
@@ -451,54 +451,62 @@
 
 @push('scripts')
     <script type="application/javascript">
-        function sortTable(columnIndex) {
-            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-            table = document.getElementById("sortableTable");
-            switching = true;
-            // Set the sorting direction to ascending initially:
-            dir = "asc";
-            // Make a loop that will continue until no switching has been done:
-            while (switching) {
-                // Start by saying: no switching is done:
-                switching = false;
-                rows = table.rows;
-                // Loop through all table rows (except the first, which contains table headers):
-                for (i = 1; i < (rows.length - 1); i++) {
-                    // Start by saying there should not be switching:
-                    shouldSwitch = false;
-                    // Get the two elements you want to compare, one from current row and one from the next:
-                    x = rows[i].getElementsByTagName("TD")[columnIndex];
-                    y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
-                    // Check if the two rows should switch place, based on the direction, asc or desc:
-                    if (dir == "asc") {
-                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                            // If so, mark as a switch and break the loop:
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else if (dir == "desc") {
-                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                            // If so, mark as a switch and break the loop:
-                            shouldSwitch = true;
-                            break;
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get the PDF button by its ID
+            const pdfButton = document.getElementById('pdfButton');
+            // Use getAttribute so we get the original value from the HTML
+            const basePdfUrl = pdfButton.getAttribute('href');
+
+            // Expose the sortTable function globally
+            window.sortTable = function(columnIndex) {
+                var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                table = document.getElementById("sortableTable");
+                switching = true;
+                // Set the sorting direction to ascending initially:
+                dir = "asc";
+                // Continue looping until no switching is needed:
+                while (switching) {
+                    switching = false;
+                    rows = table.rows;
+                    // Loop through all rows (skip the header row)
+                    for (i = 1; i < (rows.length - 1); i++) {
+                        shouldSwitch = false;
+                        // Get the two cells to compare, from the specified column index:
+                        x = rows[i].getElementsByTagName("TD")[columnIndex];
+                        y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+                        // Compare the two cells' text, based on the current direction:
+                        if (dir === "asc") {
+                            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                shouldSwitch = true;
+                                break;
+                            }
+                        } else { // dir === "desc"
+                            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                shouldSwitch = true;
+                                break;
+                            }
                         }
                     }
-                }
-                if (shouldSwitch) {
-                    // If a switch has been marked, make the switch and mark that a switch has been done:
-                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                    switching = true;
-                    // Each time a switch is done, increase this count:
-                    switchcount++;
-                } else {
-                    // If no switching has been done AND the direction is "asc",
-                    // set the direction to "desc" and run the while loop again.
-                    if (switchcount == 0 && dir == "asc") {
-                        dir = "desc";
+                    if (shouldSwitch) {
+                        // Swap the rows and mark that a switch occurred
+                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                         switching = true;
+                        switchcount++;
+                    } else {
+                        // If no switching has occurred AND the direction is "asc", change to "desc" and run again:
+                        if (switchcount === 0 && dir === "asc") {
+                            dir = "desc";
+                            switching = true;
+                        }
                     }
                 }
+                // Update the PDF button's URL with the sort parameters.
+                // For example: ?sort=2&order=asc
+                var newUrl = basePdfUrl + '?sort=' + columnIndex + '&order=' + dir;
+                pdfButton.setAttribute('href', newUrl);
+                console.log('PDF link updated to:', newUrl);
             }
-        }
+        });
     </script>
 @endpush

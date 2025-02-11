@@ -190,7 +190,7 @@
                     <input type="checkbox" value="1" name="is_available" id="is_available" class="form-check-input" @checked($product->is_available)>
 
                     <label for="is_available" class="form-check-label">
-                        Produkt widoczny
+                        Produkt dostępny
                     </label>
                 </div>
             </div>

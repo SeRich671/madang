@@ -32,9 +32,12 @@
                 @foreach($product->attributes as $attribute)
                     <strong>{{ $attribute->name }}: </strong> {{ $attribute->pivot->value }}<br>
                 @endforeach
-                {{ $product->description }}
+                {{ $product->description }}<br>
                 @foreach($product->categories->unique('id') as $category)
-                    {{ route('product.show', ['product' => $product, 'subdomain' => $category->department->subdomain, 'category' => $category]) }}
+                    <a href="{{ route('product.show', ['product' => $product, 'subdomain' => $category->department->subdomain, 'category' => $category]) }}">
+                        {{ route('product.show', ['product' => $product, 'subdomain' => $category->department->subdomain, 'category' => $category]) }}
+                    </a>
+                    @break(true)
                 @endforeach
             </td>
         </tr>

@@ -78,45 +78,77 @@ class Product extends Model
         })->where('in_stock', '>', 0);
     }
 
-    public function scopeSearch($query, $search) {
-        // Funkcja do usuwania polskich znaków diaktrytycznych
+    public function scopeSearch($query, $search)
+    {
+        // Function to remove Polish diacritics from a string
         $normalizeChars = function ($string) {
             $replace = [
-                'ą'=>'a', 'ć'=>'c', 'ę'=>'e', 'ł'=>'l', 'ń'=>'n',
-                'ó'=>'o', 'ś'=>'s', 'ź'=>'z', 'ż'=>'z',
-                'Ą'=>'A', 'Ć'=>'C', 'Ę'=>'E', 'Ł'=>'L', 'Ń'=>'N',
-                'Ó'=>'O', 'Ś'=>'S', 'Ź'=>'Z', 'Ż'=>'Z'
+                'ą' => 'a', 'ć' => 'c', 'ę' => 'e', 'ł' => 'l', 'ń' => 'n',
+                'ó' => 'o', 'ś' => 's', 'ź' => 'z', 'ż' => 'z',
+                'Ą' => 'A', 'Ć' => 'C', 'Ę' => 'E', 'Ł' => 'L', 'Ń' => 'N',
+                'Ó' => 'O', 'Ś' => 'S', 'Ź' => 'Z', 'Ż' => 'Z'
             ];
             return strtr($string, $replace);
         };
 
-        // Funkcja do przycinania końcówek słów
+        // Function to trim word endings (vowels) if the word is longer than 4 characters
         $trimEndings = function ($word) {
             $vowels = ['a', 'e', 'i', 'o', 'u', 'y', 'ą', 'ę', 'ó'];
-            while (in_array(substr($word, -1), $vowels) && strlen($word) > 4) {
+            while (strlen($word) > 4 && in_array(substr($word, -1), $vowels)) {
                 $word = substr($word, 0, -1);
             }
             return $word;
         };
 
-        // Filtrowanie i normalizacja frazy wyszukiwania
+        // Split the search string into words (ignoring words shorter than 3 characters)
         $searchTerms = array_filter(explode(' ', $search), function ($word) {
-            return strlen($word) >= 3; // Pomijamy słowa krótsze niż 3 litery
+            return strlen($word) >= 3;
         });
-//        $searchTerms = array_map($normalizeChars, $searchTerms);
+        // Apply trimming (you can also uncomment normalization here if you want to modify the search terms)
+        // $searchTerms = array_map($normalizeChars, $searchTerms);
         $searchTerms = array_map($trimEndings, $searchTerms);
 
-        // Wyszukiwanie z użyciem zmodyfikowanych fraz
-        return $query->when($query, function ($query) use ($searchTerms) {
+        // For each term, search both the raw and normalized versions of the columns.
+        // We'll use nested REPLACE() calls to normalize the stored values on the fly.
+        return $query->where(function ($query) use ($searchTerms, $normalizeChars, $trimEndings) {
             foreach ($searchTerms as $term) {
-                $query->where(function ($query) use ($term) {
-                    $query->where('name', 'LIKE', '%' . $term . '%')
-                        ->orWhere('code', 'LIKE', '%' . $term . '%');
+                // Prepare a normalized version of the term for matching (remove diacritics)
+                $normalizedTerm = $normalizeChars($term);
+
+                $query->where(function ($q) use ($term, $normalizedTerm) {
+                    // Match the original values
+                    $q->where('name', 'LIKE', '%' . $term . '%')
+                        ->orWhere('code', 'LIKE', '%' . $term . '%')
+                        // Or match normalized values (using nested REPLACE calls)
+                        ->orWhereRaw(
+                            "REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(
+                                    REPLACE(name, 'ą', 'a'),
+                                'ć', 'c'),
+                            'ę', 'e'),
+                        'ł', 'l'),
+                    'ń', 'n') LIKE ?",
+                            ['%' . $normalizedTerm . '%']
+                        )
+                        ->orWhereRaw(
+                            "REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(
+                                    REPLACE(code, 'ą', 'a'),
+                                'ć', 'c'),
+                            'ę', 'e'),
+                        'ł', 'l'),
+                    'ń', 'n') LIKE ?",
+                            ['%' . $normalizedTerm . '%']
+                        );
                 });
             }
-            return $query;
         });
     }
+
 
     public function orderLines(): HasMany
     {
