@@ -15,7 +15,7 @@
                name="login"
                required
                autocomplete="login">
-        <small class="text-muted">Wpisz unikalny login, którym będziesz się logować do systemu.</small>
+        <small class="text-muted">Wpisz unikalny email, którym będziesz się logować do systemu.</small>
         @error('login')
         <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
