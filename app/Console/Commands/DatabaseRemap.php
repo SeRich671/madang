@@ -173,7 +173,7 @@ class DatabaseRemap extends Command
             unset($item['department_default_id']);
             $item['description'] = $item['description_1'] ?: $item['description_2'];
             $item['is_available'] = (bool)$item['is_available'];
-            $item['img_path'] = 'upload/products/' . $item['id'] . '/' . $item['img_path'];
+            $item['img_path'] = 'upload/products/' . $item['img_path'];
             unset($item['description_1']);
             unset($item['description_2']);
             return $item;
