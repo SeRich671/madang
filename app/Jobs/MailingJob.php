@@ -42,7 +42,7 @@ class MailingJob implements ShouldQueue
 
             // Update is_mailed timestamp after successful mailing
             DB::transaction(function () {
-                $productIds = collect($this->products)->pluck('product_id')->toArray();
+                $productIds = $this->products;
 
                 LastDelivery::whereIn('product_id', $productIds)
                     ->whereNull('is_mailed')
@@ -51,11 +51,13 @@ class MailingJob implements ShouldQueue
                 NewDelivery::whereIn('product_id', $productIds)
                     ->whereNull('is_mailed')
                     ->update(['is_mailed' => now()]);
+
+                $this->mailing->update([
+                    'status' => MailingStatus::FINISHED,
+                ]);
             });
 
-            $this->mailing->update([
-                'status' => MailingStatus::FINISHED,
-            ]);
+
         }catch(\Throwable $e) {
 
             $this->mailing->update([
