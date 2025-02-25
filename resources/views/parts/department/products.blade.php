@@ -9,21 +9,21 @@
     @include('parts.product-filters')
 
     @if($products->count())
-    <div class="row mt-3">
-        <div class="col-lg-12">
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-        </div>
-
-        @foreach($products->items() as $product)
-            <div class="col-lg-4 mb-2 ">
-                @include('parts.department.product.card', ['product' => $product, 'category' => $category])
+        <div class="row mt-3">
+            <div class="col-lg-12">
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
             </div>
-        @endforeach
-    </div>
+
+            @foreach($products->items() as $product)
+                <div class="col-lg-4 mb-2">
+                    @include('parts.department.product.card', ['product' => $product, 'category' => $category])
+                </div>
+            @endforeach
+        </div>
     @else
         <div class="mt-3 text-center">
             Nie znaleźliśmy produktów spełniających Twoje kryteria.
@@ -35,3 +35,17 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find the first product card and scroll into view
+            const firstProduct = document.querySelector('#accordionExample');
+            const savedPos = sessionStorage.getItem('scrollPos_' + window.location.pathname);
+
+            if (firstProduct && savedPos === null) {
+                setTimeout(() => {firstProduct.scrollIntoView({ behavior: 'smooth', block: 'start' });}, 500);
+            }
+        });
+    </script>
+@endpush

@@ -54,12 +54,18 @@
                                                         </div>
                                                     @endif
                                                 </td>
-                                                <td class="col-lg-1">{!! $cartItem->product->discount_price ? '<s>' . $cartItem->product->price . '</s> <span class="text-danger">' . $cartItem->product->discount_price . '</span>' : $cartItem->product->price !!} zł</td>
+                                                <td class="col-lg-1">
+                                                    {!! $cartItem->product->discount_price
+                                                        ? '<s>' . $cartItem->product->price . '</s> <span class="text-danger">' . $cartItem->product->discount_price . '</span>'
+                                                        : $cartItem->product->price
+                                                    !!}&nbsp;zł
+                                                </td>
+
                                                 <td class="col-lg-2"><input min="1" type="number" value="{{ $cartItem->quantity }}" class="form-control" name="quantity[{{$cartItem->id}}]"></td>
                                                 <td class="col-lg-2">{{ $cartItem->product->count_in_package }}</td>
                                                 <td class="col-lg-2">{{ $cartItem->product->size_carton }}</td>
                                                 <td class="col-lg-1">{{ $cartItem->product->count_in_package * $cartItem->quantity }}</td>
-                                                <td class="col-lg-2">{{ number_format((float)(($cartItem->product->discount_price ?: $cartItem->product->price) * $cartItem->quantity * $cartItem->product->count_in_package), 2, '.', '') }} zł</td>
+                                                <td class="col-lg-2">{{ number_format((float)(($cartItem->product->discount_price ?: $cartItem->product->price) * $cartItem->quantity * $cartItem->product->count_in_package), 2, '.', '') }}&nbsp;zł</td>
                                                 <td class="col-lg-1 text-end">
                                                     <a class="btn btn-sm btn-danger text-white" href="{{ route('cart.delete', $cartItem) }}"><i class="bi bi-x"></i></a>
                                                 </td>

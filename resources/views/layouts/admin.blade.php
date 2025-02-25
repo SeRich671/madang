@@ -59,6 +59,13 @@
                                     </div>
                                 </div>
                             @endif
+                            @if(session('error'))
+                                <div class="bg-white p-3">
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                </div>
+                            @endif
                             <div class="bg-white p-3">
                                 @yield('content')
                             </div>

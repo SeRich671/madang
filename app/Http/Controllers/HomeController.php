@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\Department\StatusEnum;
 use App\Models\Category;
 use App\Models\Department;
+use App\Models\LastDelivery;
+use App\Models\NewDelivery;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,15 +41,18 @@ class HomeController extends Controller
 
         $departmentCategoryIds = $department->categories()->pluck('id');
 
-        $new = Product::whereHas('categories', function ($query) use ($departmentCategoryIds) {
-                $query->whereIn('categories.id', $departmentCategoryIds);
-            })
+        $new = Product::query()
             ->isAvailable()
-            ->where(function ($query) {
-                return $query->whereDate('created_at', '>', now()->subMonth())
-                    ->orWhereDate('updated_at', '>', now()->subMonth());
+            ->whereHas('newDeliveries', function ($query) {
+                $query->where('listed_till', '>=', now());
             })
-            ->orderByDesc('updated_at')
+            ->orderByDesc(
+            // Subquery to get the latest newDelivery created_at for the product
+                NewDelivery::select('created_at')
+                    ->whereColumn('product_id', 'products.id')
+                    ->orderByDesc('created_at')
+                    ->limit(1)
+            )
             ->take(9)
             ->get();
 
@@ -60,22 +65,18 @@ class HomeController extends Controller
             ->take(9)
             ->get();
 
-        $lastDeliveries = Product::whereHas('categories', function ($query) use ($departmentCategoryIds) {
-            $query->whereIn('categories.id', $departmentCategoryIds);
-        })
+        $lastDeliveries = Product::query()
             ->isAvailable()
-            ->where(function ($query2) {
-                return $query2->where(function ($query) {
-                    return $query->whereDate('created_at', '>=', now()->subMonth())
-                        ->orWhereDate('updated_at', '>=', now()->subMonth());
-                })
-                    ->orWhere(function ($query) {
-                        return $query->whereDate('last_available', '>=', now()->subMonth())
-                            ->where('is_available', 1)
-                            ->whereDate('updated_at', '>=', 'last_available');
-                    });
+            ->whereHas('lastDeliveries', function ($query) {
+                return $query->where('listed_till', '>=', now());
             })
-            ->orderByDesc('updated_at')
+            ->orderByDesc(
+            // Subquery to get the latest newDelivery created_at for the product
+                LastDelivery::select('created_at')
+                    ->whereColumn('product_id', 'products.id')
+                    ->orderByDesc('created_at')
+                    ->limit(1)
+            )
             ->take(9)
             ->get();
 

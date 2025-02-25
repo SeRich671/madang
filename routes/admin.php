@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\User\AddressController;
 use App\Http\Controllers\Admin\User\BillingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MailingController;
+use App\Http\Controllers\ProductImportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', AdminController::class)->name('index');
@@ -71,6 +73,11 @@ Route::prefix('user/{user}')->name('user.')->group(function () {
         'except' => ['show', 'index'],
     ]);
 });
+
+Route::post('/import-products', [ProductImportController::class, 'import'])->name('product.import');
+
+Route::post('/send-mailing', [MailingController::class, 'sendMailing'])->name('sendMailing');
+
 
 Route::get('settings', [SettingsController::class, 'edit'])->name('settings.edit');
 Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');

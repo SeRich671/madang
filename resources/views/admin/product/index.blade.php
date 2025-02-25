@@ -4,10 +4,14 @@
     <form method="GET" action="{{ url()->current() }}">
         <div class="row">
             <div class="col-lg-12 text-end">
+                <button type="button" class="btn btn-success text-dark me-2" data-bs-toggle="modal" data-bs-target="#productImportModal">
+                    Importuj XLSX
+                </button>
                 <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#productExportUser">
                     Zestawienie
                 </button>
             </div>
+
             <div class="col-lg-12">
                 <label for="query">Nazwa</label>
                 <input type="text" class="form-control" name="query" id="query" value="{{ request()->input('query') }}">
@@ -104,6 +108,30 @@
             <a href="{{ route('admin.product.create') }}" class="btn btn-primary text-white">Dodaj nowy</a>
         </div>
     </div>
+
+    <!-- Modal for Importing Products -->
+    <div class="modal fade" id="productImportModal" tabindex="-1" aria-labelledby="productImportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productImportModalLabel">Importuj produkty z XLSX</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="importForm" action="{{ route('admin.product.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <label for="file">Wybierz plik XLSX</label>
+                        <input type="file" class="form-control" name="file" id="file" accept=".xlsx,.xls" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                        <button type="submit" class="btn btn-success">Importuj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')

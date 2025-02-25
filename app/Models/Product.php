@@ -15,6 +15,31 @@ class Product extends Model
     protected $guarded = ['id'];
 
     const PER_PAGE = 12;
+    const DAYS_LISTED = 30;
+
+    public function lastDeliveries(): HasMany
+    {
+        return $this->hasMany(LastDelivery::class);
+    }
+
+    public function newDeliveries(): HasMany
+    {
+        return $this->hasMany(NewDelivery::class);
+    }
+
+    public function markAsLastDelivery(): void
+    {
+        $this->lastDeliveries()->create([
+            'listed_till' => now()->addDays(self::DAYS_LISTED),
+        ]);
+    }
+
+    public function markAsNewDelivery(): void
+    {
+        $this->newDeliveries()->create([
+            'listed_till' => now()->addDays(self::DAYS_LISTED),
+        ]);
+    }
 
     public function branches(): BelongsToMany
     {

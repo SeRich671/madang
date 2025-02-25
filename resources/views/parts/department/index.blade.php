@@ -1,4 +1,4 @@
-@if(session('success') || $new->count() || $recommended->count())
+@if(session('success') || $new->count() || $recommended->count() || $lastDeliveries->count() || $discounted->count())
 <div class="bg-white p-3">
 
     @if(session('success'))
@@ -68,23 +68,23 @@
         </div>
     @endif
 
-        @if($lastDeliveries->count())
-            <div class="row mt-4">
-                <div class="col-lg-12 text-primary d-flex justify-content-between">
-                    <h3 class="d-inline">Ostatnie dostawy</h3>
-                    <a href="{{ route('department.last-deliveries', $department->subdomain) }}" class="link-primary">Zobacz wszystkie</a>
-                </div>
-                <div class="col-lg-12 text-primary">
-                    <hr>
-                </div>
+    @if($lastDeliveries->count())
+        <div class="row mt-4">
+            <div class="col-lg-12 text-primary d-flex justify-content-between">
+                <h3 class="d-inline">Ostatnie dostawy</h3>
+                <a href="{{ route('department.last-deliveries', $department->subdomain) }}" class="link-primary">Zobacz wszystkie</a>
             </div>
-            <div class="row mt-3 mb-4">
-                @foreach($lastDeliveries as $product)
-                    <div class="col-lg-4 mb-2 ">
-                        @include('parts.department.product.card', ['product' => $product, 'category' => $product->categories()->where('department_id', $department->id)->first()])
-                    </div>
-                @endforeach
+            <div class="col-lg-12 text-primary">
+                <hr>
             </div>
-        @endif
+        </div>
+        <div class="row mt-3 mb-4">
+            @foreach($lastDeliveries as $product)
+                <div class="col-lg-4 mb-2 ">
+                    @include('parts.department.product.card', ['product' => $product, 'category' => $product->categories()->where('department_id', $department->id)->first()])
+                </div>
+            @endforeach
+        </div>
+    @endif
 </div>
 @endif

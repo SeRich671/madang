@@ -2,6 +2,18 @@
 
 @section('content')
     <div class="row">
+        <div class="col-lg-12 text-end">
+            @if(session('error'))
+
+            @endif
+            <form id="mailingForm" action="{{ route('admin.sendMailing') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-success text-white">
+                    Wyślij Mailing
+                </button>
+            </form>
+        </div>
+
         <form method="POST" action="{{ route('admin.settings.update') }}">
             @csrf
             @method('PUT')
@@ -36,3 +48,15 @@
         </form>
     </div>
 @endsection
+
+@push('scripts')
+    <script type="module">
+        $(document).ready(function () {
+            $('#mailingForm').submit(function (e) {
+                if (!confirm('Czy na pewno chcesz wysłać mailing do użytkowników?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+@endpush

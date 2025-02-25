@@ -135,6 +135,10 @@ class ProductController extends Controller
 
         $product->attributes()->sync($syncData);
 
+        if($product->in_stock > 0) {
+            $product->markAsNewDelivery();
+        }
+
         DB::commit();
 
         return redirect()->route('admin.product.index')->with('success', 'Pomyślnie dodano produkt');
@@ -177,6 +181,11 @@ class ProductController extends Controller
 
         if($product->is_available == 1 && $data['is_available'] == '0') {
             $product->update(['last_available' => now()]);
+        }
+
+        if($product->in_stock == 0 && $data['in_stock'] > 0) {
+            $product->markAsLastDelivery();
+            $product->markAsnewDelivery();
         }
 
         $product->update([

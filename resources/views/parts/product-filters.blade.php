@@ -11,11 +11,11 @@
                 <div class="accordion-body">
                     <div class="row">
                         @if(auth()->check())
-                        <div class="col-lg-12 text-end">
-                            <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#productExportUser">
-                                Zestawienie
-                            </button>
-                        </div>
+                            <div class="col-lg-12 text-end">
+                                <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#productExportUser">
+                                    Zestawienie
+                                </button>
+                            </div>
                         @endif
                         <div class="col-lg-4">
                             <label for="filters[sort_type]">Rodzaj sortowania</label>
@@ -32,6 +32,35 @@
                             </select>
                         </div>
                         <div class="col-lg-4">
+                            <label for="filters[price][from]">Cena</label><br>
+                            <div class="input-group">
+                                <input name="filters[price][from]" type="number" class="form-control" placeholder="Od" value="{{ request()->input('filters.price.from') }}">
+                                <input name="filters[price][to]" type="number" class="form-control" placeholder="Do" value="{{ request()->input('filters.price.to') }}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="filters[count_in_package][from]">Opakowanie</label><br>
+                            <div class="input-group">
+                                <input name="filters[count_in_package][from]" type="number" class="form-control" placeholder="Od" value="{{ request()->input('filters.count_in_package.from') }}">
+                                <input name="filters[count_in_package][to]" type="number" class="form-control" placeholder="Do" value="{{ request()->input('filters.count_in_package.to') }}">
+                            </div>
+                        </div>
+                            @foreach($dynamicAttributes as $key => $dynamicAttribute)
+                                <div class="col-lg-4">
+                                    <label for="filters[dynamic_attribute][{{$key}}][]">{{ $dynamicAttribute->first()->attribute_name }}</label>
+                                    <select class="form-control dynamic_attribute" name="filters[dynamic_attribute][{{$key}}][]" id="filters[dynamic_attribute][{{$key}}][]" multiple>
+                                        @foreach($dynamicAttribute as $value)
+                                            <option value="{{ $value->value }}" @selected(isset(request()->get('filters')['dynamic_attribute'][$key]) && in_array($value->value, request()->get('filters')['dynamic_attribute'][$key]))>{{ $value->value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endforeach
+                        <!-- We will move the following two filters to a dedicated group -->
+                    </div>
+
+                    <!-- NEW: Visually separated dynamic filters group -->
+                    <div class="row mt-3 filter-dynamic-group border-top p-3">
+                        <div class="col-lg-4">
                             <label for="filters[per_page]">Produktów na stronie</label>
                             <select class="form-control" name="filters[per_page]" id="filters[per_page]">
                                 <option value="12" @selected((!isset(request()->get('filters')['per_page']) && cache()->get('settings.per_page') == '12') || (isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == '12'))>12</option>
@@ -42,44 +71,20 @@
                                 <option value="all" @selected(isset(request()->get('filters')['per_page']) && request()->get('filters')['per_page'] == 'all')>Wszystkie</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-lg-4">
-                            <label for="filters[price][from]">Cena</label><br>
-                            <div class="input-group">
-                                <input name="filters[price][from]" type="number" class="form-control" placeholder="Od" value="{{ request()->input('filters.price.from') }}">
-                                <input name="filters[price][to]" type="number" class="form-control" placeholder="Do" value="{{ request()->input('filters.price.to') }}">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <label for="price_from">Opakowanie</label><br>
-                            <div class="input-group">
-                                <input name="filters[count_in_package][from]" type="number" class="form-control" placeholder="Od" value="{{ request()->input('filters.count_in_package.from') }}">
-                                <input name="filters[count_in_package][to]" type="number" class="form-control" placeholder="Do" value="{{ request()->input('filters.count_in_package.to') }}">
-                            </div>
-                        </div>
-                        <div class="col-lg-2 text-center justify-content-center">
+                        <div class="col-lg-4 text-center">
                             <label for="filters[show_unavailable]">Pokaż niedostępne</label><br>
                             <input type="hidden" name="filters[show_unavailable]" value="0">
                             <input id="filters[show_unavailable]" name="filters[show_unavailable]" class="form-check d-inline" type="checkbox" @checked(request()->input('filters.show_unavailable'))>
                         </div>
-                        <div class="col-lg-2 text-center justify-content-center">
+                        <div class="col-lg-4 text-center">
                             <label for="filters[sticker]">Miejsce na naklejkę</label><br>
                             <input type="hidden" name="filters[sticker]" value="0">
                             <input id="filters[sticker]" name="filters[sticker]" class="form-check d-inline" type="checkbox" value="1" @checked(request()->input('filters.sticker'))>
                         </div>
+                    </div>
+                    <!-- END dynamic filters group -->
 
-                        @foreach($dynamicAttributes as $key => $dynamicAttribute)
-                            <div class="col-lg-4">
-                                <label for="filters[dynamic_attribute][{{$key}}][]">{{ $dynamicAttribute->first()->attribute_name }}</label>
-                                <select class="form-control dynamic_attribute" name="filters[dynamic_attribute][{{$key}}][]" id="ffilters[dynamic_attribute][{{$key}}][]" multiple>
-                                    @foreach($dynamicAttribute as $value)
-                                        <option value="{{ $value->value }}" @selected(isset(request()->get('filters')['dynamic_attribute'][$key]) && in_array($value->value, request()->get('filters')['dynamic_attribute'][$key]))>{{ $value->value }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @endforeach
-
+                    <div class="row mt-2">
                         <div class="col-lg-12 mt-2 text-center">
                             <button type="submit" class="btn btn-primary text-white">Wyszukaj</button>
                         </div>
@@ -93,7 +98,14 @@
 @push('scripts')
     <script type="module">
         $(document).ready(function () {
+            // Initialize Select2 on dynamic attributes
             $('.dynamic_attribute').select2();
+
+            // When any of the dynamic filters change, immediately submit the form
+            // Note: we escape square brackets in the selectors.
+            $('#filters\\[per_page\\], #filters\\[show_unavailable\\], #filters\\[sticker\\]').on('change', function(){
+                $(this).closest('form').submit();
+            });
         });
     </script>
 @endpush
