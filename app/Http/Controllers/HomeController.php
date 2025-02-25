@@ -42,6 +42,9 @@ class HomeController extends Controller
         $departmentCategoryIds = $department->categories()->pluck('id');
 
         $new = Product::query()
+            ->whereHas('categories', function ($query) use ($departmentCategoryIds) {
+                $query->whereIn('categories.id', $departmentCategoryIds);
+            })
             ->isAvailable()
             ->whereHas('newDeliveries', function ($query) {
                 $query->where('listed_till', '>=', now());
@@ -67,6 +70,9 @@ class HomeController extends Controller
 
         $lastDeliveries = Product::query()
             ->isAvailable()
+            ->whereHas('categories', function ($query) use ($departmentCategoryIds) {
+                $query->whereIn('categories.id', $departmentCategoryIds);
+            })
             ->whereHas('lastDeliveries', function ($query) {
                 return $query->where('listed_till', '>=', now());
             })
