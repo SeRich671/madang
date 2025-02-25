@@ -11,9 +11,9 @@ class ProductMailing extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public array $products;
+    public $products;
 
-    public function __construct(array $products)
+    public function __construct($products)
     {
         $this->products = $products;
     }

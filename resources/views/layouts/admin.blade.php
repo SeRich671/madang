@@ -34,6 +34,7 @@
                             <a href="{{ route('admin.product.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Produkty</a>
                             <a href="{{ route('admin.attribute.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Cechy produktów</a>
                             <a href="{{ route('admin.user.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Użytkownicy</a>
+                            <a href="{{ route('admin.mailing.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Mailing</a>
                             <a href="{{ route('admin.report.index') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Historia raportów</a>
                             <a href="{{ route('admin.settings.edit') }}" class="list-group-item list-group-item-light list-group-item-action text-primary">Ustawienia</a>
                         </div>
