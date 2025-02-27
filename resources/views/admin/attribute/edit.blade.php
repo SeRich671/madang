@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <form method="POST" action="{{ route('admin.attribute.update', $attribute) }}">
+        <form method="POST" action="{{ route('admin.attribute.update', $attribute) }}?page={{ request()->get('page') }}">
             @csrf
             @method('PUT')
             <div class="row mt-4 mb-3">

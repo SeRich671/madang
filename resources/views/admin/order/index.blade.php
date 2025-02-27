@@ -61,7 +61,7 @@
                             <td>{{ $order->branch->name }}</td>
                             <td>{{ $order->user->first_name }} {{ $order->user->last_name }}</td>
                             <td>{{ $order->total }} zł</td>
-                            <td class="text-end"><a class="btn btn-primary text-white" href="{{ route('admin.order.edit', $order) }}"><i class="bi bi-pen"></i></a></td>
+                            <td class="text-end"><a class="btn btn-primary text-white" href="{{ route('admin.order.edit', $order) }}?page={{ request()->get('page') }}"><i class="bi bi-pen"></i></a></td>
                         </tr>
                     @endforeach
 

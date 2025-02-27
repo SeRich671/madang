@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <form method="POST" action="{{ route('admin.branch.update', $branch) }}">
+        <form method="POST" action="{{ route('admin.branch.update', $branch) }}?page={{ request()->get('page') }}">
             @csrf
             @method('PUT')
             <div class="row mt-4 mb-3">

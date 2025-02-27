@@ -20,7 +20,7 @@
                             <form method="POST" action="{{ route('admin.attribute.destroy', $attribute) }}">
                                 @csrf
                                 @method('DELETE')
-                                <a class="btn btn-primary text-white" href="{{ route('admin.attribute.edit', $attribute) }}"><i class="bi bi-pen"></i></a>
+                                <a class="btn btn-primary text-white" href="{{ route('admin.attribute.edit', $attribute) }}?page={{ request()->get('page') }}"><i class="bi bi-pen"></i></a>
                                 <button type="submit" class="ms-1 btn btn-danger text-white" @disabled($attribute->products()->count())>
                                     <i class="bi bi-trash"></i>
                                 </button>

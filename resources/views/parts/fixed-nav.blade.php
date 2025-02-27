@@ -46,7 +46,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-fill"></i>
+                        <i class="bi bi-person-fill"></i> @if(Auth::check()) {{ auth()->user()->first_name }}  {{ auth()->user()->last_name }}@endif
                     </a>
                     <ul class="dropdown-menu px-2" style="min-width: 300px; left:-250px;" aria-labelledby="navbarDropdown">
                         @if(Auth::check())

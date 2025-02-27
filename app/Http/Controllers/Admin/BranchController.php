@@ -62,7 +62,7 @@ class BranchController extends Controller
     {
         $branch->update($request->validated());
 
-        return redirect()->route('admin.branch.index')->with('success', 'Pomyślnie zaktualizowano oddział');
+        return redirect(route('admin.branch.index') . '?page=' . $request->get('page'))->with('success', 'Pomyślnie zaktualizowano oddział');
     }
 
     /**

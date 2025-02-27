@@ -195,5 +195,22 @@
         })();
 
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Select all forms
+            document.querySelectorAll('form').forEach(function(form) {
+                // Check if the form contains a hidden input _method with value DELETE
+                const deleteInput = form.querySelector('input[name="_method"][value="DELETE"]');
+                if (deleteInput) {
+                    form.addEventListener('submit', function(e) {
+                        if (!confirm("Are you sure you want to delete this item?")) {
+                            e.preventDefault();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

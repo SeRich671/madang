@@ -59,7 +59,7 @@ class AttributeController extends Controller
     {
         $attribute->update($request->validated());
 
-        return redirect()->route('admin.attribute.index')->with('success', 'Pomyślnie zaktualizowano cechę produktu');
+        return redirect(route('admin.attribute.index') . '?page=' . $request->get('page'))->with('success', 'Pomyślnie zaktualizowano cechę produktu');
     }
 
     /**

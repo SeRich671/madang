@@ -90,7 +90,7 @@
                             <form method="POST" action="{{ route('admin.product.destroy', $product) }}">
                                 @csrf
                                 @method('DELETE')
-                                <a class="btn btn-primary text-white" href="{{ route('admin.product.edit', $product) }}"><i class="bi bi-pen"></i></a>
+                                <a class="btn btn-primary text-white" href="{{ route('admin.product.edit', $product) }}?page={{ request()->get('page') }}"><i class="bi bi-pen"></i></a>
                                 <button type="submit" class="ms-1 btn btn-danger text-white" @disabled($product->orderLines()->count())>
                                     <i class="bi bi-trash"></i>
                                 </button>

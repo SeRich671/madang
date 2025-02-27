@@ -1,7 +1,7 @@
 @extends('layouts.admin', ['menuName' => 'Edycja kategorii ' . ($editedCategory ? $editedCategory->name : '')])
 
 @section('content')
-    <form method="POST" action="{{ route('admin.category.update', $editedCategory) }}">
+    <form method="POST" action="{{ route('admin.category.update', $editedCategory) }}?page={{ request()->get('page') }}">
         @csrf
         @method('PUT')
         <div class="row">

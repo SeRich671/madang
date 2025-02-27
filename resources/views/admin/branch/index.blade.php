@@ -26,7 +26,7 @@
                             <form method="POST" action="{{ route('admin.branch.destroy', $branch) }}">
                                 @csrf
                                 @method('DELETE')
-                                <a class="btn btn-primary text-white" href="{{ route('admin.branch.edit', $branch) }}"><i class="bi bi-pen"></i></a>
+                                <a class="btn btn-primary text-white" href="{{ route('admin.branch.edit', $branch) }}?page={{ request()->get('page') }}"><i class="bi bi-pen"></i></a>
                                 <button type="submit" class="ms-1 btn btn-danger text-white" @disabled($branch->products()->count())>
                                     <i class="bi bi-trash"></i>
                                 </button>

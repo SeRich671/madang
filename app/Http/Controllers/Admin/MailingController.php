@@ -41,10 +41,13 @@ class MailingController extends Controller
     }
 
     public function destroy(Mailing $mailing) {
-        $mailing->update(['status' => MailingStatus::DELETED]);
+        if($mailing->status === MailingStatus::CREATED) {
+            $mailing->update(['status' => MailingStatus::DELETED]);
 
-        return redirect()->route('admin.mailing.index')->with('success', 'Mailing został skasowany');
+            return redirect()->route('admin.mailing.index')->with('success', 'Mailing został skasowany');
+        }
 
+        return redirect()->route('admin.mailing.index')->with('error', 'Mailing już jest usunięty lub jest w procesie wysyłania / ukończony');
     }
 
     public function sendMailing(Request $request): RedirectResponse

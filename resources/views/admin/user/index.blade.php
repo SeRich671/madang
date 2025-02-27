@@ -3,7 +3,7 @@
 @section('content')
     <form method="GET" action="{{ url()->current() }}">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <label for="query">Imię, nazwisko, adres e-mail, login</label>
                 <input type="text" class="form-control" name="query" value="{{ request()->input('query') }}">
             </div>
@@ -15,7 +15,24 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-lg-12 text-center">
+            <div class="col-lg-4">
+                <label for="status">Status</label>
+                <select name="status" id="status" class="form-control">
+                    <option value="">Wybierz status</option>
+                    @foreach(\App\Enums\User\StatusEnum::asSelectArray() as $key => $status)
+                        <option value="{{ $key }}" @selected(request()->input('status'))>{{ $status }}</option>
+                    @endforeach
+                </select>
+            </div>
+{{--            <div class="col-lg-4">--}}
+{{--                <label for="branch_id">Oddziały</label>--}}
+{{--                <select name="branch_id[]" id="branch_id" class="form-control" multiple>--}}
+{{--                    @foreach($branches as $key => $branch)--}}
+{{--                        <option value="{{ $key }}" @selected(in_array($key, request()->input('branch_id', [])))>{{ $branch }}</option>--}}
+{{--                    @endforeach--}}
+{{--                </select>--}}
+{{--            </div>--}}
+            <div class="col-lg-12 text-center mt-2">
                 <button type="submit" class="btn btn-primary text-white">Wyszukaj</button>
             </div>
         </div>
@@ -59,7 +76,7 @@
                             <form method="POST" action="{{ route('admin.user.destroy', $user) }}">
                                 @csrf
                                 @method('DELETE')
-                                <a class="btn btn-primary text-white" href="{{ route('admin.user.edit', $user) }}"><i class="bi bi-pen"></i></a>
+                                <a class="btn btn-primary text-white" href="{{ route('admin.user.edit', $user) }}?page={{ request()->get('page') }}"><i class="bi bi-pen"></i></a>
                                 <button type="submit" class="ms-1 btn btn-danger text-white" @disabled($user->orders()->count())>
                                     <i class="bi bi-trash"></i>
                                 </button>

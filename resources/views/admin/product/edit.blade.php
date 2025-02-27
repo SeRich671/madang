@@ -1,7 +1,7 @@
 @extends('layouts.admin', ['menuName' => 'Edycja produktu ' . $product->name])
 
 @section('content')
-    <form method="POST" action="{{ route('admin.product.update', $product) }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('admin.product.update', $product) }}?page={{ request()->get('page') }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row mb-3">

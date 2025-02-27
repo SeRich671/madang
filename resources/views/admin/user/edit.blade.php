@@ -1,7 +1,7 @@
 @extends('layouts.admin', ['menuName' => 'Edycja użytkownika ' . $user->first_name . ' ' . $user->last_name])
 
 @section('content')
-    <form method="POST" action="{{ route('admin.user.update', $user) }}">
+    <form method="POST" action="{{ route('admin.user.update', $user) }}?page={{ request()->get('page') }}">
         @csrf
         @method('PUT')
         <div class="row mb-3">

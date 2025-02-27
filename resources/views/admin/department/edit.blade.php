@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <form method="POST" action="{{ route('admin.department.update', $department) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('admin.department.update', $department) }}?page={{ request()->get('page') }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="row mt-4 mb-3">

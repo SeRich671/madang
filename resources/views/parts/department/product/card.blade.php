@@ -46,10 +46,10 @@
                     <input name="quantity" min="1" type="number" class="form-control" placeholder="Ilość" value="1" required>
                     <input type="hidden" name="to_div" value="{{ '#product_' . $product->id }}"/>
                     @csrf
-                    <button type="submit" class="btn btn-primary text-white">
+                    <button type="submit" class="btn {{ in_array($product->id, cart_ids()) ? 'bg-white text-primary' : 'btn-primary text-white' }} ">
                         <i class="bi bi-cart-check"></i>
                     </button>
-                    <a class="btn btn-outline-primary" href="{{ route('product.show', ['product' => $product, 'category' => is_string($category) ? null : $category, 'subdomain' => current_subdomain() ?: $product->categories()->first()->department->subdomain]) }}">
+                    <a class="btn {{ in_array($product->id, cart_ids()) ? 'bg-white text-primary' : 'btn-outline-primary' }}" href="{{ route('product.show', ['product' => $product, 'category' => is_string($category) ? null : $category, 'subdomain' => current_subdomain() ?: $product->categories()->first()->department->subdomain]) }}">
                         <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>

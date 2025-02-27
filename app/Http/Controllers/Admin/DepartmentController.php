@@ -82,7 +82,7 @@ class DepartmentController extends Controller
 
         $department->update($data);
 
-        return redirect()->route('admin.department.index')->with('success', 'Pomyślnie zaktualizowano dział');
+        return redirect(route('admin.department.index') . '?page=' . $request->get('page'))->with('success', 'Pomyślnie zaktualizowano dział');
     }
 
     /**

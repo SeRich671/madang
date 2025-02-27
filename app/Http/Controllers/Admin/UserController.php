@@ -32,6 +32,10 @@ class UserController extends Controller
             ->when(!empty($request->input('branch_id', [])), function ($query) use ($request) {
                 return $query->whereIn('branch_id', $request->input('branch_id', []));
             })
+            ->when(!empty($request->input('status')), function ($query) use ($request) {
+                return $query->where('status', $request->input('status'));
+            })
+            ->orderByDesc('created_at')
             ->paginate(
                 $request->input('filters.per_page') ? ($request->input('filters.per_page') == 'all' ? 100000 : $request->input('filters.per_page')) : cache()->get('settings.per_page')
             );
@@ -109,7 +113,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('admin.user.index')->with('success', 'Pomyślnie zaktualizowano użytkownika');
+        return redirect(route('admin.user.index') . '?page=' . $request->get('page'))->with('success', 'Pomyślnie zaktualizowano użytkownika');
 
     }
 

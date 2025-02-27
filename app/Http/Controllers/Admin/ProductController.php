@@ -237,7 +237,7 @@ class ProductController extends Controller
 
         DB::commit();
 
-        return redirect()->route('admin.product.index')->with('success', 'Pomyślnie zaktualizowano produkt');
+        return redirect(route('admin.product.index') . '?page=' . $request->get('page'))->with('success', 'Pomyślnie zaktualizowano produkt');
     }
 
     /**

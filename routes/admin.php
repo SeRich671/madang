@@ -77,6 +77,7 @@ Route::prefix('user/{user}')->name('user.')->group(function () {
 Route::post('/import-products', [ProductImportController::class, 'import'])->name('product.import');
 
 Route::get('mailing', [MailingController::class, 'index'])->name('mailing.index');
+Route::delete('mailing', [MailingController::class, 'destroy'])->name('mailing.destroy');
 Route::post('/send-mailing', [MailingController::class, 'sendMailing'])->name('sendMailing');
 
 

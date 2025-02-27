@@ -29,7 +29,7 @@
                             <form method="POST" action="{{ route('admin.department.destroy', $department) }}">
                                 @csrf
                                 @method('DELETE')
-                                <a class="btn btn-primary text-white" href="{{ route('admin.department.edit', $department) }}"><i class="bi bi-pen"></i></a>
+                                <a class="btn btn-primary text-white" href="{{ route('admin.department.edit', $department) }}?page={{ request()->get('page') }}"><i class="bi bi-pen"></i></a>
                                 <button type="submit" class="ms-1 btn btn-danger text-white" @disabled($department->categories()->count())>
                                     <i class="bi bi-trash"></i>
                                 </button>

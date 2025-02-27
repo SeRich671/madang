@@ -21,6 +21,7 @@
                     <th>Status</th>
                     <th>Produkty</th>
                     <th>Data</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,6 +35,17 @@
                         </td>
                         <td>{{ $mailing->products }}</td>
                         <td>{{ $mailing->created_at }}</td>
+                        <td>
+                            @if($mailing->status === \App\Enums\MailingStatus::CREATED)
+                                <form method="POST" action="{{ route('admin.mailing.destroy') }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="ms-1 btn btn-danger text-white">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

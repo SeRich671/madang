@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="row">
-        <form method="POST" action="{{ route('admin.order.update', $order) }}">
+        <form method="POST" action="{{ route('admin.order.update', $order) }}?page={{ request()->get('page') }}">
             @csrf
             @method('PUT')
             <div class="col-lg-12 text-primary">

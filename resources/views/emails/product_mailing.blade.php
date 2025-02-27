@@ -38,7 +38,7 @@
 
 @foreach($products as $product)
     <div class="product-container">
-        <img src="{{ url($product->img_path) }}" alt="{{ $product->name }}">
+        <img src="{{ url('storage/' . $product->img_path) }}" alt="{{ $product->name }}">
 
         <div>
             @foreach($product->categories->unique('id') as $category)

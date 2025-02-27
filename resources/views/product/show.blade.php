@@ -30,16 +30,6 @@
                             <div class="text-primary border-primary border-bottom">
                                 <h3>{{ $product->name }}</h3>
                             </div>
-                            @if($product->count_in_package)
-                                <div>
-                                    {{ $product->count_in_package }} szt./komplet
-                                </div>
-                            @endif
-                            @if($product->size_carton)
-                                <div>
-                                    {{ $product->size_carton }} szt./karton
-                                </div>
-                            @endif
                             <div class="mt-4">
                                 {{ $product->description }}
                             </div>
