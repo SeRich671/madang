@@ -142,8 +142,9 @@ class DatabaseRemap extends Command
                 offer_products_prices.price_basic as price,
                 pi.name as img_path
                     FROM offer_products
-                    LEFT JOIN kliksklepprodukty
-                    ON offer_products.kod_produktu = kliksklepprodukty.kod
+                    LEFT JOIN offer_products_descriptions
+                    ON offer_products.id = offer_products_descriptions.product_id
+                        AND lang_id=4
                     LEFT JOIN kliksklepprodukty_madang
                     ON offer_products.kod_produktu = kliksklepprodukty_madang.kod
                     LEFT JOIN offer_products_prices
@@ -173,7 +174,7 @@ class DatabaseRemap extends Command
             unset($item['department_default_id']);
             $item['description'] = $item['description_1'] ?: $item['description_2'];
             $item['is_available'] = (bool)$item['is_available'];
-            $item['img_path'] = 'upload/products/' . $item['img_path'];
+            $item['img_path'] = 'upload/products/' . $item['id'] . '/' . $item['img_path'];
             unset($item['description_1']);
             unset($item['description_2']);
             return $item;
