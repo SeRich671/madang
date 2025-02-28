@@ -1,5 +1,5 @@
 <li class="mt-2">
-    {{ $category['name'] }}
+    {{ $category['name'] }}(ID: {{ $category['id'] }})
         <form class="d-inline" method="POST" action="{{ route('admin.category.destroy', $category['id']) }}">
                 @method('DELETE')
                 @csrf

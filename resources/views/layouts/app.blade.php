@@ -19,6 +19,15 @@
         @include('parts.fixed-nav')
         @include('parts.second-nav')
 
+        <div class="py-4">
+            <div class="container bg-white text-danger p-4 text-center">
+                <span style="font-size:24px">
+                    Witamy w Naszym nowym serwisie internetowym.<br>
+                    Informujemy, że w celu składania zamówień należy się na nowo zarejestrować.
+                </span>
+            </div>
+        </div>
+
         <main class="py-4">
             @yield('content')
         </main>
@@ -66,6 +75,38 @@
             </div>
         </div>
     </div>
+
+    <div id="cookie-banner" class="bg-light py-3 fixed-bottom" style="z-index: 9999; display: none;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-9 text-center text-md-start">
+                    <p class="mb-0">
+                        Strona korzysta z plików cookies w celu realizacji usług i zgodnie z Polityką Plików Cookies. Możesz określić warunki przechowywania lub dostępu do plików cookies w Twojej przeglądarce.
+                    </p>
+                </div>
+                <div class="col-md-3 text-center text-md-end">
+                    <button id="accept-cookies" class="btn btn-primary text-white">Zamknij</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check if the flag is not set, then display the banner
+            if (!localStorage.getItem("cookieBannerAccepted")) {
+                document.getElementById("cookie-banner").style.display = "block";
+            }
+
+            document.getElementById("accept-cookies").addEventListener("click", function() {
+                // Set the flag in localStorage so the banner won't be shown again
+                localStorage.setItem("cookieBannerAccepted", "true");
+                // Hide the banner
+                document.getElementById("cookie-banner").style.display = "none";
+            });
+        });
+    </script>
+
     @stack('scripts')
     <script type="application/javascript">
         function showProductImage(src) {

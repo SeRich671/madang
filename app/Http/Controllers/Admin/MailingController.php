@@ -36,8 +36,9 @@ class MailingController extends Controller
                     ->get()
             )
             ->pluck('product.name');
+        $users = User::where('marketing', true)->pluck('email')->toArray();
 
-        return view('admin.mailing.index', compact('mailings', 'mailingProducts'));
+        return view('admin.mailing.index', compact('mailings', 'mailingProducts', 'users'));
     }
 
     public function destroy(Mailing $mailing) {

@@ -2,10 +2,15 @@
 
 @section('content')
     <div class="row">
-        <div class="col-lg-12 text-end">
-            @if(session('error'))
-
-            @endif
+        <div class="col-lg-6">
+            Produkty:<br>
+            {{ implode(', ', $mailingProducts->toArray()) }}
+        </div>
+        <div class="col-lg-6">
+            Użytkownicy:<br>
+            {{ implode(', ', $users) }}
+        </div>
+        <div class="col-lg-12 text-center">
             <form id="mailingForm" action="{{ route('admin.sendMailing') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-success text-white">
@@ -13,7 +18,7 @@
                 </button>
             </form>
         </div>
-        <div class="col-lg-12 table-responsive">
+        <div class="col-lg-12 table-responsive mt-4">
             <table class="table table-striped">
                 <thead>
                 <tr>
